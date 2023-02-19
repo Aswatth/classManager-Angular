@@ -8,6 +8,7 @@ public class ClassManagerBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClassManagerBackendApplication.class, args);
+		System.out.println("Server started...");
 	}
 
 }

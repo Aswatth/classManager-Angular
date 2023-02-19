@@ -1,16 +1,78 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { FormsModule } from '@angular/forms';
+import {Routes, RouterModule, Route} from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { StudentListComponent } from './Student/student-list/student-list.component';
+import { AddStudentComponent } from './Student/add-student/add-student.component';
+import { PersonalInfoComponent } from './Student/add-student/personal-info/personal-info.component';
+import { SessionInfoComponent } from './Student/add-student/session-info/session-info.component';
+import { ReviewSubmitComponent } from './Student/add-student/review-submit/review-submit.component';
+import { StudentDetailComponent } from './Student/student-detail/student-detail.component';
+
+import {TableModule} from 'primeng/table';
+import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
+import {DropdownModule} from 'primeng/dropdown';
+import {ToolbarModule} from 'primeng/toolbar';
+import {StepsModule} from 'primeng/steps';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { StudentService } from './Student/student.service';
+
+const routes: Routes = [
+  {
+    path: '', 
+    component: StudentListComponent, 
+    children: [{
+    path: 'addStudent', 
+    component: AddStudentComponent,
+    children:[
+      {path: '', redirectTo: 'personal', pathMatch: 'full'},
+      {path: 'personal', component: PersonalInfoComponent},
+      {path: 'session', component: SessionInfoComponent},
+      {path: 'review_submit', component: ReviewSubmitComponent}
+    ]}
+  ]},
+  {path: 'student/:id', component: StudentDetailComponent},
+  
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StudentListComponent,
+    AddStudentComponent,
+    PersonalInfoComponent,
+    SessionInfoComponent,
+    ReviewSubmitComponent,
+    StudentDetailComponent
   ],
   imports: [
-    BrowserModule
+    //Angular Modules
+    BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(routes),
+
+    //PrimeNG modules
+    ToolbarModule,
+    TableModule,
+    InputTextModule,
+    ButtonModule,
+    DialogModule,
+    StepsModule,
+    DropdownModule,
+    ConfirmDialogModule
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

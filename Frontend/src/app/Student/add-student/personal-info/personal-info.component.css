@@ -1,0 +1,10 @@
+.inputField{
+    margin: 25px;
+}
+.horizontalLayout{
+    display: inline-block;
+}
+
+:host ::ng-deep .right {
+    float: right;
+}
