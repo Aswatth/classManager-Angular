@@ -1,0 +1,48 @@
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <h1 class="information">Home</h1>
+    </div>
+    <div class="p-toolbar-group-end">
+        <i class="pi pi-users information"></i><p class="information">40</p>
+        <i class="pi pi-dollar information"></i><p class="information">40,000</p>
+    </div>   
+  </p-toolbar>
+  <hr>
+<p-button label="Add student" styleClass="p-button-add-student" (onClick)="OnAddStudent()"></p-button>
+<p-table [value]="studentList"
+selectionMode="single"
+(onRowSelect)="onRowSelect($event)"
+[rows]="5"
+[showCurrentPageReport]="true"
+[rowsPerPageOptions]="[5,10,15]"
+[paginator]="true"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>School</th>
+            <th>Location</th>
+            <th>Student PhNum</th>
+            <th>Parent PhNum 1</th>
+            <th>Parent PhNum 2</th>
+            <th>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-student>
+        <tr [pSelectableRow]="student">
+            <td>{{ studentList.indexOf(student) + 1 }}</td>
+            <td>{{student.studentName}}</td>
+            <td>{{student.schoolName}}</td>
+            <td>{{student.location}}</td>
+            <td>{{student.studentMobileNumber}}</td>
+            <td>{{student.parentMobileNumber1}}</td>
+            <td>{{student.parentMobileNumber2}}</td>
+            <p-button class="p-button-text p-button-rounded" styleClass="p-button-delete" icon="pi pi-trash" (onClick)="OnDelete(student)"></p-button>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog header="Add student" [(visible)]="displayAddStudentForm" styleClass="p-dialog-style" (onHide)="OnDialogClose()">
+    <router-outlet></router-outlet>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,53 @@
+:host ::ng-deep .p-toolbar {
+    padding: 5px;
+    border: none;
+    background-color: rgb(44, 41, 35);
+}
+.information{
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+}
+
+:host ::ng-deep .p-button-add-student {
+    background-color: green;
+    border-color: transparent;
+}
+:host ::ng-deep .p-button-add-student:hover {
+    background-color: transparent;
+    color: black;
+    border-color: green;
+}
+:host ::ng-deep .p-button-add-student {
+    display: block;
+    background-color: green;
+    border-color: transparent;
+    margin-right: 0;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+:host ::ng-deep .p-button-add-student:hover {
+    background-color: transparent;
+    color: black;
+    border-color: green;
+}
+
+:host ::ng-deep .p-button-delete {
+    background-color: transparent;
+    color: red;
+    border: none;
+}
+:host ::ng-deep .p-button-delete:hover{
+    background-color: transparent;
+    color: red;
+    border: solid;
+    border-width: 1px;
+    border-color: red;
+}
+
+:host ::ng-deep .p-dialog-style{
+    border: 2px;
+    border-style: solid;
+    border-color: green;
+}
