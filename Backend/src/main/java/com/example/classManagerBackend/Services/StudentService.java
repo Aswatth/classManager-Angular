@@ -16,8 +16,9 @@ public class StudentService implements IStudentService
     StudentRepo studentRepo;
 
     @Override
-    public void AddStudent(StudentModel studentModel){
+    public List<StudentModel> AddStudent(StudentModel studentModel){
         studentRepo.save((studentModel));
+        return GetAllStudents();
     }
 
     @Override
@@ -26,12 +27,10 @@ public class StudentService implements IStudentService
     }
 
     @Override
-    public void DeleteStudent(int id)
+    public List<StudentModel> DeleteStudent(int id)
     {
-        Optional<StudentModel> studentModel = studentRepo.findById(id);
-        if(studentModel.isPresent()){
-            studentRepo.delete(studentModel.get());
-        }
+        studentRepo.deleteById(id);
+        return GetAllStudents();
     }
 
     @Override
@@ -46,5 +45,4 @@ public class StudentService implements IStudentService
             return studentModel.get();
         return null;
     }
-
 }

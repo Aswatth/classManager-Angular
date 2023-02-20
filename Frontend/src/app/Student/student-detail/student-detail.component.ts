@@ -25,8 +25,7 @@ export class StudentDetailComponent implements OnInit{
   constructor(
     private router: Router,
     private route: ActivatedRoute, 
-    private studentService: StudentService, 
-    private addStudentService: AddStudentService){}
+    private studentService: StudentService){}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -45,8 +44,8 @@ export class StudentDetailComponent implements OnInit{
     );
 
     this.GetData();
-    this.boardList = this.addStudentService.boardList;
-    this.classList = this.addStudentService.classList;
+    this.boardList = this.studentService.boardList;
+    this.classList = this.studentService.classList;
   }
 
   GetData(){
