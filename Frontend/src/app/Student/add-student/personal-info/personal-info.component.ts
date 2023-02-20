@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AddStudentService } from '../add-student.service';
+import { StudentService } from '../../student.service';
 import { PersonalInfoModel } from './personal-info.model';
 
 @Component({
@@ -18,9 +18,11 @@ export class PersonalInfoComponent {
   
   personalInfoModel!: PersonalInfoModel;
 
-  constructor(private router: Router, private http: HttpClient, private addStudentService: AddStudentService) { }
+  constructor(private router: Router,private studentService: StudentService) { }
 
   ngOnInit(){
+  console.log("Personal info init...");
+  this.personalInfoModel = new PersonalInfoModel();
     this.personalInfoForm = new FormGroup(
       {
         'studentName': new FormControl(null, Validators.required),
@@ -33,28 +35,28 @@ export class PersonalInfoComponent {
         'parentMobileNumber2': new FormControl(null),
       }
     );
-    this.boardList = this.addStudentService.boardList;
-    this.classList = this.addStudentService.classList;
+
+    this.personalInfoModel.studentName = 'Ash';
+    this.personalInfoModel.location = 'Chennai';
+    this.personalInfoModel.schoolName = 'SVVV';
+    this.personalInfoModel.className = 'X';
+    this.personalInfoModel.boardName = 'CBSE';
+    this.personalInfoModel.studentMobileNumber = '123';
+    this.personalInfoModel.parentMobileNumber1 = '456';
+    this.personalInfoModel.parentMobileNumber2 = null;
+
+    this.personalInfoForm.setValue(this.personalInfoModel);
+
+    this.boardList = this.studentService.boardList;
+    this.classList = this.studentService.classList;
   }
 
   OnNextClick(){
-    console.log(this.personalInfoForm);
+    console.log("Personal info");
+    console.log(this.personalInfoForm.getRawValue());
 
-    this.personalInfoModel = new PersonalInfoModel(
-      this.personalInfoForm.get('studentName')?.value,
-      this.personalInfoForm.get('schoolName')?.value,
-      this.personalInfoForm.get('className')?.value,
-      this.personalInfoForm.get('boardName')?.value,
-      this.personalInfoForm.get('location')?.value,
-      this.personalInfoForm.get('studentMobileNumber')?.value,
-      this.personalInfoForm.get('parentMobileNumber1')?.value,
-      this.personalInfoForm.get('parentMobileNumber2')?.value
-    );
-
-    console.log(this.personalInfoModel);
-    this.addStudentService.personalInfo = this.personalInfoModel;
+    this.studentService.S_submittedPersonalInfo.next(this.personalInfoForm.getRawValue());
 
     this.router.navigate(['addStudent/session']);
   }
-
 }

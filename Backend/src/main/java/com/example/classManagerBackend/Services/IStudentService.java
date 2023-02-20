@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface IStudentService
 {
-    void AddStudent(StudentModel studentModel);
+    List<StudentModel> AddStudent(StudentModel studentModel);
     void UpdateStudent(int id, StudentModel newStudentModel);
-    void DeleteStudent(int id);
+    List<StudentModel> DeleteStudent(int id);
     List<StudentModel> GetAllStudents();
     StudentModel GetStudent(int id);
 }

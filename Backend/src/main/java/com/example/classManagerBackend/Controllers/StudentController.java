@@ -18,9 +18,8 @@ public class StudentController
     StudentService studentService;
 
     @PostMapping("/student")
-    void AddStudent(@RequestBody StudentModel studentModel){
-        System.out.println(studentModel.toString());
-        studentService.AddStudent(studentModel);
+    ResponseEntity<List<StudentModel>> AddStudent(@RequestBody StudentModel studentModel){
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.AddStudent(studentModel));
     }
 
     @PutMapping("/students/{id}")
@@ -29,8 +28,8 @@ public class StudentController
     }
 
     @DeleteMapping("/students/{id}")
-    void DeleteStudent(@PathVariable int id ){
-        studentService.DeleteStudent(id);
+    ResponseEntity<List<StudentModel>> DeleteStudent(@PathVariable int id ){
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.DeleteStudent(id));
     }
 
     @GetMapping("/students")

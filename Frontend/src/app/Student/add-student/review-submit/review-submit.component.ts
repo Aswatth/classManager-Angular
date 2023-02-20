@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { AddStudentService } from '../add-student.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { StudentService } from '../../student.service';
 import { PersonalInfoModel } from '../personal-info/personal-info.model';
 
 @Component({
@@ -8,17 +9,30 @@ import { PersonalInfoModel } from '../personal-info/personal-info.model';
   templateUrl: './review-submit.component.html',
   styleUrls: ['./review-submit.component.css']
 })
-export class ReviewSubmitComponent implements OnInit{
+export class ReviewSubmitComponent implements OnInit, OnDestroy{
 
-  personalInfoModel!: PersonalInfoModel;
+  personalInfoModel: PersonalInfoModel = new PersonalInfoModel();
+  personalInfoSubscription!: Subscription;
 
-  constructor(private addStudentService: AddStudentService, private http:HttpClient){}
+  constructor(private studentService: StudentService){}
 
   ngOnInit(){
-    this.personalInfoModel = this.addStudentService.personalInfo;
+    console.log("outside subscribe 1");
+    this.personalInfoSubscription = this.studentService.S_submittedPersonalInfo.subscribe(
+      (personalInfo) => {
+        console.log("inside subs");
+        this.personalInfoModel = personalInfo;
+      }
+    );
+    console.log("outside subscribe 2");
   }
 
   OnSubmit(){
-    this.addStudentService.AddStudent();
+    this.studentService.AddStudent(this.personalInfoModel);
+  }
+
+  ngOnDestroy(){
+    console.log("Unsubscibing")
+    this.personalInfoSubscription.unsubscribe();
   }
 }

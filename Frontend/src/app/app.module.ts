@@ -13,17 +13,22 @@ import { PersonalInfoComponent } from './Student/add-student/personal-info/perso
 import { SessionInfoComponent } from './Student/add-student/session-info/session-info.component';
 import { ReviewSubmitComponent } from './Student/add-student/review-submit/review-submit.component';
 import { StudentDetailComponent } from './Student/student-detail/student-detail.component';
+import { StudentService } from './Student/student.service';
+import { AddSessionComponent } from './Session/add-session/add-session.component';
 
 import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
+import {InputNumberModule} from 'primeng/inputnumber';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {ToolbarModule} from 'primeng/toolbar';
 import {StepsModule} from 'primeng/steps';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
-import { StudentService } from './Student/student.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
+import {CalendarModule} from 'primeng/calendar';
+
 
 const routes: Routes = [
   {
@@ -51,7 +56,8 @@ const routes: Routes = [
     PersonalInfoComponent,
     SessionInfoComponent,
     ReviewSubmitComponent,
-    StudentDetailComponent
+    StudentDetailComponent,
+    AddSessionComponent
   ],
   imports: [
     //Angular Modules
@@ -66,13 +72,16 @@ const routes: Routes = [
     ToolbarModule,
     TableModule,
     InputTextModule,
+    InputNumberModule,
     ButtonModule,
     DialogModule,
     StepsModule,
     DropdownModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ToastModule,
+    CalendarModule
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
