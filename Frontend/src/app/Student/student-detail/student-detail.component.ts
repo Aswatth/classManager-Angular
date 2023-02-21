@@ -65,9 +65,9 @@ export class StudentDetailComponent implements OnInit{
       'className': this.oldStudentModel.className,
       'boardName': this.oldStudentModel.boardName,
       'location': this.oldStudentModel.location,
-      'studentMobileNumber': this.oldStudentModel.studentMobileNumber,
-      'parentMobileNumber1': this.oldStudentModel.parentMobileNumber1,
-      'parentMobileNumber2': this.oldStudentModel.parentMobileNumber2,
+      'studentMobileNumber': this.oldStudentModel.studentPhNum,
+      'parentMobileNumber1': this.oldStudentModel.parentPhNum1,
+      'parentMobileNumber2': this.oldStudentModel.parentPhNum2,
     });
   }
 
@@ -104,9 +104,9 @@ export class StudentDetailComponent implements OnInit{
     this.newStudentModel.className =  this.personalInfoForm.get('className')?.value;
     this.newStudentModel.boardName =  this.personalInfoForm.get('boardName')?.value;
     this.newStudentModel.location =  this.personalInfoForm.get('location')?.value;
-    this.newStudentModel.studentMobileNumber =  this.personalInfoForm.get('studentMobileNumber')?.value;
-    this.newStudentModel.parentMobileNumber1 =  this.personalInfoForm.get('parentMobileNumber1')?.value;
-    this.newStudentModel.parentMobileNumber2 =  this.personalInfoForm.get('parentMobileNumber2')?.value;
+    this.newStudentModel.studentPhNum =  this.personalInfoForm.get('studentMobileNumber')?.value;
+    this.newStudentModel.parentPhNum1 =  this.personalInfoForm.get('parentMobileNumber1')?.value;
+    this.newStudentModel.parentPhNum2 =  this.personalInfoForm.get('parentMobileNumber2')?.value;
 
     this.studentService.UpdateStudent(this.oldStudentModel.id, this.newStudentModel);
 
