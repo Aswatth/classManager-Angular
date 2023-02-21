@@ -1,11 +1,14 @@
-<div *ngIf="personalInfoModel">
-    <p>Student name: {{ personalInfoModel.studentName }} </p>
-    <p>Location:  {{ personalInfoModel.location }} </p>
-    <p>School name:  {{ personalInfoModel.schoolName }} </p>
-    <p>Class:  {{ personalInfoModel.className }} </p>
-    <p>Board:  {{ personalInfoModel.boardName }} </p>
-    <p>Student PhNum:  {{ personalInfoModel.studentMobileNumber }} </p>
-    <p>Parent PhNum:  {{ personalInfoModel.parentMobileNumber1 }} </p>
-    <p>Parent PhNum:  {{ personalInfoModel.parentMobileNumber2 }} 
+<div style="width: 1000px; height: 400px;">
+    <div *ngIf="personalInfoModel">
+        <p>Student name: {{ personalInfoModel.studentName }} </p>
+        <p>Location:  {{ personalInfoModel.location }} </p>
+        <p>School name:  {{ personalInfoModel.schoolName }} </p>
+        <p>Class:  {{ personalInfoModel.className }} </p>
+        <p>Board:  {{ personalInfoModel.boardName }} </p>
+        <p>Student PhNum:  {{ personalInfoModel.studentMobileNumber }} </p>
+        <p>Parent PhNum:  {{ personalInfoModel.parentMobileNumber1 }} </p>
+        <p>Parent PhNum:  {{ personalInfoModel.parentMobileNumber2 }} 
+    </div>
+    <p-button label="Prev" icon="pi pi-chevron-left" (onClick)="MovePrev()"></p-button>
+    <p-button label="Submit" style="float: right;" (onClick)="OnSubmit()"></p-button>
 </div>
-<p-button label="Submit" (onClick)="OnSubmit()"></p-button>

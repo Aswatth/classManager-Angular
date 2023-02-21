@@ -1,10 +1,13 @@
 package com.example.classManagerBackend.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "Student")
 public class StudentModel
 {
     @Id
@@ -15,9 +18,12 @@ public class StudentModel
     String className;
     String boardName;
     String location;
-    String studentMobileNumber;
-    String parentMobileNumber1;
-    String parentMobileNumber2;
+    String studentPhNum;
+    String parentPhNum1;
+    String parentPhNum2;
+    @OneToMany
+    @JoinColumn(name = "StudentId")
+    List<SessionModel> sessionModelList;
 
     public int getId()
     {
@@ -79,34 +85,60 @@ public class StudentModel
         this.location = location;
     }
 
-    public String getStudentMobileNumber()
+    public String getStudentPhNum()
     {
-        return studentMobileNumber;
+        return studentPhNum;
     }
 
-    public void setStudentMobileNumber(String studentMobileNumber)
+    public void setStudentPhNum(String studentPhNum)
     {
-        this.studentMobileNumber = studentMobileNumber;
+        this.studentPhNum = studentPhNum;
     }
 
-    public String getParentMobileNumber1()
+    public String getParentPhNum1()
     {
-        return parentMobileNumber1;
+        return parentPhNum1;
     }
 
-    public void setParentMobileNumber1(String parentMobileNumber1)
+    public void setParentPhNum1(String parentPhNum1)
     {
-        this.parentMobileNumber1 = parentMobileNumber1;
+        this.parentPhNum1 = parentPhNum1;
     }
 
-    public String getParentMobileNumber2()
+    public String getParentPhNum2()
     {
-        return parentMobileNumber2;
+        return parentPhNum2;
     }
 
-    public void setParentMobileNumber2(String parentMobileNumber2)
+    public void setParentPhNum2(String parentPhNum2)
     {
-        this.parentMobileNumber2 = parentMobileNumber2;
+        this.parentPhNum2 = parentPhNum2;
     }
 
+    public List<SessionModel> getSessionModelList()
+    {
+        return sessionModelList;
+    }
+
+    public void setSessionModelList(List<SessionModel> sessionModelList)
+    {
+        this.sessionModelList = sessionModelList;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "StudentModel{" +
+                "id=" + id +
+                ", studentName='" + studentName + '\'' +
+                ", schoolName='" + schoolName + '\'' +
+                ", className='" + className + '\'' +
+                ", boardName='" + boardName + '\'' +
+                ", location='" + location + '\'' +
+                ", studentPhNum='" + studentPhNum + '\'' +
+                ", parentPhNum1='" + parentPhNum1 + '\'' +
+                ", parentPhNum2='" + parentPhNum2 + '\'' +
+                ", sessionModelList=" + sessionModelList +
+                '}';
+    }
 }

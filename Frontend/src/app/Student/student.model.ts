@@ -5,8 +5,8 @@ export class StudentModel{
     className!: string;
     boardName!: string;
     location!: string;
-    studentMobileNumber!: string;
-    parentMobileNumber1!: string;
-    parentMobileNumber2!: string;
+    studentPhNum!: string;
+    parentPhNum1!: string;
+    parentPhNum2!: string;
     //Will have session details
 }

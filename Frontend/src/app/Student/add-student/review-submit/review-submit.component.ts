@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StudentService } from '../../student.service';
 import { PersonalInfoModel } from '../personal-info/personal-info.model';
@@ -14,7 +15,7 @@ export class ReviewSubmitComponent implements OnInit, OnDestroy{
   personalInfoModel: PersonalInfoModel = new PersonalInfoModel();
   personalInfoSubscription!: Subscription;
 
-  constructor(private studentService: StudentService){}
+  constructor(private router:Router, private studentService: StudentService){}
 
   ngOnInit(){
     console.log("outside subscribe 1");
@@ -25,6 +26,10 @@ export class ReviewSubmitComponent implements OnInit, OnDestroy{
       }
     );
     console.log("outside subscribe 2");
+  }
+
+  MovePrev(){
+    this.router.navigate(['addStudent/session'])
   }
 
   OnSubmit(){
