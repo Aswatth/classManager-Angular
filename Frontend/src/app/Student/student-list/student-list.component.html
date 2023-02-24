@@ -3,8 +3,8 @@
         <h1 class="information">Home</h1>
     </div>
     <div class="p-toolbar-group-end">
-        <i class="pi pi-users information"></i><p class="information">40</p>
-        <i class="pi pi-dollar information"></i><p class="information">40,000</p>
+        <i class="pi pi-users information"></i><p class="information">{{ studentList.length }}</p>
+        <p class="information">&#8377; {{ totalFees }}</p>
     </div>   
   </p-toolbar>
   <hr>
@@ -21,11 +21,12 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <tr>
             <th>#</th>
             <th>Name</th>
-            <th>School</th>
-            <th>Location</th>
-            <th>Student PhNum</th>
-            <th>Parent PhNum 1</th>
-            <th>Parent PhNum 2</th>
+            <th> Class</th>
+            <th>Board</th>
+            <th>Subjects</th>
+            <th>Days</th>
+            <th>Timing</th>
+            <th>Fees</th>
             <th>Actions</th>
         </tr>
     </ng-template>
@@ -33,11 +34,28 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <tr [pSelectableRow]="student">
             <td>{{ studentList.indexOf(student) + 1 }}</td>
             <td>{{student.studentName}}</td>
-            <td>{{student.schoolName}}</td>
-            <td>{{student.location}}</td>
-            <td>{{student.studentPhNum}}</td>
-            <td>{{student.parentPhNum1}}</td>
-            <td>{{student.parentPhNum2}}</td>
+            <td>{{student.className}}</td>
+            <td>{{student.boardName}}</td>
+            <td>
+                <ng-container *ngFor="let session of student.sessionList">
+                    <p>{{ session.subject }}</p>
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngFor="let session of student.sessionList">
+                    <p>{{ session.days }}</p>
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngFor="let session of student.sessionList">
+                    <p>{{ session.startTime | Date2Time }} - {{ session.endTime | Date2Time }}</p>
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngFor="let session of student.sessionList">
+                    <p>&#8377;{{ session.fees }}</p>
+                </ng-container>
+            </td>
             <p-button class="p-button-text p-button-rounded" styleClass="p-button-delete" icon="pi pi-trash" (onClick)="OnDelete(student)"></p-button>
         </tr>
     </ng-template>
@@ -45,5 +63,5 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
 <p-dialog header="Add student" [modal]="true" [closeOnEscape]="false" [(visible)]="displayAddStudentForm" styleClass="p-dialog-style" (onHide)="OnDialogClose()">
     <router-outlet></router-outlet>
 </p-dialog>
-<p-toast></p-toast>
+<p-toast position="bottom-center"></p-toast>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

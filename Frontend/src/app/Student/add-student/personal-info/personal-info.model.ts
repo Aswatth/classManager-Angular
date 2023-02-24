@@ -4,7 +4,7 @@ export class PersonalInfoModel{
     className!: string;
     boardName!: string;
     location!: string;
-    studentMobileNumber!: string;
-    parentMobileNumber1!: string;
-    parentMobileNumber2!: string | null;
+    studentPhNum!: string;
+    parentPhNum1!: string;
+    parentPhNum2!: string | null;
 }

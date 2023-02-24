@@ -13,8 +13,7 @@ import { PersonalInfoComponent } from './Student/add-student/personal-info/perso
 import { SessionInfoComponent } from './Student/add-student/session-info/session-info.component';
 import { ReviewSubmitComponent } from './Student/add-student/review-submit/review-submit.component';
 import { StudentDetailComponent } from './Student/student-detail/student-detail.component';
-import { StudentService } from './Student/student.service';
-import { AddSessionComponent } from './Session/add-session/add-session.component';
+import { SessionData } from './Student/add-student/session-info/session-data/session-data.component';
 
 import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
@@ -28,7 +27,12 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {CalendarModule} from 'primeng/calendar';
+import {SplitterModule} from 'primeng/splitter';
+import {MultiSelectModule} from 'primeng/multiselect';
 
+import {ScrollerModule} from 'primeng/scroller';
+import {ListboxModule} from 'primeng/listbox';
+import { Date2Time } from './Pipes/date2time.pipe';
 
 const routes: Routes = [
   {
@@ -57,7 +61,8 @@ const routes: Routes = [
     SessionInfoComponent,
     ReviewSubmitComponent,
     StudentDetailComponent,
-    AddSessionComponent
+    SessionData,
+    Date2Time
   ],
   imports: [
     //Angular Modules
@@ -79,7 +84,11 @@ const routes: Routes = [
     DropdownModule,
     ConfirmDialogModule,
     ToastModule,
-    CalendarModule
+    CalendarModule,
+    SplitterModule,
+    MultiSelectModule,
+    ScrollerModule,
+    ListboxModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

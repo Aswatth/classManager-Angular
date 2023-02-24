@@ -1,0 +1,18 @@
+<div class="tile">
+    <div class="leading">
+        <b>{{ sessionModel.subject }}</b>
+        <div class="subtitle">
+            {{ sessionModel.days }}
+        </div>
+    </div>
+    <div class="title">
+        {{ sessionModel.startTime | Date2Time }} 
+            - 
+        {{ sessionModel.endTime | Date2Time }}
+    </div> 
+    <div class="trailing">
+        &#8377;{{sessionModel.fees }}
+    </div>   
+    <p-button *ngIf="displayDelete" class="p-button-text p-button-rounded" styleClass="p-button-delete" icon="pi pi-trash" (onClick)="OnDelete()"></p-button>
+</div>
+<hr>

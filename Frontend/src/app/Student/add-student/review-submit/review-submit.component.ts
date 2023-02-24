@@ -3,7 +3,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StudentService } from '../../student.service';
+import { AddStudentService } from '../add-student.service';
 import { PersonalInfoModel } from '../personal-info/personal-info.model';
+import { SessionModel } from '../session-info/session.model';
 
 @Component({
   selector: 'app-review-submit',
@@ -15,17 +17,23 @@ export class ReviewSubmitComponent implements OnInit, OnDestroy{
   personalInfoModel: PersonalInfoModel = new PersonalInfoModel();
   personalInfoSubscription!: Subscription;
 
-  constructor(private router:Router, private studentService: StudentService){}
+  sessionModelList: SessionModel[] = [];
+  sessionListSubscription!: Subscription;
+
+  constructor(private router:Router, private addStudentService: AddStudentService){}
 
   ngOnInit(){
-    console.log("outside subscribe 1");
-    this.personalInfoSubscription = this.studentService.S_submittedPersonalInfo.subscribe(
+    this.personalInfoSubscription = this.addStudentService.S_submittedPersonalInfo.subscribe(
       (personalInfo) => {
-        console.log("inside subs");
         this.personalInfoModel = personalInfo;
       }
     );
-    console.log("outside subscribe 2");
+
+    this.sessionListSubscription = this.addStudentService.S_submittedSessionList.subscribe(
+      (sessionList) => {
+        this.sessionModelList = sessionList;
+      }
+    );
   }
 
   MovePrev(){
@@ -33,11 +41,11 @@ export class ReviewSubmitComponent implements OnInit, OnDestroy{
   }
 
   OnSubmit(){
-    this.studentService.AddStudent(this.personalInfoModel);
+    this.addStudentService.AddStudent();
   }
 
   ngOnDestroy(){
-    console.log("Unsubscibing")
     this.personalInfoSubscription.unsubscribe();
+    this.sessionListSubscription.unsubscribe();
   }
 }

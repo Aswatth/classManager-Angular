@@ -1,2 +1,73 @@
-<p>Session works</p>
-<p-button label="Next" (onClick)="MoveNext()"></p-button>
+<div style="width: 1000px; height: 400px; padding: 10px;">    
+    <p-splitter [panelSizes]="[50, 50]">
+        <ng-template pTemplate>
+            <div style="padding: 10px;">
+                <form [formGroup]="sessionForm" (ngSubmit)="OnAdd()">
+                    <p-dropdown
+                        class="block margins"
+                        [options]="subjectList"
+                        placeholder="Select a subject"
+                        formControlName = "subject"
+                        >
+                    </p-dropdown>
+                    <p-multiSelect
+                        class="block margins"
+                        [options]="dayList"
+                        [filter]="false"
+                        placeholder="Day(s)"
+                        [maxSelectedLabels]="3"
+                        display="chip"
+                        formControlName = "days">
+                    </p-multiSelect>
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;" class="margins">
+                        <div style="flex: 1;" class="timePicker">
+                            <p-calendar 
+                                placeholder="Start time"
+                                [showTime]="true" 
+                                [timeOnly]="true"
+                                hourFormat="12"
+                                [showIcon]="true"
+                                icon="pi pi-clock"
+                                formControlName="startTime">
+                            </p-calendar>
+                        </div>
+                        <div style="flex: 1;" class="timePicker">
+                            <p-calendar 
+                                placeholder="End time"
+                                [showTime]="true" 
+                                [timeOnly]="true"
+                                hourFormat="12"
+                                [showIcon]="true"
+                                icon="pi pi-clock"
+                                formControlName="endTime">
+                            </p-calendar>
+                        </div>
+                    </div>
+                    <input 
+                        id="fees" 
+                        type="number" 
+                        formControlName = "fees"
+                        pInputText>
+                    <p-button
+                        type="submit"
+                        styleClass="addButton"
+                        label="Add sesion"
+                        icon="pi pi-plus"
+                        [disabled]="!sessionForm.valid"
+                        >
+                    </p-button>
+                </form>
+            </div>
+        </ng-template>
+        <ng-template pTemplate>
+            <div style="width: 100%; padding: 5px;">     
+                <ng-container *ngFor="let session of sessionList">
+                    <session-data [sessionModel]="session" (sessionDelete)="DeleteSession($event)"></session-data>    
+                </ng-container>              
+            </div>            
+        </ng-template>
+    </p-splitter>
+    <p-button label="Prev" icon="pi pi-chevron-left" iconPos="left" styleClass="prevButton" (onClick)="MovePrev()"></p-button>
+    <p-button label="Next" icon="pi pi-chevron-right" iconPos="right" styleClass="nextButton" (onClick)="MoveNext()" [disabled]="sessionList.length == 0"></p-button>
+</div>
+<p-toast key="session-add"></p-toast>

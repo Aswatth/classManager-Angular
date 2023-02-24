@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddStudentService } from '../add-student/add-student.service';
+import { PersonalInfoModel } from '../add-student/personal-info/personal-info.model';
 import { StudentModel } from '../student.model';
 import { StudentService } from '../student.service';
 
@@ -17,9 +18,6 @@ export class StudentDetailComponent implements OnInit{
   id!: number;
   isEditing: boolean = false;
 
-  boardList: string[] = [];
-  classList: string[] = [];
-
   personalInfoForm!: FormGroup;
 
   constructor(
@@ -28,24 +26,16 @@ export class StudentDetailComponent implements OnInit{
     private studentService: StudentService){}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params['id'];
+    let id = this.route.snapshot.params['id'];
 
-    this.personalInfoForm = new FormGroup(
-      {
-        'studentName': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'schoolName': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'className': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'boardName': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'location': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'studentMobileNumber': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'parentMobileNumber1': new FormControl({value: null, disabled: !this.isEditing}, Validators.required),
-        'parentMobileNumber2': new FormControl({value: null, disabled: !this.isEditing}),
+    this.studentService.S_stundentList.subscribe(
+      data => {
+        this.oldStudentModel = data.filter(f=>f.id == id)[0];
+        
+        let personalInfo: PersonalInfoModel = this.oldStudentModel
+        console.log(personalInfo);
       }
     );
-
-    this.GetData();
-    this.boardList = this.studentService.boardList;
-    this.classList = this.studentService.classList;
   }
 
   GetData(){
@@ -53,22 +43,13 @@ export class StudentDetailComponent implements OnInit{
       studentData => {
         this.oldStudentModel = studentData;
         console.log(this.oldStudentModel);
-        this.SetDefault();
+        //this.SetDefault();
       }
     );
   }
 
   SetDefault(){
-    this.personalInfoForm.setValue({
-      'studentName': this.oldStudentModel.studentName,
-      'schoolName': this.oldStudentModel.schoolName,
-      'className': this.oldStudentModel.className,
-      'boardName': this.oldStudentModel.boardName,
-      'location': this.oldStudentModel.location,
-      'studentMobileNumber': this.oldStudentModel.studentPhNum,
-      'parentMobileNumber1': this.oldStudentModel.parentPhNum1,
-      'parentMobileNumber2': this.oldStudentModel.parentPhNum2,
-    });
+    this.personalInfoForm.setValue(this.oldStudentModel);
   }
 
   EnableForm(){
@@ -86,7 +67,8 @@ export class StudentDetailComponent implements OnInit{
   OnEdit(){
     console.log("Editing");
     this.isEditing = true;
-    this.EnableForm();
+    //this.EnableForm();
+    this.router.navigate(['/addStudent/personalInfo']);
   }
 
   OnCancel(){

@@ -1,4 +1,4 @@
-<form [formGroup]="personalInfoForm" (ngSubmit)="Submit()">
+<!-- <form [formGroup]="personalInfoForm" (ngSubmit)="Submit()">
     <div>
         <div class="inputField horizontalLayout">
             <span class="p-float-label">
@@ -74,4 +74,10 @@
     <p-button label="Save" type="submit" class="buttonAlign" *ngIf="isEditing" [disabled]="!personalInfoForm.valid"></p-button>
 </form>
 <p-button label="Edit" class="buttonAlign" *ngIf="!isEditing" (onClick)="OnEdit()"></p-button>
-<p-button label="Discard" styleClass="discard" *ngIf="isEditing" (onClick)="OnCancel()"></p-button>
+<p-button label="Discard" styleClass="discard" *ngIf="isEditing" (onClick)="OnCancel()"></p-button> -->
+<!-- <app-personal-info [displayNextButton]="false" [canEdit]="false" ></app-personal-info> -->
+student details
+<p-button (onClick)="OnEdit()">
+    Edit
+</p-button>
+<app-personal-info [personalInfoModel]="oldStudentModel" [canEdit]="false"></app-personal-info>

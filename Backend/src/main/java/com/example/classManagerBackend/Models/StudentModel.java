@@ -23,7 +23,7 @@ public class StudentModel
     String parentPhNum2;
     @OneToMany
     @JoinColumn(name = "StudentId")
-    List<SessionModel> sessionModelList;
+    List<SessionModel> sessionList;
 
     public int getId()
     {
@@ -115,14 +115,14 @@ public class StudentModel
         this.parentPhNum2 = parentPhNum2;
     }
 
-    public List<SessionModel> getSessionModelList()
+    public List<SessionModel> getsessionList()
     {
-        return sessionModelList;
+        return sessionList;
     }
 
-    public void setSessionModelList(List<SessionModel> sessionModelList)
+    public void setsessionList(List<SessionModel> sessionList)
     {
-        this.sessionModelList = sessionModelList;
+        this.sessionList = sessionList;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class StudentModel
                 ", studentPhNum='" + studentPhNum + '\'' +
                 ", parentPhNum1='" + parentPhNum1 + '\'' +
                 ", parentPhNum2='" + parentPhNum2 + '\'' +
-                ", sessionModelList=" + sessionModelList +
+                ", sessionList=" + sessionList +
                 '}';
     }
 }
