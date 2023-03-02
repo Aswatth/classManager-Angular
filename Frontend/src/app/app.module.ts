@@ -29,27 +29,32 @@ import {ToastModule} from 'primeng/toast';
 import {CalendarModule} from 'primeng/calendar';
 import {SplitterModule} from 'primeng/splitter';
 import {MultiSelectModule} from 'primeng/multiselect';
-
-import {ScrollerModule} from 'primeng/scroller';
-import {ListboxModule} from 'primeng/listbox';
+import {InplaceModule} from 'primeng/inplace';
+import {ChartModule} from 'primeng/chart';
 import { Date2Time } from './Pipes/date2time.pipe';
 
-const routes: Routes = [
-  {
-    path: '', 
-    component: StudentListComponent, 
-    children: [{
-    path: 'addStudent', 
+const popupRoute: Routes = [{
+  path: 'student-popup', 
     component: AddStudentComponent,
     children:[
       {path: '', redirectTo: 'personal', pathMatch: 'full'},
       {path: 'personal', component: PersonalInfoComponent},
       {path: 'session', component: SessionInfoComponent},
       {path: 'review_submit', component: ReviewSubmitComponent}
-    ]}
-  ]},
-  {path: 'student/:id', component: StudentDetailComponent},
-  
+    ]
+}];
+
+const routes: Routes = [
+  {
+    path: '', 
+    component: StudentListComponent, 
+    children: popupRoute
+  },
+  {
+    path: 'student/:id', 
+    component: StudentDetailComponent, 
+    children: popupRoute
+  },
 ];
 
 @NgModule({
@@ -87,8 +92,8 @@ const routes: Routes = [
     CalendarModule,
     SplitterModule,
     MultiSelectModule,
-    ScrollerModule,
-    ListboxModule
+    InplaceModule,
+    ChartModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

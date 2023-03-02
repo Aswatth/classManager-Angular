@@ -24,26 +24,17 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   constructor(private studentService: StudentService, 
     private router:Router, 
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService){}
+    private confirmationService: ConfirmationService
+    ){}
 
   ngOnInit(): void {
     console.log("Student list init");
-    this.studentDataSubscription = this.studentService.S_stundentList.subscribe(
-      data => {
+    this.studentDataSubscription = this.studentService.S_StudentDataSource.subscribe({
+      next: (data) => {
         this.studentList = data;
         this.CalculateTotalFees();
-        // let startTime:Date = Date.parse(this.studentList[0].sessionList[0].startTime.toString());
-        // console.log(startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
       }
-    );
-    
-    // this.studentService.GetTotalFees().subscribe(
-    //   value => {
-    //     this.totalFees = value;
-    //     console.log(this.totalFees);
-    //   }
-    // );
+    });
 
     this.addingStudentSubscription = this.studentService.S_isAddingStudent.subscribe(
       (value) => (this.displayAddStudentForm = value)
@@ -53,7 +44,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   CalculateTotalFees(){
     this.totalFees = 0;
     this.studentList.forEach(student => {
-      student.sessionList.forEach(session => {
+      student.sessionList!.forEach(session => {
         this.totalFees += session.fees;
       })
     })
@@ -61,7 +52,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   OnAddStudent(){
     this.studentService.S_isAddingStudent.next(true);
-    this.router.navigate(['/addStudent']);
+    this.router.navigate(['/student-popup']);
   }
 
   OnDialogClose(){

@@ -25,15 +25,10 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
 
   sessionForm!: FormGroup;
   sessionList: SessionModel[] = [];
-  sessionSubcription!: Subscription;
 
   ngOnInit(){
     this.subjectList = this.studentService.subjectList;
     this.dayList = this.studentService.dayList;
-
-    this.sessionSubcription = this.addStudentService.S_submittedSessionList.subscribe(
-      (sessionList) => this.sessionList = sessionList
-    );
 
     this.sessionForm = new FormGroup<{
       subject: FormControl<string | null>,
@@ -48,20 +43,20 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
         endTime: new FormControl(null,Validators.required),
         fees: new FormControl(null,Validators.required),
       });
+
+    if(this.addStudentService.sessionList)
+      if(this.addStudentService.sessionList.length > 0){
+        this.sessionList = this.addStudentService.sessionList;
+    }
   }
 
   OnAdd(){
     let sessionModel = this.sessionForm.getRawValue();
-    // sessionModel.startTime = this.sessionForm.controls['startTime'].value.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-    // sessionModel.endTime = this.sessionForm.controls['endTime'].value.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
     let subject = this.sessionForm.controls['subject'].value;
-    console.log(subject);
 
     if(!this.SessionExists(subject)){
       this.sessionList.push(sessionModel);
-      console.log(this.sessionList);
-      this.sessionForm.reset();
+      //this.sessionForm.reset();
     }else{
       this.messageService.add({key:"session-add", severity: 'warn', detail: subject + '\'s already exists'});
     }
@@ -82,15 +77,15 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   MovePrev(){
-    this.router.navigate(['addStudent/personal']);
+    this.router.navigate(['student-popup/personal']);
   }
 
   MoveNext(){
-    this.addStudentService.S_submittedSessionList.next(this.sessionList);
-    this.router.navigate(['addStudent/review_submit']);
+    this.addStudentService.sessionList = this.sessionList;
+    this.router.navigate(['student-popup/review_submit']);
   }
 
   ngOnDestroy(){
-    this.sessionSubcription.unsubscribe();
+    //this.sessionSubcription.unsubscribe();
   }
 }

@@ -2,22 +2,22 @@
     <p-splitter [panelSizes]="[50, 50]">
         <ng-template pTemplate>
             <div>
-                <ng-container *ngIf="personalInfoModel">
-                    <p><b>Student name:</b>{{ personalInfoModel.studentName }} </p>
-                    <p><b>Location:</b>  {{ personalInfoModel.location }} </p>
-                    <p><b>School name:</b>  {{ personalInfoModel.schoolName }} </p>
-                    <p><b>Class:</b>  {{ personalInfoModel.className }} </p>
-                    <p><b>Board:</b>  {{ personalInfoModel.boardName }} </p>
-                    <p><b>Student PhNum:</b>  {{ personalInfoModel.studentPhNum }} </p>
-                    <p><b>Parent PhNum:</b>  {{ personalInfoModel.parentPhNum1 }} </p>
-                    <p><b>Parent PhNum:</b>  {{ personalInfoModel.parentPhNum2 }}
-            </ng-container>
+                <ng-container *ngIf="studentInfo">
+                    <p><b>Student name:</b>{{ studentInfo.studentName }} </p>
+                    <p><b>Location:</b>  {{ studentInfo.location }} </p>
+                    <p><b>School name:</b>  {{ studentInfo.schoolName }} </p>
+                    <p><b>Class:</b>  {{ studentInfo.className }} </p>
+                    <p><b>Board:</b>  {{ studentInfo.boardName }} </p>
+                    <p><b>Student PhNum:</b>  {{ studentInfo.studentPhNum }} </p>
+                    <p><b>Parent PhNum:</b>  {{ studentInfo.parentPhNum1 }} </p>
+                    <p><b>Parent PhNum:</b>  {{ studentInfo.parentPhNum2 }}
+                </ng-container>
             </div>
         </ng-template>
         <ng-template pTemplate>
-            <ng-container *ngIf="sessionModelList">
+            <ng-container *ngIf="sessionList">
                 <div style="width: 100%; padding: 5px;">
-                    <ng-container *ngFor="let session of sessionModelList">
+                    <ng-container *ngFor="let session of sessionList">
                         <session-data [sessionModel]="session" [displayDelete]="false"></session-data>
                     </ng-container>
                 </div>
