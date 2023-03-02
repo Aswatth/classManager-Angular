@@ -1,28 +1,31 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { StudentService } from '../../student.service';
-import { PersonalInfoModel } from './personal-info.model';
+import { AddStudentService } from '../add-student.service';
+//import { PersonalInfoModel } from './personal-info.model';
 
 @Component({
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.css']
 })
-export class PersonalInfoComponent {
+export class PersonalInfoComponent implements OnInit{
+
   personalInfoForm!: FormGroup;
 
   boardList: string[] = [];
   classList: string[] = [];
-  
-  personalInfoModel!: PersonalInfoModel;
 
-  constructor(private router: Router,private studentService: StudentService) { }
+  constructor(private router: Router,
+    private addStudentService: AddStudentService,
+    private studentService: StudentService) { }
 
   ngOnInit(){
-  console.log("Personal info init...");
-  this.personalInfoModel = new PersonalInfoModel();
+    //console.log(this.personalInfoModel);
+
     this.personalInfoForm = new FormGroup(
       {
         'studentName': new FormControl(null, Validators.required),
@@ -30,33 +33,31 @@ export class PersonalInfoComponent {
         'className': new FormControl(null, Validators.required),
         'boardName': new FormControl(null, Validators.required),
         'location': new FormControl(null, Validators.required),
-        'studentMobileNumber': new FormControl(null, Validators.required),
-        'parentMobileNumber1': new FormControl(null, Validators.required),
-        'parentMobileNumber2': new FormControl(null),
+        'studentPhNum': new FormControl(null),
+        'parentPhNum1': new FormControl(null, Validators.required),
+        'parentPhNum2': new FormControl(null),
       }
     );
 
-    this.personalInfoModel.studentName = 'Ash';
-    this.personalInfoModel.location = 'Chennai';
-    this.personalInfoModel.schoolName = 'SVVV';
-    this.personalInfoModel.className = 'X';
-    this.personalInfoModel.boardName = 'CBSE';
-    this.personalInfoModel.studentMobileNumber = '123';
-    this.personalInfoModel.parentMobileNumber1 = '456';
-    this.personalInfoModel.parentMobileNumber2 = null;
-
-    this.personalInfoForm.setValue(this.personalInfoModel);
+    // this.personalInfoModel.studentName = 'Ash';
+    // this.personalInfoModel.location = 'Chennai';
+    // this.personalInfoModel.schoolName = 'SVVV';
+    // this.personalInfoModel.className = 'X';
+    // this.personalInfoModel.boardName = 'CBSE';
+    // this.personalInfoModel.studentPhNum = '123';
+    // this.personalInfoModel.parentPhNum1 = '456';
+    // this.personalInfoModel.parentPhNum2 = null;
 
     this.boardList = this.studentService.boardList;
     this.classList = this.studentService.classList;
+
+    //If already exists display the previous data
+    if(this.addStudentService.studentInfo.studentName)
+      this.personalInfoForm.setValue(this.addStudentService.studentInfo);
   }
 
   OnNextClick(){
-    console.log("Personal info");
-    console.log(this.personalInfoForm.getRawValue());
-
-    this.studentService.S_submittedPersonalInfo.next(this.personalInfoForm.getRawValue());
-
-    this.router.navigate(['addStudent/session']);
+    this.addStudentService.studentInfo = this.personalInfoForm.getRawValue();
+    this.router.navigate(['student-popup/session']);
   }
 }

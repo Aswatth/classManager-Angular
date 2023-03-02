@@ -17,30 +17,42 @@ export class StudentListComponent implements OnInit, OnDestroy{
   
   displayAddStudentForm: boolean = false;
   studentList: StudentModel[] = [];
+  totalFees = 0;
 
   addingStudentSubscription!: Subscription;
   studentDataSubscription!: Subscription;
 
   constructor(private studentService: StudentService, 
     private router:Router, 
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService){}
+    private confirmationService: ConfirmationService
+    ){}
 
   ngOnInit(): void {
     console.log("Student list init");
-    this.studentService.S_stundentList.subscribe(
-      data => {
+    this.studentDataSubscription = this.studentService.S_StudentDataSource.subscribe({
+      next: (data) => {
         this.studentList = data;
+        this.CalculateTotalFees();
       }
-    )
-    this.studentDataSubscription = this.addingStudentSubscription = this.studentService.S_isAddingStudent.subscribe(
+    });
+
+    this.addingStudentSubscription = this.studentService.S_isAddingStudent.subscribe(
       (value) => (this.displayAddStudentForm = value)
     );   
   }
 
+  CalculateTotalFees(){
+    this.totalFees = 0;
+    this.studentList.forEach(student => {
+      student.sessionList!.forEach(session => {
+        this.totalFees += session.fees;
+      })
+    })
+  }
+
   OnAddStudent(){
     this.studentService.S_isAddingStudent.next(true);
-    this.router.navigate(['/addStudent']);
+    this.router.navigate(['/student-popup']);
   }
 
   OnDialogClose(){
@@ -53,6 +65,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
       message: 'Are you sure that you want to delete <b>'+ student.studentName +'\'s</b> data?',
       accept: () => {
         this.studentService.DeleteStudent(student.id);
+        this.CalculateTotalFees();
       },
       reject: () =>{
         console.log("Rejected");
@@ -61,7 +74,6 @@ export class StudentListComponent implements OnInit, OnDestroy{
   }
 
   onRowSelect(event: {data: StudentModel}){
-    console.log(event.data);
     this.router.navigate(['/student/'+event.data.id]);
   }
 

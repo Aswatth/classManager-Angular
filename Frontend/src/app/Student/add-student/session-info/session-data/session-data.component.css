@@ -1,0 +1,39 @@
+.tile{
+    display: flex;
+    /* box-shadow: 2px 2px 5px; */
+}
+.leading{
+    margin-left: 5px;
+    flex: 1;
+    display: inline-block;          
+}
+.title{
+    flex: 2;
+    display: inline-block;          
+}
+.subtitle{
+    display: block;
+    color: gray;
+}
+.trailing{
+    flex: 1;
+    display: inline-block;
+}
+:host ::ng-deep .p-button-delete {
+    flex: 1;
+    align-items: center;
+    background-color: transparent;
+    color: red;
+    border: none;
+}
+:host ::ng-deep .p-button-delete:hover{
+    background-color: transparent;
+    color: red;
+    border: solid;
+    border-width: 1px;
+    border-color: red;
+}
+
+.tile .title .leading .trailing .p-button-delete .p-button-delete:hover{
+    margin: 5px;
+}

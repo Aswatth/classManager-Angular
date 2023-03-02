@@ -1,0 +1,22 @@
+.margins{
+    margin-bottom: 10px; 
+}
+.block{
+    display: block;
+}
+.timePicker{
+    margin-right: 10px;
+}
+:host ::ng-deep .prevButton{
+    margin-top: 20px;
+}
+:host ::ng-deep .nextButton{
+    margin-top: 20px;
+    float: right;
+}
+:host ::ng-deep .addButton{
+    margin-left: 10px;
+}
+.panel2{
+    display: block;
+}

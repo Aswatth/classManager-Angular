@@ -1,16 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { StudentModel } from '../student.model';
 import { StudentService } from '../student.service';
-import { PersonalInfoModel } from './personal-info/personal-info.model';
+import { SessionModel } from './session-info/session.model';
 
 @Injectable({providedIn: 'root'})
 export class AddStudentService{
-
-
-    personalInfo!: PersonalInfoModel;
     
-    constructor(private studentService: StudentService){}
+    studentInfo = new StudentModel();
+    sessionList!: SessionModel[];
+
+    constructor(private studentService: StudentService){
+    }
 
     AddStudent(){
-        this.studentService.AddStudent(this.personalInfo);
+        this.studentInfo.sessionList = this.sessionList;
+        this.studentService.AddStudent(this.studentInfo);
     }
 }

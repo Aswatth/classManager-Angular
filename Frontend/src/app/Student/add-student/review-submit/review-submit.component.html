@@ -1,14 +1,30 @@
-<div style="width: 1000px; height: 400px;">
-    <div *ngIf="personalInfoModel">
-        <p>Student name: {{ personalInfoModel.studentName }} </p>
-        <p>Location:  {{ personalInfoModel.location }} </p>
-        <p>School name:  {{ personalInfoModel.schoolName }} </p>
-        <p>Class:  {{ personalInfoModel.className }} </p>
-        <p>Board:  {{ personalInfoModel.boardName }} </p>
-        <p>Student PhNum:  {{ personalInfoModel.studentMobileNumber }} </p>
-        <p>Parent PhNum:  {{ personalInfoModel.parentMobileNumber1 }} </p>
-        <p>Parent PhNum:  {{ personalInfoModel.parentMobileNumber2 }} 
-    </div>
+<div style="width: 1000px; padding: 10px;">
+    <p-splitter [panelSizes]="[50, 50]">
+        <ng-template pTemplate>
+            <div>
+                <ng-container *ngIf="studentInfo">
+                    <p><b>Student name:</b>{{ studentInfo.studentName }} </p>
+                    <p><b>Location:</b>  {{ studentInfo.location }} </p>
+                    <p><b>School name:</b>  {{ studentInfo.schoolName }} </p>
+                    <p><b>Class:</b>  {{ studentInfo.className }} </p>
+                    <p><b>Board:</b>  {{ studentInfo.boardName }} </p>
+                    <p><b>Student PhNum:</b>  {{ studentInfo.studentPhNum }} </p>
+                    <p><b>Parent PhNum:</b>  {{ studentInfo.parentPhNum1 }} </p>
+                    <p><b>Parent PhNum:</b>  {{ studentInfo.parentPhNum2 }}
+                </ng-container>
+            </div>
+        </ng-template>
+        <ng-template pTemplate>
+            <ng-container *ngIf="sessionList">
+                <div style="width: 100%; padding: 5px;">
+                    <ng-container *ngFor="let session of sessionList">
+                        <session-data [sessionModel]="session" [displayDelete]="false"></session-data>
+                    </ng-container>
+                </div>
+                
+            </ng-container>
+        </ng-template>
+    </p-splitter>    
     <p-button label="Prev" icon="pi pi-chevron-left" (onClick)="MovePrev()"></p-button>
     <p-button label="Submit" style="float: right;" (onClick)="OnSubmit()"></p-button>
 </div>
