@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService implements IStudentService
@@ -52,7 +53,33 @@ public class StudentService implements IStudentService
 
     @Override
     public void UpdateStudent(int id, StudentModel newStudentModel){
-        studentRepo.save(newStudentModel);
+
+        //Delete session info
+        List<String> existingSubjectList = studentRepo.findById(id).get().getsessionList().stream().map(e -> e.getSubject()).collect(Collectors.toList());
+
+        List<SessionModel> sessionModelList = newStudentModel.getsessionList();
+        List<String>  sessionSubjectList = sessionModelList.stream().map(e -> e.getSubject()).collect(Collectors.toList());
+
+        if(existingSubjectList.stream().count() > sessionSubjectList.stream().count())
+        {
+            for (int i=0; i<existingSubjectList.stream().count(); ++i)
+            {
+                 if(!sessionSubjectList.contains(existingSubjectList.get(i)))
+                {
+                    sessionService.DeleteSessionBySubject(existingSubjectList.get(i), id);
+                }
+            }
+        }
+        else
+        {
+            //Update student and session info
+            sessionService.AddSessions(sessionModelList, id);
+
+            newStudentModel.setsessionList(sessionModelList);
+
+            studentRepo.save(newStudentModel);
+            //studentRepo.save(newStudentModel);
+        }
     }
 
     @Override

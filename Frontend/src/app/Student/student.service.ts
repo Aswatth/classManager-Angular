@@ -15,7 +15,7 @@ export class StudentService{
 
     //Subjects
     //flag for popup open/close
-    S_isAddingStudent = new BehaviorSubject<boolean>(false);
+    S_IsPopupOpen = new BehaviorSubject<boolean>(false);
 
     S_StudentDataSource = new BehaviorSubject<StudentModel[]>([]);
 
@@ -39,25 +39,30 @@ export class StudentService{
     }
 
     AddStudent(student: StudentModel){        
-        this.http.post<StudentModel[]>('http://localhost:9999/student', student).subscribe(
+        this.http.post('http://localhost:9999/student', student).subscribe(
             {
-                next: (data) => {
+                complete: () => {
                     this.messageService.add({severity: 'success', detail: 'Successfully added student'});
-                    this.S_isAddingStudent.next(false);
-                    this.S_StudentDataSource.next(data)
+                    this.S_IsPopupOpen.next(false);
+                    this.GetAllStudent();
                 }
             }
         );
     }
 
-    // UpdateStudent(id: number | undefined, newStudentModel: StudentModel){
-    //     this.http.put<PersonalInfoModel>('http://localhost:9999/students/'+id, newStudentModel).subscribe();
-    // }
+    UpdateStudent(newStudentModel: StudentModel){
+        this.http.put<StudentModel>('http://localhost:9999/students/'+newStudentModel.id!, newStudentModel).subscribe({
+            complete: () => {
+                this.GetAllStudent(); 
+                this.S_IsPopupOpen.next(false);
+            }
+        });
+    }
 
     DeleteStudent(id: number | undefined){
-        this.http.delete<StudentModel[]>("http://localhost:9999/students/"+ id).subscribe(
+        this.http.delete("http://localhost:9999/students/"+ id).subscribe(
             {
-                next: (data) => this.S_StudentDataSource.next(data)
+                complete: () => this.GetAllStudent()
             }
         );
     }

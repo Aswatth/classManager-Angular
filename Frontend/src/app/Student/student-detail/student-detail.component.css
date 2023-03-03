@@ -1,20 +1,33 @@
-.inputField{
-    margin: 25px;
+:host ::ng-deep .p-toolbar {
+    padding: 5px;
+    border: none;
+    background-color: transparent;
 }
-.horizontalLayout{
-    display: inline-block;
+:host ::ng-deep .general-button{
+    background-color: transparent;
+    border-color: transparent;
+    border: none;
+    color: black;
 }
-.buttonAlign{
-    margin: 25px;
+:host ::ng-deep .general-button:hover{
+    background-color: transparent;
+    border-color: transparent;
+    border: solid 0.5px;
+    color: black;
+}
+:host ::ng-deep .editButton{
+    position: relative;
+    top: 0;
+    right: 0;
 }
 
-:host ::ng-deep .discard {
-    margin: 25px;
-    background-color: red;
-    border-color: transparent;
+:host ::ng-deep .p-card-card-item{
+    margin: 2px;
+    padding: 20px;
 }
-:host ::ng-deep .discard:hover {
-    background-color: transparent;
-    color: black;
-    border-color: red;
+h1{
+    margin: 0px;
+}
+h3, p{
+    margin: 5px;
 }

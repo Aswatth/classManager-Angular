@@ -14,6 +14,7 @@ import { SessionInfoComponent } from './Student/add-student/session-info/session
 import { ReviewSubmitComponent } from './Student/add-student/review-submit/review-submit.component';
 import { StudentDetailComponent } from './Student/student-detail/student-detail.component';
 import { SessionData } from './Student/add-student/session-info/session-data/session-data.component';
+import { Date2Time } from './Pipes/date2time.pipe';
 
 import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
@@ -24,14 +25,15 @@ import {DropdownModule} from 'primeng/dropdown';
 import {ToolbarModule} from 'primeng/toolbar';
 import {StepsModule} from 'primeng/steps';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {CalendarModule} from 'primeng/calendar';
 import {SplitterModule} from 'primeng/splitter';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {InplaceModule} from 'primeng/inplace';
 import {ChartModule} from 'primeng/chart';
-import { Date2Time } from './Pipes/date2time.pipe';
+import {CardModule} from 'primeng/card';
+import {ListboxModule} from 'primeng/listbox';
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -53,7 +55,7 @@ const routes: Routes = [
   {
     path: 'student/:id', 
     component: StudentDetailComponent, 
-    children: popupRoute
+    //children: popupRoute
   },
 ];
 
@@ -93,7 +95,9 @@ const routes: Routes = [
     SplitterModule,
     MultiSelectModule,
     InplaceModule,
-    ChartModule
+    ChartModule,
+    CardModule,
+    ListboxModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { StudentModel } from '../../student.model';
 import { StudentService } from '../../student.service';
 import { AddStudentService } from '../add-student.service';
 import { SessionModel } from './session.model';
@@ -26,6 +27,9 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   sessionForm!: FormGroup;
   sessionList: SessionModel[] = [];
 
+  @Input() existingStudentData!: StudentModel;
+  hasUpdates: boolean = false;
+
   ngOnInit(){
     this.subjectList = this.studentService.subjectList;
     this.dayList = this.studentService.dayList;
@@ -48,6 +52,10 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
       if(this.addStudentService.sessionList.length > 0){
         this.sessionList = this.addStudentService.sessionList;
     }
+
+    if(this.existingStudentData){
+      this.sessionList = this.existingStudentData.sessionList;
+    }
   }
 
   OnAdd(){
@@ -57,8 +65,21 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
     if(!this.SessionExists(subject)){
       this.sessionList.push(sessionModel);
       //this.sessionForm.reset();
+      this.hasUpdates = true;
     }else{
-      this.messageService.add({key:"session-add", severity: 'warn', detail: subject + '\'s already exists'});
+      this.messageService.add({key:"session-add", severity: 'warn', detail: 'Updated existing '+ subject + ' info'});
+      
+      let existingSession!: SessionModel;
+      
+      this.sessionList.filter(function(e) {
+        if(e.subject == subject){
+          existingSession = e;
+        }
+      });
+
+      let existingSessionIndex: number = this.sessionList.indexOf(existingSession);
+      this.sessionList[existingSessionIndex] = this.sessionForm.getRawValue();
+      this.hasUpdates = true;
     }
   }
   
@@ -74,6 +95,15 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
     console.log(session);
     let index = this.sessionList.indexOf(session);
     this.sessionList.splice(index, 1);
+    this.hasUpdates = true;
+  }
+
+  SessionSelect(session: SessionModel){
+    this.sessionForm.controls['subject'].setValue(session.subject);
+    this.sessionForm.controls['days'].setValue(session.days);
+    this.sessionForm.controls['startTime'].setValue(new Date(session.startTime));
+    this.sessionForm.controls['endTime'].setValue(new Date(session.endTime));
+    this.sessionForm.controls['fees'].setValue(session.fees);
   }
 
   MovePrev(){
@@ -85,7 +115,13 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
     this.router.navigate(['student-popup/review_submit']);
   }
 
+  OnSaveClick(){
+    this.existingStudentData.sessionList = this.sessionList;
+    console.log(this.existingStudentData);
+    this.studentService.UpdateStudent(this.existingStudentData);
+  }
+
   ngOnDestroy(){
-    //this.sessionSubcription.unsubscribe();
+    
   }
 }

@@ -1,5 +1,5 @@
 <div style="width: 1000px; height: 400px; padding: 10px;">
-    <form [formGroup]="personalInfoForm" (ngSubmit)="OnNextClick()">
+    <form [formGroup]="personalInfoForm">
         <div>
             <div class="inputField horizontalLayout">
                 <span class="p-float-label">
@@ -78,6 +78,11 @@
                 </span>
             </div>
         </div>
-        <button pButton type="submit" label="Next" style="float: right" [disabled]="!personalInfoForm.valid" ></button>
+        <ng-container *ngIf="existingStudentData">
+            <button pButton (click)="OnSaveClick()" label="Save" style="float: right" class="button save" [disabled]="!personalInfoForm.dirty" ></button>
+        </ng-container>
+        <ng-container *ngIf="!existingStudentData">
+            <button pButton (click)="OnNextClick()" label="Next" style="float: right" [disabled]="!personalInfoForm.valid" ></button>
+        </ng-container>
     </form>
 </div>
