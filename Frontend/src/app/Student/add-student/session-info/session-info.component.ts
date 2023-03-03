@@ -107,6 +107,7 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   MovePrev(){
+    this.addStudentService.sessionList = this.sessionList;
     this.router.navigate(['student-popup/personal']);
   }
 
