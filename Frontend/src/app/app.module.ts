@@ -33,6 +33,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {InplaceModule} from 'primeng/inplace';
 import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
+import {ListboxModule} from 'primeng/listbox';
+
 const popupRoute: Routes = [{
   path: 'student-popup', 
     component: AddStudentComponent,
@@ -94,7 +96,8 @@ const routes: Routes = [
     MultiSelectModule,
     InplaceModule,
     ChartModule,
-    CardModule
+    CardModule,
+    ListboxModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

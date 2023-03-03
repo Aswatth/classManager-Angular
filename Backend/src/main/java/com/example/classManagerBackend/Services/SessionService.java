@@ -29,6 +29,10 @@ public class SessionService implements ISessionService
         sessionRepo.delete(sessionModel);
     }
 
+    public void DeleteSessionBySubject(String subject, int studentId){
+        sessionRepo.delete(sessionRepo.findBySubjectAndStudentId(subject, studentId));
+    }
+
     @Override
     public double TotalFees()
     {

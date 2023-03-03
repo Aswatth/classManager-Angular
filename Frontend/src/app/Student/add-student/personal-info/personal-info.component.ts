@@ -13,7 +13,7 @@ import { AddStudentService } from '../add-student.service';
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.css']
 })
-export class PersonalInfoComponent implements OnInit{
+export class PersonalInfoComponent implements OnInit, OnDestroy{
 
   personalInfoForm!: FormGroup;
 
@@ -82,5 +82,9 @@ export class PersonalInfoComponent implements OnInit{
   OnNextClick(){
     this.addStudentService.studentInfo = this.personalInfoForm.getRawValue();
     this.router.navigate(['student-popup/session']);
+  }
+
+  ngOnDestroy(): void {
+    console.log("destroying popup");
   }
 }

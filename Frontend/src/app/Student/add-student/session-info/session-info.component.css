@@ -20,3 +20,20 @@
 .panel2{
     display: block;
 }
+button{
+    margin: 5px;
+}
+.save{
+    background-color: green;
+    color:  white;
+    border: transparent;
+}
+.save:hover{
+    background-color: transparent;
+    color: black;
+    border: transparent;
+}
+:host ::ng-deep .session-tile{
+    width: 100%;
+    /* background-color: transparent; */
+}

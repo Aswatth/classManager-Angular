@@ -51,8 +51,7 @@
                     <p-button
                         type="submit"
                         styleClass="addButton"
-                        label="Add sesion"
-                        icon="pi pi-plus"
+                        icon="pi pi-check"
                         [disabled]="!sessionForm.valid"
                         >
                     </p-button>
@@ -60,14 +59,23 @@
             </div>
         </ng-template>
         <ng-template pTemplate>
-            <div style="width: 100%; padding: 5px;">     
+            <div style="width: 100%; padding: 5px;">
                 <ng-container *ngFor="let session of sessionList">
-                    <session-data [sessionModel]="session" (sessionDelete)="DeleteSession($event)"></session-data>    
+                    <session-data 
+                        [sessionModel]="session" 
+                        (sessionDelete)= "DeleteSession($event)"
+                        (selectedSession) = "SessionSelect($event)">
+                    </session-data>
                 </ng-container>              
             </div>            
         </ng-template>
     </p-splitter>
-    <p-button label="Prev" icon="pi pi-chevron-left" iconPos="left" styleClass="prevButton" (onClick)="MovePrev()"></p-button>
-    <p-button label="Next" icon="pi pi-chevron-right" iconPos="right" styleClass="nextButton" (onClick)="MoveNext()" [disabled]="sessionList.length == 0"></p-button>
+    <ng-container *ngIf="!existingStudentData">
+        <p-button label="Prev" icon="pi pi-chevron-left" iconPos="left" styleClass="prevButton" (onClick)="MovePrev()"></p-button>
+        <p-button label="Next" icon="pi pi-chevron-right" iconPos="right" styleClass="nextButton" (onClick)="MoveNext()" [disabled]="sessionList.length == 0"></p-button>
+    </ng-container>
+    <ng-container *ngIf="existingStudentData">
+        <button pButton (click)="OnSaveClick()" label="Save" style="float: right" class="button save" [disabled]="!hasUpdates" ></button>
+    </ng-container>
 </div>
 <p-toast key="session-add"></p-toast>

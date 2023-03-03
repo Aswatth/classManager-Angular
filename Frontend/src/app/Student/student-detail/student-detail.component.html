@@ -117,5 +117,5 @@
     (onHide)="OnDialogClose()"
     >
     <app-personal-info *ngSwitchCase="'personal info'" [existingStudentData]="newStudentModel"></app-personal-info>
-    <app-session-info *ngSwitchCase="'session info'"></app-session-info>
+    <app-session-info *ngSwitchCase="'session info'" [existingStudentData]="newStudentModel"></app-session-info>
 </p-dialog>
