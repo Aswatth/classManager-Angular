@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AddStudentService } from '../add-student/add-student.service';
-import { PersonalInfoModel } from '../add-student/personal-info/personal-info.model';
 import { StudentModel } from '../student.model';
 import { StudentService } from '../student.service';
 
@@ -11,14 +11,18 @@ import { StudentService } from '../student.service';
   templateUrl: './student-detail.component.html',
   styleUrls: ['./student-detail.component.css']
 })
-export class StudentDetailComponent implements OnInit{
+export class StudentDetailComponent implements OnInit, OnDestroy{
  
   oldStudentModel!: StudentModel;
   newStudentModel!: StudentModel;
-  id!: number;
-  isEditing: boolean = false;
+  studentDataSubscription!: Subscription;
+
+  displayPopup: boolean = false;
+  popupSubscription!: Subscription;
 
   personalInfoForm!: FormGroup;
+  
+  popupType!: string;
 
   constructor(
     private router: Router,
@@ -28,71 +32,38 @@ export class StudentDetailComponent implements OnInit{
   ngOnInit(): void {
     let id = this.route.snapshot.params['id'];
 
-    this.studentService.S_stundentList.subscribe(
-      data => {
-        this.oldStudentModel = data.filter(f=>f.id == id)[0];
-        
-        let personalInfo: PersonalInfoModel = this.oldStudentModel
-        console.log(personalInfo);
+    this.studentDataSubscription = this.studentService.S_StudentDataSource.subscribe({
+      next: (data) => {
+          this.oldStudentModel = data.filter(f=>f.id == id)[0] as StudentModel;  
+          this.newStudentModel = this.oldStudentModel;
+        }
       }
     );
+
+    this.popupSubscription = this.studentService.S_IsPopupOpen.subscribe((data) => this.displayPopup = data);
   }
 
-  GetData(){
-    this.studentService.GetStudent(this.id).subscribe(
-      studentData => {
-        this.oldStudentModel = studentData;
-        console.log(this.oldStudentModel);
-        //this.SetDefault();
-      }
-    );
+  GoBack(){
+    this.router.navigate(['/']);
   }
 
-  SetDefault(){
-    this.personalInfoForm.setValue(this.oldStudentModel);
+  OnPersonalInfoEdit(){
+    this.studentService.S_IsPopupOpen.next(true);
+    this.popupType = "personal info";
+    //this.router.navigate(['/student-popup/personal'],);
   }
 
-  EnableForm(){
-    Object.keys(this.personalInfoForm.controls).forEach(key =>{
-      this.personalInfoForm.controls[key].enable();
-    });
+  OnSessionInfoEdit(){
+    this.studentService.S_IsPopupOpen.next(true);
+    this.popupType = "session info";
   }
 
-  DisableForm(){
-    Object.keys(this.personalInfoForm.controls).forEach(key =>{
-      this.personalInfoForm.controls[key].disable();
-    });
+  OnDialogClose(){
+    this.studentService.S_IsPopupOpen.next(false);
   }
 
-  OnEdit(){
-    console.log("Editing");
-    this.isEditing = true;
-    //this.EnableForm();
-    this.router.navigate(['/addStudent/personalInfo']);
-  }
-
-  OnCancel(){
-    console.log("Cancel changes");
-    this.isEditing = false;
-    this.DisableForm();
-    this.SetDefault();
-  }
-
-  Submit(){
-    this.newStudentModel = new StudentModel();
-    this.newStudentModel.id = this.oldStudentModel.id;
-    this.newStudentModel.studentName  = this.personalInfoForm.get('studentName')?.value;
-    this.newStudentModel.schoolName = this.personalInfoForm.get('schoolName')?.value;
-    this.newStudentModel.className =  this.personalInfoForm.get('className')?.value;
-    this.newStudentModel.boardName =  this.personalInfoForm.get('boardName')?.value;
-    this.newStudentModel.location =  this.personalInfoForm.get('location')?.value;
-    this.newStudentModel.studentPhNum =  this.personalInfoForm.get('studentMobileNumber')?.value;
-    this.newStudentModel.parentPhNum1 =  this.personalInfoForm.get('parentMobileNumber1')?.value;
-    this.newStudentModel.parentPhNum2 =  this.personalInfoForm.get('parentMobileNumber2')?.value;
-
-    this.studentService.UpdateStudent(this.oldStudentModel.id, this.newStudentModel);
-
-    this.DisableForm();
-    this.isEditing = false;
+  ngOnDestroy(): void {
+    this.studentDataSubscription.unsubscribe();
+    this.popupSubscription.unsubscribe();
   }
 }

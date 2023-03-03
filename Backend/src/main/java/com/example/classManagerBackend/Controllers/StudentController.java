@@ -17,8 +17,8 @@ public class StudentController
     StudentService studentService;
 
     @PostMapping("/student")
-    ResponseEntity<List<StudentModel>> AddStudent(@RequestBody StudentModel studentModel){
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.AddStudent(studentModel));
+    void AddStudent(@RequestBody StudentModel studentModel){
+        studentService.AddStudent(studentModel);
     }
 
     @PutMapping("/students/{id}")
@@ -27,8 +27,8 @@ public class StudentController
     }
 
     @DeleteMapping("/students/{id}")
-    ResponseEntity<List<StudentModel>> DeleteStudent(@PathVariable int id ){
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.DeleteStudent(id));
+    void DeleteStudent(@PathVariable int id ){
+        studentService.DeleteStudent(id);
     }
 
     @GetMapping("/students")

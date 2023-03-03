@@ -1,83 +1,121 @@
-<!-- <form [formGroup]="personalInfoForm" (ngSubmit)="Submit()">
-    <div>
-        <div class="inputField horizontalLayout">
-            <span class="p-float-label">
-                <input 
-                id="studentName" 
-                type="text" 
-                formControlName = "studentName"
-                pInputText> 
-                <label for="studentName">Student Name</label>
-            </span>
-        </div>
-        <div class="inputField horizontalLayout">
-            <span class="p-float-label">
-                <input 
-                id="location" 
-                type="text" 
-                formControlName = "location"
-                pInputText> 
-                <label for="location">Location</label>
-            </span>
-        </div>
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <p-button 
+            styleClass="general-button"
+            iconPos="left" 
+            icon="pi pi-chevron-left" 
+            label="Back" 
+            (onClick)="GoBack()">
+        </p-button>
+    </div>  
+</p-toolbar>
+<div style="display: flex; flex-direction: row;">
+    <div style="flex: 1;">
+        <p-card styleClass="p-card-card-item">
+            <ng-template pTemplate="header">
+                <div style="display: flex;">
+                    <div style="flex: 3;">
+                        <h1 style="display: inline-block;width: 80%;">Personal Info: </h1>
+                    </div>
+                    <div style="flex: 1;text-align: center;">
+                        <p-button 
+                            icon="pi pi-pencil" 
+                            styleClass="general-button editButton"
+                            (onClick)="OnPersonalInfoEdit()">
+                        </p-button>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>Name: </h3></div>
+                    <div style="flex: 1;"><p>{{ oldStudentModel.studentName }} </p></div>
+                </div>
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>Class - Board: </h3></div>
+                    <div style="flex: 1;"><p>{{ oldStudentModel.className }} - {{ oldStudentModel.boardName }} </p></div>
+                </div>
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>SchoolName: </h3></div>
+                    <div style="flex: 1;"><p>{{ oldStudentModel.schoolName }} </p></div>
+                </div>
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>Location: </h3></div>
+                    <div style="flex: 1;"><p>{{ oldStudentModel.location }} </p></div>
+                </div>
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>Student Ph Number: </h3></div>
+                    <div style="flex: 1;">
+                        <ng-container *ngIf="oldStudentModel.studentPhNum">
+                            <p>{{ oldStudentModel.studentPhNum }} </p>
+                        </ng-container>
+                        <ng-container *ngIf="!oldStudentModel.studentPhNum">
+                            <p> - </p>
+                        </ng-container>
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>Parent Ph Number 1: </h3></div>
+                    <div style="flex: 1;"><p>{{ oldStudentModel.parentPhNum1 }} </p></div>
+                </div>
+                <div style="display: flex;">
+                    <div style="flex: 2;"><h3>Parent Ph Number 2: </h3></div>
+                    <div style="flex: 1;">
+                        <ng-container *ngIf="oldStudentModel.parentPhNum2">
+                            <p>{{ oldStudentModel.parentPhNum2 }} </p>
+                        </ng-container>
+                        <ng-container *ngIf="!oldStudentModel.parentPhNum2">
+                            <p> - </p>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <hr>
+                <div style="display: flex;">
+                    <div style="flex: 3;">
+                        <h1 style="display: inline-block;width: 80%;">Sessions: </h1>
+                    </div>
+                    <div style="flex: 1;text-align: center;">
+                        <p-button 
+                            icon="pi pi-pencil" 
+                            styleClass="general-button editButton" 
+                            (onClick)="OnSessionInfoEdit()">
+                        </p-button>
+                    </div>
+                </div><br>
+                <ng-container *ngIf="oldStudentModel.sessionList">
+                    <div style="width: 100%; padding: 5px;">
+                        <ng-container *ngFor="let session of oldStudentModel.sessionList">
+                            <session-data [sessionModel]="session" [displayDelete]="false"></session-data>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </ng-template>
+        </p-card>
     </div>
-    <div>
-        <div class="inputField horizontalLayout">
-            <span class="p-float-label">
-                <input 
-                id="schoolName" 
-                type="text" 
-                formControlName = "schoolName"
-                pInputText> 
-                <label for="schoolName">School Name</label>
-            </span>
-        </div>
-        <div class="inputField horizontalLayout">
-            <p-dropdown [options]="classList" formControlName="className" placeholder="Select Class"></p-dropdown>
-        </div>
-        <div class="inputField horizontalLayout">
-            <p-dropdown [options]="boardList" formControlName="boardName" placeholder="Select Board"></p-dropdown>
-        </div>
+    <div style="flex: 2;">
+        <p-card styleClass="p-card-card-item">
+            <ng-template pTemplate="header">
+                <h3>Personal Info: </h3>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <p>
+                    {{ oldStudentModel.studentName }}
+                </p>
+            </ng-template>
+        </p-card>
     </div>
-    <div>
-        <div class="inputField horizontalLayout">
-            <span class="p-float-label">
-                <input 
-                id="studentMobileNumber" 
-                type="number" 
-                formControlName = "studentMobileNumber"
-                pInputText> 
-                <label for="studentMobileNumber">Student Ph.Num</label>
-            </span>
-        </div>
-        <div class="inputField horizontalLayout">
-            <span class="p-float-label">
-                <input 
-                id="parentMobileNumber1" 
-                type="number" 
-                formControlName = "parentMobileNumber1"
-                pInputText> 
-                <label for="parentMobileNumber1">Parent Ph.Num 1</label>
-            </span>
-        </div>
-        <div class="inputField horizontalLayout">
-            <span class="p-float-label">
-                <input 
-                id="parentMobileNumber2" 
-                type="number" 
-                formControlName = "parentMobileNumber2"
-                pInputText> 
-                <label for="parentMobileNumber2">Parent Ph.Num 2</label>
-            </span>
-        </div>
-    </div>
-    <p-button label="Save" type="submit" class="buttonAlign" *ngIf="isEditing" [disabled]="!personalInfoForm.valid"></p-button>
-</form>
-<p-button label="Edit" class="buttonAlign" *ngIf="!isEditing" (onClick)="OnEdit()"></p-button>
-<p-button label="Discard" styleClass="discard" *ngIf="isEditing" (onClick)="OnCancel()"></p-button> -->
-<!-- <app-personal-info [displayNextButton]="false" [canEdit]="false" ></app-personal-info> -->
-student details
-<p-button (onClick)="OnEdit()">
-    Edit
-</p-button>
-<app-personal-info [personalInfoModel]="oldStudentModel" [canEdit]="false"></app-personal-info>
+</div>
+<p-dialog 
+    [header]="'Edit ' + popupType" 
+    [modal]="true" 
+    [closeOnEscape]="false" 
+    [(visible)]="displayPopup" 
+    styleClass="p-dialog-style"
+    [ngSwitch]="popupType"
+    (onHide)="OnDialogClose()"
+    >
+    <app-personal-info *ngSwitchCase="'personal info'" [existingStudentData]="newStudentModel"></app-personal-info>
+    <app-session-info *ngSwitchCase="'session info'"></app-session-info>
+</p-dialog>

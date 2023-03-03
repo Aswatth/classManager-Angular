@@ -60,7 +60,7 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         </tr>
     </ng-template>
 </p-table>
-<p-dialog header="Add student" [modal]="true" [closeOnEscape]="false" [(visible)]="displayAddStudentForm" styleClass="p-dialog-style" (onHide)="OnDialogClose()">
+<p-dialog header="Add student" [modal]="true" [closeOnEscape]="false" [(visible)]="displayPopup" styleClass="p-dialog-style" (onHide)="OnDialogClose()">
     <router-outlet></router-outlet>
 </p-dialog>
 <p-toast position="bottom-center"></p-toast>

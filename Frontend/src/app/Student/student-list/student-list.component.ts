@@ -15,11 +15,11 @@ import { Subscription } from 'rxjs';
 })
 export class StudentListComponent implements OnInit, OnDestroy{
   
-  displayAddStudentForm: boolean = false;
+  displayPopup: boolean = false;
   studentList: StudentModel[] = [];
   totalFees = 0;
 
-  addingStudentSubscription!: Subscription;
+  popupSubscription!: Subscription;
   studentDataSubscription!: Subscription;
 
   constructor(private studentService: StudentService, 
@@ -36,8 +36,8 @@ export class StudentListComponent implements OnInit, OnDestroy{
       }
     });
 
-    this.addingStudentSubscription = this.studentService.S_isAddingStudent.subscribe(
-      (value) => (this.displayAddStudentForm = value)
+    this.popupSubscription = this.studentService.S_IsPopupOpen.subscribe(
+      (value) => (this.displayPopup = value)
     );   
   }
 
@@ -51,11 +51,12 @@ export class StudentListComponent implements OnInit, OnDestroy{
   }
 
   OnAddStudent(){
-    this.studentService.S_isAddingStudent.next(true);
+    this.studentService.S_IsPopupOpen.next(true);
     this.router.navigate(['/student-popup']);
   }
 
   OnDialogClose(){
+    this.studentService.S_IsPopupOpen.next(false);
     this.router.navigate(['']);
   }
 
@@ -79,6 +80,6 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void {
     this.studentDataSubscription.unsubscribe();
-    this.addingStudentSubscription.unsubscribe();
+    this.popupSubscription.unsubscribe();
   }
 }
