@@ -1,5 +1,6 @@
 package com.example.classManagerBackend.Models;
 
+import com.example.classManagerBackend.StringListConverter;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class SessionModel
     @Id
     int studentId;
 
+    @Convert(converter = StringListConverter.class)
     List<String> days;
     String startTime;
     String endTime;
