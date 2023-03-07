@@ -26,27 +26,13 @@ public class StudentService implements IStudentService
 
     @Override
     public List<StudentModel> AddStudent(StudentModel studentModel){
-        /*jdbcTemplate.update("INSERT INTO Student(" +
-                "student_name, school_name, class_name, board_name, location, student_ph_num, parent_ph_num1, parent_ph_num2) " +
-                "VALUES(?,?,?,?,?,?,?,?)",
-                studentModel.getStudentName(),
-                studentModel.getSchoolName(),
-                studentModel.getClassName(),
-                studentModel.getBoardName(),
-                studentModel.getLocation(),
-                studentModel.getStudentPhNum(),
-                studentModel.getParentPhNum1(),
-                studentModel.getParentPhNum2()
-                );*/
+
         List<SessionModel> sessionModelList = studentModel.getsessionList();
         studentModel.setsessionList(null);
 
         int addedStudentId = studentRepo.save((studentModel)).getId();
 
         sessionService.AddSessions(sessionModelList, addedStudentId);
-
-        studentModel.setsessionList(sessionModelList);
-        studentRepo.save(studentModel);
 
         return GetAllStudents();
     }
@@ -74,11 +60,6 @@ public class StudentService implements IStudentService
         {
             //Update student and session info
             sessionService.AddSessions(sessionModelList, id);
-
-            newStudentModel.setsessionList(sessionModelList);
-
-            studentRepo.save(newStudentModel);
-            //studentRepo.save(newStudentModel);
         }
     }
 
