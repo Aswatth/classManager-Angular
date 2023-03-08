@@ -2,7 +2,7 @@ package com.example.classManagerBackend.Services;
 
 import com.example.classManagerBackend.Models.SessionModel;
 import com.example.classManagerBackend.Models.StudentModel;
-import com.example.classManagerBackend.Repos.StudentRepo;
+//import com.example.classManagerBackend.Repos.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -13,80 +13,84 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class StudentService implements IStudentService
+public class StudentService
 {
     @Autowired
-    StudentRepo studentRepo;
+    JdbcTemplate jdbcTemplate;
 
     @Autowired
     SessionService sessionService;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public List<StudentModel> AddStudent(StudentModel studentModel)
+    {
+        String insertQuery = """
+        INSERT INTO Student(StudentName, SchoolName, ClassName, BoardName, Location, StudentPhNum, ParentPhNum1, ParentPhNum2)
+        VALUES(?,?,?,?,?,?,?,?)
+        """;
+        jdbcTemplate.update(insertQuery, studentModel.getStudentName(), studentModel.getSchoolName(),studentModel.getClassName(), studentModel.getBoardName(), studentModel.getLocation(), studentModel.getStudentPhNum(), studentModel.getParentPhNum1(), studentModel.getParentPhNum2());
 
-    @Override
-    public List<StudentModel> AddStudent(StudentModel studentModel){
+        int insertedStudentId = jdbcTemplate.queryForObject("SELECT IDENT_CURRENT('student')", Integer.class);
 
-        List<SessionModel> sessionModelList = studentModel.getsessionList();
-        studentModel.setsessionList(null);
-
-        int addedStudentId = studentRepo.save((studentModel)).getId();
-
-        sessionService.AddSessions(sessionModelList, addedStudentId);
+        sessionService.AddSessions(studentModel.getsessionList(), insertedStudentId);
 
         return GetAllStudents();
     }
 
-    @Override
-    public void UpdateStudent(int id, StudentModel newStudentModel){
+    public List<StudentModel> GetAllStudents(){
+        List<StudentModel> studentList = jdbcTemplate.query("SELECT * FROM Student", (rs, rowNum)-> new StudentModel(
+                rs.getInt("Id"),
+                rs.getString("StudentName"),
+                rs.getString("SchoolName"),
+                rs.getString("ClassName"),
+                rs.getString("BoardName"),
+                rs.getString("Location"),
+                rs.getString("StudentPhNum"),
+                rs.getString("ParentPhNum1"),
+                rs.getString("ParentPhNum2")
+        ));
 
-        //Delete session info
-        List<String> existingSubjectList = studentRepo.findById(id).get().getsessionList().stream().map(e -> e.getSubject()).collect(Collectors.toList());
+        studentList.stream().forEach(e -> {
+            e.setsessionList(sessionService.GetSessions(e.getId()));
+        });
 
-        List<SessionModel> sessionModelList = newStudentModel.getsessionList();
-        List<String>  sessionSubjectList = sessionModelList.stream().map(e -> e.getSubject()).collect(Collectors.toList());
-
-        if(existingSubjectList.stream().count() > sessionSubjectList.stream().count())
-        {
-            for (int i=0; i<existingSubjectList.stream().count(); ++i)
-            {
-                 if(!sessionSubjectList.contains(existingSubjectList.get(i)))
-                {
-                    sessionService.DeleteSessionBySubject(existingSubjectList.get(i), id);
-                }
-            }
-        }
-        else
-        {
-            //Update student and session info
-            sessionService.AddSessions(sessionModelList, id);
-        }
+        return studentList;
     }
 
-    @Override
     public List<StudentModel> DeleteStudent(int id)
     {
-        List<SessionModel> sessionModelList = studentRepo.findById(id).get().getsessionList();
-
-        for (int i=0; i < sessionModelList.stream().count(); ++i)
-        {
-            this.sessionService.DeleteSession(sessionModelList.get(i));
-        }
-
-        studentRepo.deleteById(id);
+        String query = """
+                DELETE FROM Student WHERE Id = ?
+                """;
+        jdbcTemplate.update(query, new Object[]{id});
         return GetAllStudents();
     }
 
-    @Override
-    public List<StudentModel> GetAllStudents(){
-        return studentRepo.findAll();
-    }
+    public void UpdateStudent(int studentId, StudentModel newStudentModel){
+        String query = """
+                UPDATE Student 
+                SET 
+                    StudentName = ?,
+                     SchoolName = ?,
+                     ClassName = ?,
+                     BoardName = ?,
+                     Location = ?,
+                     StudentPhNum = ?,
+                     ParentPhNum1 = ?,
+                     ParentPhNum2 = ?
+                    WHERE Id = ?
+                """;
+        jdbcTemplate.update(query,
+                newStudentModel.getStudentName(),
+                newStudentModel.getSchoolName(),
+                newStudentModel.getClassName(),
+                newStudentModel.getBoardName(),
+                newStudentModel.getLocation(),
+                newStudentModel.getStudentPhNum(),
+                newStudentModel.getParentPhNum1(),
+                newStudentModel.getParentPhNum2(),
+                studentId
+        );
 
-    @Override
-    public StudentModel GetStudent(int id){
-        Optional<StudentModel> studentModel = studentRepo.findById(id);
-        if(studentModel.isPresent())
-            return studentModel.get();
-        return null;
+        sessionService.UpdateSession(newStudentModel.getsessionList(), studentId);
     }
 }
