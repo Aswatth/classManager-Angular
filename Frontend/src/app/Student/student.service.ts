@@ -30,7 +30,11 @@ export class StudentService{
     //Fetch all student data from DB
     GetAllStudent(){
         this.http.get<StudentModel[]>('http://localhost:9999/students').subscribe({
-            next: (data) => this.S_StudentDataSource.next(data)
+            next: (data) => {
+                console.log("STUDENT LIST");
+                console.log(data);                
+                this.S_StudentDataSource.next(data);
+            }
         });
     }
 
@@ -52,6 +56,15 @@ export class StudentService{
 
     UpdateStudent(newStudentModel: StudentModel){
         this.http.put<StudentModel>('http://localhost:9999/students/'+newStudentModel.id!, newStudentModel).subscribe({
+            complete: () => {
+                this.GetAllStudent(); 
+                this.S_IsPopupOpen.next(false);
+            }
+        });
+    }
+
+    UpdateSession(id: number, sessionList: SessionModel[]){
+        this.http.put<StudentModel>('http://localhost:9999/students/'+id+'/session', sessionList).subscribe({
             complete: () => {
                 this.GetAllStudent(); 
                 this.S_IsPopupOpen.next(false);

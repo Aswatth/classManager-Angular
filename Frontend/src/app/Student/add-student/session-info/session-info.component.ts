@@ -59,14 +59,17 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   OnAdd(){
-    let sessionModel = this.sessionForm.getRawValue();
+    let sessionModel:SessionModel = this.sessionForm.getRawValue();
     let subject = this.sessionForm.controls['subject'].value;
 
     if(!this.SessionExists(subject)){
+      if(this.existingStudentData)
+        sessionModel.studentId = this.existingStudentData.id!;
       this.sessionList.push(sessionModel);
       //this.sessionForm.reset();
       this.hasUpdates = true;
-    }else{
+    }
+    else{
       this.messageService.add({key:"session-add", severity: 'warn', detail: 'Updated existing '+ subject + ' info'});
       
       let existingSession!: SessionModel;
@@ -78,7 +81,12 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
       });
 
       let existingSessionIndex: number = this.sessionList.indexOf(existingSession);
-      this.sessionList[existingSessionIndex] = this.sessionForm.getRawValue();
+      let sessionToStore: SessionModel = this.sessionForm.getRawValue();
+
+      sessionToStore.id = existingSession.id;
+      sessionToStore.studentId = existingSession.studentId;
+
+      this.sessionList[existingSessionIndex] = sessionToStore;
       this.hasUpdates = true;
     }
   }
@@ -118,8 +126,8 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
 
   OnSaveClick(){
     this.existingStudentData.sessionList = this.sessionList;
-    console.log(this.existingStudentData);
-    this.studentService.UpdateStudent(this.existingStudentData);
+    console.log(this.sessionList);
+    this.studentService.UpdateSession(this.existingStudentData.id! ,this.existingStudentData.sessionList);
   }
 
   ngOnDestroy(){

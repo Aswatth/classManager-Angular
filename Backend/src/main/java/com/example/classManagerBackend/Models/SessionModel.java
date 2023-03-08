@@ -1,39 +1,37 @@
 package com.example.classManagerBackend.Models;
 
-import java.util.Arrays;
+import com.example.classManagerBackend.StringListConverter;
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
+@Table(name = "Session")
 public class SessionModel
 {
-    String subject;
+    @Id
+    @GeneratedValue
+    int id;
+
     int studentId;
+    String subject;
+    @Convert(converter = StringListConverter.class)
     List<String> days;
     String startTime;
     String endTime;
     float fees;
 
-    public SessionModel(){};
-    public SessionModel(String subject, int studentId, List<String> days, String startTime, String endTime, float fees)
+    public int getId()
     {
-        this.subject = subject;
-        this.studentId = studentId;
-        this.days = days;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.fees = fees;
+        return id;
     }
 
-    public SessionModel(String subject, int studentId, String days, String startTime, String endTime, float fees)
+    public void setId(int id)
     {
-        this.subject = subject;
-        this.studentId = studentId;
-        this.days = Arrays.asList(days.split(","));
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.fees = fees;
+        this.id = id;
     }
 
-        public int getStudentId()
+    public int getStudentId()
     {
         return studentId;
     }
@@ -91,5 +89,19 @@ public class SessionModel
     public void setFees(float fees)
     {
         this.fees = fees;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "SessionModel{" +
+                "id=" + id +
+                ", studentId=" + studentId +
+                ", subject='" + subject + '\'' +
+                ", days=" + days +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", fees=" + fees +
+                '}';
     }
 }

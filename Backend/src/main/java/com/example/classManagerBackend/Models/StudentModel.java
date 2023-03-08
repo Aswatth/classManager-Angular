@@ -1,9 +1,17 @@
 package com.example.classManagerBackend.Models;
 
-import java.util.List;
+import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Table(name = "Student")
 public class StudentModel
 {
+    @Id
+    @GeneratedValue
     int id;
     String studentName;
     String schoolName;
@@ -13,20 +21,9 @@ public class StudentModel
     String studentPhNum;
     String parentPhNum1;
     String parentPhNum2;
+    @OneToMany
+    @JoinColumn(name = "StudentId")
     List<SessionModel> sessionList;
-
-    public StudentModel(int id, String studentName, String schoolName, String className, String boardName, String location, String studentPhNum, String parentPhNum1, String parentPhNum2)
-    {
-        this.id = id;
-        this.studentName = studentName;
-        this.schoolName = schoolName;
-        this.className = className;
-        this.boardName = boardName;
-        this.location = location;
-        this.studentPhNum = studentPhNum;
-        this.parentPhNum1 = parentPhNum1;
-        this.parentPhNum2 = parentPhNum2;
-    }
 
     public int getId()
     {
@@ -141,7 +138,7 @@ public class StudentModel
                 ", studentPhNum='" + studentPhNum + '\'' +
                 ", parentPhNum1='" + parentPhNum1 + '\'' +
                 ", parentPhNum2='" + parentPhNum2 + '\'' +
-                ", sessionList=" + sessionList +
+                ", sessionList=" + sessionList.toString() +
                 '}';
     }
 }
