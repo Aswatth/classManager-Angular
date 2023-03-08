@@ -1,28 +1,39 @@
 package com.example.classManagerBackend.Models;
 
-import com.example.classManagerBackend.StringListConverter;
-import jakarta.persistence.*;
-
+import java.util.Arrays;
 import java.util.List;
 
-@Entity
-@Table(name = "Session")
-@IdClass(SessionId.class)
 public class SessionModel
 {
-    @Id
     String subject;
-
-    @Id
     int studentId;
-
-    @Convert(converter = StringListConverter.class)
     List<String> days;
     String startTime;
     String endTime;
     float fees;
 
-    public int getStudentId()
+    public SessionModel(){};
+    public SessionModel(String subject, int studentId, List<String> days, String startTime, String endTime, float fees)
+    {
+        this.subject = subject;
+        this.studentId = studentId;
+        this.days = days;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.fees = fees;
+    }
+
+    public SessionModel(String subject, int studentId, String days, String startTime, String endTime, float fees)
+    {
+        this.subject = subject;
+        this.studentId = studentId;
+        this.days = Arrays.asList(days.split(","));
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.fees = fees;
+    }
+
+        public int getStudentId()
     {
         return studentId;
     }
