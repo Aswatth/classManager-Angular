@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { BehaviorSubject, map, Observable, of, Subject } from "rxjs";
-import { SessionModel } from "./add-student/session-info/session.model";
-import { StudentModel } from "./student.model";
+import { SessionModel } from "../Models/session.model";
+import { StudentModel } from "../Models/student.model";
 
 @Injectable({providedIn: 'root'})
 export class StudentService{

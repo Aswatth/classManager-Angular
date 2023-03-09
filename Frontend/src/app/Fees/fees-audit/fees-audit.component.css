@@ -1,0 +1,20 @@
+:host ::ng-deep .general-button{
+    background-color: transparent;
+    border-color: transparent;
+    border: none;
+    color: black;
+}
+:host ::ng-deep .general-button:hover{
+    background-color: transparent;
+    border-color: transparent;
+    border: solid 0.5px;
+    color: black;
+}
+.pending{
+    background-color: rgb(255, 111, 111);
+    color: rgb(255, 0, 0);
+}
+.paid{
+    background-color: greenyellow;
+    color: green;
+}

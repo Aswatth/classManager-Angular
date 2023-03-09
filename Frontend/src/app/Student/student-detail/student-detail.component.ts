@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AddStudentService } from '../add-student/add-student.service';
-import { StudentModel } from '../student.model';
-import { StudentService } from '../student.service';
+import { StudentModel } from 'src/app/Models/student.model';
+import { StudentService } from 'src/app/Services/student.service';
 
 @Component({
   selector: 'app-student-detail',
@@ -47,7 +46,8 @@ export class StudentDetailComponent implements OnInit, OnDestroy{
     this.router.navigate(['/']);
   }
 
-  OnPersonalInfoEdit(){
+  OnPersonalInfoEdit(){    
+    //this.newStudentModel = this.oldStudentModel;
     this.studentService.S_IsPopupOpen.next(true);
     this.popupType = "personal info";
     //this.router.navigate(['/student-popup/personal'],);

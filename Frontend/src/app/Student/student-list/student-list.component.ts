@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
-import { StudentModel } from '../student.model';
+import { StudentModel } from 'src/app/Models/student.model';
 import {ConfirmationService, MessageService} from 'primeng/api';
-import { StudentService } from '../student.service';
-import { HttpClient } from '@angular/common/http';
+import { StudentService } from 'src/app/Services/student.service';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'student-list',
@@ -53,6 +51,10 @@ export class StudentListComponent implements OnInit, OnDestroy{
   OnAddStudent(){
     this.studentService.S_IsPopupOpen.next(true);
     this.router.navigate(['/student-popup']);
+  }
+
+  ShowsFees(){
+    this.router.navigate(['/fees']);
   }
 
   OnDialogClose(){

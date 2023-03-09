@@ -2,11 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
-import { StudentModel } from '../../student.model';
-import { StudentService } from '../../student.service';
-import { AddStudentService } from '../add-student.service';
-import { SessionModel } from './session.model';
+import { StudentModel } from 'src/app/Models/student.model';
+import { StudentService } from 'src/app/Services/student.service';
+import { AddStudentService } from 'src/app/Services/add-student.service';
+import { SessionModel } from 'src/app/Models/session.model';
 
 @Component({
   selector: 'app-session-info',

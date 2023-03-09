@@ -8,25 +8,48 @@
     </div>   
   </p-toolbar>
   <hr>
-<p-button label="Add student" styleClass="p-button-add-student" (onClick)="OnAddStudent()"></p-button>
-<p-table [value]="studentList"
+<p-table #dt [value]="studentList"
 selectionMode="single"
 (onRowSelect)="onRowSelect($event)"
 [rows]="10"
 [showCurrentPageReport]="true"
 [rowsPerPageOptions]="[5,10,15]"
 [paginator]="true"
+[globalFilterFields]="['studentName','class-board', 'subject']"
 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="caption">
+        <div style="display: flex; justify-content: space-between; ">
+            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+            <div style="display: flex;">
+                <div style="margin-right: 5px;">
+                    <p-button label="Add student" styleClass="p-button-success" (onClick)="OnAddStudent()"></p-button>
+                </div>
+                <div style="margin-right: 5px;">
+                    <p-button label="Fees" styleClass="p-button-fees" (onClick)="ShowsFees()"></p-button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th>#</th>
-            <th>Name</th>
-            <th> Class</th>
-            <th>Board</th>
-            <th>Subjects</th>
+            <th>
+                Name
+                <p-columnFilter type="text" field="studentName" display="menu"></p-columnFilter>
+            </th>
+            <th>
+                Class-Board
+                <p-columnFilter type="text" field="class-board" display="menu"></p-columnFilter>
+            </th>
+            <!-- <th>Board</th> -->
+            <th>
+                Subjects
+                <p-columnFilter type="text" field="subject" display="menu"></p-columnFilter>
+            </th>
             <th>Days</th>
             <th>Timing</th>
             <th>Fees</th>
+            <!-- <th>Payment status</th> -->
             <th>Actions</th>
         </tr>
     </ng-template>
@@ -34,8 +57,7 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <tr [pSelectableRow]="student">
             <td>{{ studentList.indexOf(student) + 1 }}</td>
             <td>{{student.studentName}}</td>
-            <td>{{student.className}}</td>
-            <td>{{student.boardName}}</td>
+            <td>{{student.className}} - {{student.boardName}}</td>
             <td>
                 <ng-container *ngFor="let session of student.sessionList">
                     <p>{{ session.subject }}</p>
@@ -56,6 +78,7 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                     <p>&#8377;{{ session.fees }}</p>
                 </ng-container>
             </td>
+            <!-- <td style="color: red;"> Pending </td> -->
             <p-button class="p-button-text p-button-rounded" styleClass="p-button-delete" icon="pi pi-trash" (onClick)="OnDelete(student)"></p-button>
         </tr>
     </ng-template>
