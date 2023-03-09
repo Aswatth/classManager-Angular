@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { StudentModel } from '../../student.model';
-import { StudentService } from '../../student.service';
-import { AddStudentService } from '../add-student.service';
-//import { PersonalInfoModel } from './personal-info.model';
+import { StudentModel } from 'src/app/Models/student.model';
+import { StudentService } from 'src/app/Services/student.service';
+import { AddStudentService } from 'src/app/Services/add-student.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -27,6 +26,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
     private studentService: StudentService) { }
 
   ngOnInit(){
+    console.log("Personal info init");
+    
     this.personalInfoForm = new FormGroup(
       {
         'studentName': new FormControl(null, Validators.required),
@@ -44,24 +45,25 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
     this.classList = this.studentService.classList;
 
     //If already exists display the previous data
-    if(this.addStudentService.studentInfo.studentName){
+    if(this.addStudentService.studentInfo && this.addStudentService.studentInfo!.studentName){
       this.personalInfoForm.setValue(this.addStudentService.studentInfo);
     }
 
     if(this.existingStudentData){
-      this.SetFormValue();
+      this.SetFormValue(this.existingStudentData);
     }    
   }
 
-  SetFormValue(){
-    this.personalInfoForm.controls['studentName'].setValue(this.existingStudentData.studentName);
-    this.personalInfoForm.controls['schoolName'].setValue(this.existingStudentData.schoolName);
-    this.personalInfoForm.controls['className'].setValue(this.existingStudentData.className);
-    this.personalInfoForm.controls['boardName'].setValue(this.existingStudentData.boardName);
-    this.personalInfoForm.controls['location'].setValue(this.existingStudentData.location);
-    this.personalInfoForm.controls['studentPhNum'].setValue(this.existingStudentData.studentPhNum);
-    this.personalInfoForm.controls['parentPhNum1'].setValue(this.existingStudentData.parentPhNum1);
-    this.personalInfoForm.controls['parentPhNum2'].setValue(this.existingStudentData.parentPhNum2);
+
+  SetFormValue(existingStudentData: StudentModel){
+    this.personalInfoForm.controls['studentName'].setValue(existingStudentData.studentName);
+    this.personalInfoForm.controls['schoolName'].setValue(existingStudentData.schoolName);
+    this.personalInfoForm.controls['className'].setValue(existingStudentData.className);
+    this.personalInfoForm.controls['boardName'].setValue(existingStudentData.boardName);
+    this.personalInfoForm.controls['location'].setValue(existingStudentData.location);
+    this.personalInfoForm.controls['studentPhNum'].setValue(existingStudentData.studentPhNum);
+    this.personalInfoForm.controls['parentPhNum1'].setValue(existingStudentData.parentPhNum1);
+    this.personalInfoForm.controls['parentPhNum2'].setValue(existingStudentData.parentPhNum2);
   }
 
   OnSaveClick(){
@@ -75,8 +77,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
 
     console.log(this.existingStudentData);
     this.studentService.UpdateStudent(this.existingStudentData)
-
-    this.existingStudentData = undefined as unknown as StudentModel;
   }
 
   OnNextClick(){

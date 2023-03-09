@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { SessionModel } from "../session.model";
+import { SessionModel } from "src/app/Models/session.model";
 
 @Component({
     selector: 'session-data',

@@ -1,0 +1,86 @@
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <p-button 
+            styleClass="general-button"
+            iconPos="left" 
+            icon="pi pi-chevron-left" 
+            label="Back" 
+            (onClick)="GoBack()">
+        </p-button>
+        <h1>
+            Fees summary
+        </h1>
+    </div>
+</p-toolbar>
+<p-table [value]="feesAuditList">
+    <ng-template pTemplate="caption">
+        <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex;justify-content: start;">
+                <p-dropdown [options]="monthList"></p-dropdown>
+                <p-dropdown [options]="yearList"></p-dropdown>
+            </div>
+            <p-button icon="pi pi-file-pdf" styleClass="p-button-danger"></p-button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>StudentId</th>
+            <th>Subject</th>
+            <th>Fees</th>
+            <th>Payment status</th>
+            <th>PaidOn</th>
+            <th>Comments</th>
+            <!-- <th>Jan</th>
+            <th>Feb</th>
+            <th>Mar</th>
+            <th>Apr</th>
+            <th>May</th>
+            <th>Jun</th>
+            <th>Jul</th>
+            <th>Aug</th>
+            <th>Sep</th>
+            <th>Oct</th>
+            <th>Nov</th>
+            <th>Dec</th> -->
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-feesAudit>
+        <tr>
+            <td>{{ feesAudit.studentId }}</td>
+            <td>{{ feesAudit.subject }}</td>
+            <td>{{ feesAudit.fees }}</td>
+            <td *ngIf="feesAudit.paidOn == null">
+                <p-button styleClass="p-button-danger" label="Pending" (onClick)="OnPendingPress(feesAuditList.indexOf(feesAudit))"></p-button>
+            </td>
+            <td *ngIf="feesAudit.paidOn != null">
+                <p-tag value="Paid" severity="success"></p-tag>
+            </td>
+            <td>{{ feesAudit.paidOn | date  }}</td>
+            <td>{{ feesAudit.comments }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog 
+header="Payment confirmation" 
+[modal]="true"
+[closeOnEscape]="false" 
+[(visible)]="displayPopup">
+    <ng-template pTemplate="content">
+        <form (ngSubmit)="ConfirmPayment()" [formGroup]="paymentConfirmationForm">
+            <h4>Paid On: {{ datePaid | date}}</h4>
+            <p-calendar id="paidOn" formControlName="paidOn" [(ngModel)] = "datePaid" [inline]="true"></p-calendar>
+            <h4>Fees to be paid:</h4>
+            <input 
+            id="fees" 
+            type="number" 
+            formControlName = "fees"
+            pInputText>
+            <h4>Comments:</h4>
+            <textarea pInputTextarea formControlName="comments"></textarea>
+            <div style="display: flex; justify-content: end;">
+                <p-button label="Confirm" type="submit"></p-button>
+            </div>
+        </form>   
+    </ng-template>        
+</p-dialog>

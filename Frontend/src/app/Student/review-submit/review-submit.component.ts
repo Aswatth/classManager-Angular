@@ -1,11 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Route, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { StudentModel } from '../../student.model';
-import { StudentService } from '../../student.service';
-import { AddStudentService } from '../add-student.service';
-import { SessionModel } from '../session-info/session.model';
+import { StudentModel } from 'src/app/Models/student.model';
+import { AddStudentService } from 'src/app/Services/add-student.service';
+import { SessionModel } from 'src/app/Models/session.model';
 
 @Component({
   selector: 'app-review-submit',

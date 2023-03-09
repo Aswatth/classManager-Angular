@@ -9,11 +9,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { StudentListComponent } from './Student/student-list/student-list.component';
 import { AddStudentComponent } from './Student/add-student/add-student.component';
-import { PersonalInfoComponent } from './Student/add-student/personal-info/personal-info.component';
-import { SessionInfoComponent } from './Student/add-student/session-info/session-info.component';
-import { ReviewSubmitComponent } from './Student/add-student/review-submit/review-submit.component';
+import { PersonalInfoComponent } from './Student/personal-info/personal-info.component';
+import { SessionInfoComponent } from './Student/session-info/session-info.component';
+import { ReviewSubmitComponent } from './Student/review-submit/review-submit.component';
 import { StudentDetailComponent } from './Student/student-detail/student-detail.component';
-import { SessionData } from './Student/add-student/session-info/session-data/session-data.component';
+import { SessionData } from './Student/session-info/session-data/session-data.component';
+import { FeesAuditComponent } from './Fees/fees-audit/fees-audit.component';
 import { Date2Time } from './Pipes/date2time.pipe';
 
 import {TableModule} from 'primeng/table';
@@ -33,7 +34,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {InplaceModule} from 'primeng/inplace';
 import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
-import {ListboxModule} from 'primeng/listbox';
+import { TagModule } from 'primeng/tag';
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -57,6 +58,10 @@ const routes: Routes = [
     component: StudentDetailComponent, 
     //children: popupRoute
   },
+  {
+    path: 'fees',
+    component: FeesAuditComponent
+  }
 ];
 
 @NgModule({
@@ -69,6 +74,7 @@ const routes: Routes = [
     ReviewSubmitComponent,
     StudentDetailComponent,
     SessionData,
+    FeesAuditComponent,
     Date2Time
   ],
   imports: [
@@ -97,7 +103,7 @@ const routes: Routes = [
     InplaceModule,
     ChartModule,
     CardModule,
-    ListboxModule
+    TagModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

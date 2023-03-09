@@ -8,29 +8,37 @@
     color: rgb(255, 255, 255);
     font-size: 25px;
 }
-
-:host ::ng-deep .p-button-add-student {
-    background-color: green;
-    border-color: transparent;
-}
-:host ::ng-deep .p-button-add-student:hover {
-    background-color: transparent;
-    color: black;
-    border-color: green;
-}
 :host ::ng-deep .p-button-add-student {
     display: block;
     background-color: green;
     border-color: transparent;
     margin-right: 0;
     margin-left: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+    margin-right: 0px;
 }
 :host ::ng-deep .p-button-add-student:hover {
     background-color: transparent;
     color: black;
     border-color: green;
+}
+
+
+:host ::ng-deep .p-button-fees {
+    display: block;
+    /* background-color: blue; */
+    border-color: transparent;
+    margin-right: 0;
+    margin-left: auto;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+    margin-right: 0px;
+}
+:host ::ng-deep .p-button-fees:hover {
+    background-color: transparent;
+    color: black;
+    border-color: blue;
 }
 
 :host ::ng-deep .p-button-delete {

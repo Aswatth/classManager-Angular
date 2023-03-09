@@ -1,137 +1,89 @@
 package com.example.classManagerBackend.Services;
 
 import com.example.classManagerBackend.Models.SessionModel;
-/*import com.example.classManagerBackend.Repos.SessionRepo;*/
+import com.example.classManagerBackend.Repos.SessionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SessionService
+public class SessionService implements ISessionService
 {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    SessionRepo sessionRepo;
 
-    public List<SessionModel> GetSessions(int studentId)
+    @Override
+    public void AddSessions(List<SessionModel> sessionModelList, int studentId)
     {
-        String query = """
-                SELECT * FROM Session WHERE StudentId = ?
-                """;
-        return jdbcTemplate.query(query, new Object[]{studentId},(rs, rowNum) -> new SessionModel(
-                rs.getString("Subject"),
-                rs.getInt("StudentId"),
-                rs.getString("Days"),
-                rs.getString("StartTime"),
-                rs.getString("EndTime"),
-                rs.getFloat("Fees")
-        ));
-    }
-
-    public Optional<SessionModel> GetSession(String subject, int studentId)
-    {
-        String query = """
-                SELECT * FROM Session WHERE Subject = ? AND StudentId = ? 
-                """;
-        return jdbcTemplate.query(query, new Object[]{subject, studentId}, (rs, rowNum) -> new SessionModel(
-                rs.getString("Subject"),
-                rs.getInt("StudentId"),
-                rs.getString("Days"),
-                rs.getString("StartTime"),
-                rs.getString("EndTime"),
-                rs.getFloat("Fees")
-        )).stream().findFirst();
-    }
-
-    public void UpdateSession(List<SessionModel> sessionModelList, int studentId)
-    {
-        List<SessionModel> sessionToAdd = sessionModelList.stream().collect(Collectors.toList());
-
-        List<String> existingSessionSubject = GetSessions(studentId).stream().map(m->m.getSubject()).collect(Collectors.toList());
-
-        System.out.println(sessionModelList.stream().toList());
-
-        //Check if a record exists for Subject-StudentId combination
         sessionModelList.stream().forEach(e -> {
+            e.setStudentId(studentId);
 
-            //Update if record already exists
+            if(!sessionRepo.findBySubjectAndStudentId(e.getSubject(), studentId).isPresent())
+            {
+                sessionRepo.save(e);
+            }
+        });
+
+        /*for(int i=0; i< sessionModelList.stream().count(); ++i)
+        {
+            sessionModelList.get(i).setStudentId(studentId);
+
+            Optional<SessionModel> existingSession = sessionRepo.findBySubjectAndStudentId(sessionModelList.get(i).getSubject(), studentId);
+
+            if(existingSession.isPresent())
+            {
+                //Update existing session
+                int sessionId = existingSession.get().getStudentId();
+                sessionModelList.get(i).setId(sessionId);
+
+                sessionRepo.save(sessionModelList.get(i));
+            }
+            else
+            {
+                //Add new session
+                sessionRepo.save(sessionModelList.get(i));
+            }
+        }*/
+    }
+
+    public void UpdateSession(int studentId, List<SessionModel> sessionModelList)
+    {
+        List<SessionModel> sessionsToAdd = sessionModelList.stream().collect(Collectors.toList());
+        List<String> existingSessionSubject = sessionRepo.findByStudentId(studentId).stream().map(m->m.getSubject()).collect(Collectors.toList());
+
+        sessionModelList.stream().forEach(e -> {
+            e.setStudentId(studentId);
+            //Update existing session records
             if(existingSessionSubject.contains(e.getSubject()))
             {
-                String query = """
-                        UPDATE Session
-                        SET StartTime = ?,
-                        EndTime = ?,
-                        Days = ?,
-                        Fees = ?
-                        WHERE Subject = ? AND StudentId = ?
-                        """;
-                jdbcTemplate.update(query, e.getStartTime(), e.getEndTime(), String.join(",", e.getDays()), e.getFees(), e.getSubject(), studentId);
-                sessionToAdd.remove(e);
+                sessionRepo.save(e);
+                sessionsToAdd.remove(e);
                 existingSessionSubject.remove(e.getSubject());
             }
         });
 
-        //Add pending sessions
-        if(sessionToAdd.size() > 0)
-            AddSessions(sessionToAdd, studentId);
+        //Add new sessions
+        if(sessionsToAdd.size() > 0)
+            AddSessions(sessionsToAdd, studentId);
 
-        //Delete old sessions
         if(existingSessionSubject.size() > 0)
         {
-            existingSessionSubject.stream().forEach(e->{
-                Optional<SessionModel> sessionModel = GetSession(e, studentId);
-                if(sessionModel.isPresent())
-                {
-                    DeleteSession(sessionModel.get(), studentId);
-                }
+            existingSessionSubject.stream().forEach(e -> {
+                DeleteSessionBySubject(e, studentId);
             });
         }
     }
 
-    public void AddSessions(List<SessionModel> sessionModelList, int studentId)
-    {
-        String insertQuery = """
-                INSERT INTO Session(Subject, StudentId, Days, StartTime, EndTime, Fees)
-                VALUES(?,?,?,?,?,?)
-                """;
-
-        jdbcTemplate.batchUpdate(insertQuery, new BatchPreparedStatementSetter()
-        {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException
-            {
-                SessionModel sessionModel = sessionModelList.get(i);
-                ps.setString(1, sessionModel.getSubject());
-                ps.setInt(2, studentId);
-                ps.setString(3, String.join(",", sessionModel.getDays()));
-                ps.setString(4, sessionModel.getStartTime());
-                ps.setString(5, sessionModel.getEndTime());
-                ps.setFloat(6, sessionModel.getFees());
-            }
-
-            @Override
-            public int getBatchSize()
-            {
-                return sessionModelList.size();
-            }
-        });
-    }
-
+    @Override
     public void DeleteSession(SessionModel sessionModel)
     {
-        DeleteSession(sessionModel, sessionModel.getStudentId());
+        sessionRepo.delete(sessionModel);
     }
 
-    public void DeleteSession(SessionModel sessionModel, int studentId)
-    {
-        String query = """
-                DELETE FROM Session WHERE Subject = ? AND StudentId = ?
-                """;
-        jdbcTemplate.update(query, sessionModel.getSubject(), studentId);
+    public void DeleteSessionBySubject(String subject, int studentId){
+        sessionRepo.delete(sessionRepo.findBySubjectAndStudentId(subject, studentId).get());
     }
 }

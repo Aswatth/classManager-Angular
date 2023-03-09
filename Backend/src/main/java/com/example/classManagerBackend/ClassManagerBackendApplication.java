@@ -16,9 +16,6 @@ public class ClassManagerBackendApplication {
 	{
 		ApplicationContext context = SpringApplication.run(ClassManagerBackendApplication.class, args);
 
-		JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
-		QueryRunner queryRunner = new QueryRunner(jdbcTemplate);
-		queryRunner.RunQueryFromFile("createSQL.sql");
 		System.out.println("Server started...");
 	}
 }

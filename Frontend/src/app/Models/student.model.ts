@@ -1,4 +1,4 @@
-import { SessionModel } from "./add-student/session-info/session.model";
+import { SessionModel } from "./session.model";
 
 export class StudentModel{
     id?: number;
