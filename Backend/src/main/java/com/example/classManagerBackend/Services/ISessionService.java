@@ -10,5 +10,5 @@ public interface ISessionService
     public void DeleteSession(SessionEntity sessionEntity);
     public void DeleteSessionBySubject(String subject, int studentId);
     public void DeleteSessions(List<SessionEntity> sessionEntityList);
-    public void UpdateSession(int studentId, List<SessionEntity> sessionEntityList);
+    public List<SessionEntity> UpdateSession(int studentId, List<SessionEntity> sessionEntityList);
 }

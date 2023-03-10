@@ -1,8 +1,10 @@
 package com.example.classManagerBackend.Models;
 
 import com.example.classManagerBackend.Utils.StringListConverter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,8 +19,10 @@ public class SessionEntity
     String subject;
     @Convert(converter = StringListConverter.class)
     List<String> days;
-    String startTime;
-    String endTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    Date startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    Date endTime;
     float fees;
 
     public int getId()
@@ -61,22 +65,22 @@ public class SessionEntity
         this.days = days;
     }
 
-    public String getStartTime()
+    public Date getStartTime()
     {
         return startTime;
     }
 
-    public void setStartTime(String startTime)
+    public void setStartTime(Date startTime)
     {
         this.startTime = startTime;
     }
 
-    public String getEndTime()
+    public Date getEndTime()
     {
         return endTime;
     }
 
-    public void setEndTime(String endTime)
+    public void setEndTime(Date endTime)
     {
         this.endTime = endTime;
     }

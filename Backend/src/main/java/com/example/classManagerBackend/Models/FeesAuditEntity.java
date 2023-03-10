@@ -1,5 +1,6 @@
 package com.example.classManagerBackend.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -11,9 +12,11 @@ public class FeesAuditEntity
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     int id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date feesDate;
     int studentId;
     double fees;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date paidOn;
     String comments;
 

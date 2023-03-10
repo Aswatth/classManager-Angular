@@ -58,10 +58,12 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   OnAdd(){
+    console.log("session list");
+    console.log(this.sessionList);    
+    
     let sessionModel:SessionModel = this.sessionForm.getRawValue();
-    let subject = this.sessionForm.controls['subject'].value;
 
-    if(!this.SessionExists(subject)){
+    if(!this.SessionExists(sessionModel.subject)){
       if(this.existingStudentData)
         sessionModel.studentId = this.existingStudentData.id!;
       this.sessionList.push(sessionModel);
@@ -69,32 +71,26 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
       this.hasUpdates = true;
     }
     else{
-      this.messageService.add({key:"session-add", severity: 'warn', detail: 'Updated existing '+ subject + ' info'});
+      this.messageService.add({key:"session-add", severity: 'warn', detail: 'Updated existing '+ sessionModel.subject + ' info'});
       
-      let existingSession!: SessionModel;
-      
-      this.sessionList.filter(function(e) {
-        if(e.subject == subject){
-          existingSession = e;
+      this.sessionList.filter((e) => {
+        if(e.subject == sessionModel.subject){
+          let existingSessionIndex: number = this.sessionList.indexOf(e);
+          sessionModel.id = this.sessionList[existingSessionIndex].id;
+          sessionModel.studentId = this.sessionList[existingSessionIndex].studentId;
+
+          this.sessionList[existingSessionIndex] = sessionModel;
+          this.hasUpdates = true;
         }
       });
-
-      let existingSessionIndex: number = this.sessionList.indexOf(existingSession);
-      let sessionToStore: SessionModel = this.sessionForm.getRawValue();
-
-      sessionToStore.id = existingSession.id;
-      sessionToStore.studentId = existingSession.studentId;
-
-      this.sessionList[existingSessionIndex] = sessionToStore;
-      this.hasUpdates = true;
     }
   }
   
   SessionExists(subject: string) : boolean{
-    let filteredData = this.sessionList.filter(function(e) {
-      return e.subject == subject
-    });
-    return filteredData.length != 0;
+    if(this.sessionList.some(e => Object.values(e).includes(subject)))
+      return true;
+    return false;
+    //return filteredData.length != 0;
   }
 
   DeleteSession(session: SessionModel){
@@ -126,7 +122,11 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   OnSaveClick(){
     this.existingStudentData.sessionList = this.sessionList;
     console.log(this.sessionList);
-    this.studentService.UpdateSession(this.existingStudentData.id! ,this.existingStudentData.sessionList);
+    this.studentService.UpdateSession(this.existingStudentData.id! ,this.existingStudentData.sessionList).subscribe(
+      data => {
+        this.sessionList = data;
+      }
+    );
   }
 
   ngOnDestroy(){

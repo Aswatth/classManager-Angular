@@ -1,8 +1,5 @@
 package com.example.classManagerBackend.Models;
 
-import java.util.Date;
-import java.util.List;
-
 public class FeesDataModel
 {
     int studentId;

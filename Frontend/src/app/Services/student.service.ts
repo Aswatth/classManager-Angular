@@ -56,19 +56,21 @@ export class StudentService{
     UpdateStudent(newStudentModel: StudentModel){
         this.http.put<StudentModel>('http://localhost:9999/students/'+newStudentModel.id!, newStudentModel).subscribe({
             complete: () => {
-                this.GetAllStudent(); 
+                this.S_StudentDataSource.subscribe(
+                    data => {
+                        let studentList = data;
+                        let studentModel = studentList.find(f=>f.id == newStudentModel.id)
+                        let index = studentList.indexOf(studentModel!);
+                        studentList[index] = newStudentModel;
+                    }
+                );
                 this.S_IsPopupOpen.next(false);
             }
         });
     }
 
     UpdateSession(id: number, sessionList: SessionModel[]){
-        this.http.put<StudentModel>('http://localhost:9999/students/'+id+'/session', sessionList).subscribe({
-            complete: () => {
-                this.GetAllStudent(); 
-                this.S_IsPopupOpen.next(false);
-            }
-        });
+        return this.http.post<SessionModel[]>('http://localhost:9999/students/'+id+'/session', sessionList);
     }
 
     DeleteStudent(id: number | undefined){
