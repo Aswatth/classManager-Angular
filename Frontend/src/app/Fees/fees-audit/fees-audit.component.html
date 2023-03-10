@@ -16,8 +16,8 @@
     <ng-template pTemplate="caption">
         <div style="display: flex;justify-content: space-between;">
             <div style="display: flex;justify-content: start;">
-                <p-dropdown [options]="monthList"></p-dropdown>
-                <p-dropdown [options]="yearList"></p-dropdown>
+                <p-dropdown [options]="yearList" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
+                <p-dropdown [options]="monthList" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
             </div>
             <p-button icon="pi pi-file-pdf" styleClass="p-button-danger"></p-button>
         </div>

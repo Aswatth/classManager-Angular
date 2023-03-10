@@ -25,8 +25,6 @@ public class FeesAuditService implements IFeesAuditService
         feesAuditRepo.saveAll(feesAuditEntityList);
     }
 
-
-
     public void CreateAudit(int studentId, double totalFees)
     {
         FeesAuditEntity feesAuditEntity = new FeesAuditEntity();
@@ -77,6 +75,11 @@ public class FeesAuditService implements IFeesAuditService
     {
 
         return feesAuditRepo.findByFeesDateAndStudentId(date, studentId);
+    }
+
+    public List<Date> GetDateList()
+    {
+        return feesAuditRepo.findDistinctFeesDate();
     }
 
 

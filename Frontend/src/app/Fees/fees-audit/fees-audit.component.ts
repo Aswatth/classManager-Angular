@@ -16,58 +16,56 @@ import { FeesDataModel } from 'src/app/Models/fees-data.model';
 export class FeesAuditComponent implements OnInit, OnDestroy{
   
   feesDataList: FeesDataModel[] = [];
+  feesDataSubcription!: Subscription;
   
-  studentList!: StudentModel[];
-  studentSubscription!: Subscription;
-
   displayPopup: boolean = false;
 
   paymentConfirmationForm!: FormGroup;
   selectedIndex!: number;
 
-  yearList: string[] = [];
+  yearList: number[] = [];
+  selectedYear!: number;
   monthList: string[] = [];
+  selectedMonth!: string;
+  
+  dateList: Date[] = [];
 
   datePaid: Date = new Date();
 
   constructor(private router: Router, 
-    private feesAuditService: FeesAuditService, 
-    private studentService: StudentService){}
+    private feesAuditService: FeesAuditService){}
 
   ngOnInit(): void {
-    //this.BaseData();
 
-    // this.studentSubscription = this.studentService.S_StudentDataSource.subscribe(
-    //   (data) => {
-    //     this.studentList = data;
-    //   }
-    // )
-
-    this.feesAuditService.GetFeesAudit().subscribe(
+    this.feesDataSubcription = this.feesAuditService.S_FeesAuditData.subscribe(
       (data) => {
         this.feesDataList = data;
-        console.log(data);
-
-        // let feeDates = Array.from(new Set(data.map(m=>m.feesAuditEntity.feesDate).map(date => date.toDateString()))).map(dateString => new Date(dateString));
-    
-        // this.yearList = Array.from(new Set(feeDates.map(e=>e.getFullYear().toString())));
-        // this.monthList = Array.from(new Set(feeDates.map(e=>e.toLocaleDateString('default', {month: 'short'}))));
       }
     );
 
-    // this.feesAuditService.GetFeesAudit()
-    // .pipe(
-    //   map((data) =>{
-    //     data.forEach(f=>f.feesDate = new Date(f.feesDate));
-    //     return data;
-    //   }),
-    // ).subscribe(
-    //   (data) => {
-    //     this.feesAuditList = data;
-        
-        
-    //   }
-    // );
+    this.feesAuditService.GetDates().subscribe(
+      (data) => {
+        data.forEach(e=>{
+          let date = new Date(e);
+          let year = date.getFullYear();
+          let month = date.toLocaleString('default', { month: 'long' });
+
+          if(!this.yearList.includes(year))
+          {
+            this.yearList.push(year);
+          }
+          if(!this.monthList.includes(month))
+          {
+            this.monthList.push(month);
+          }
+          this.dateList.push(date);
+        });
+
+        let date = new Date();
+        this.selectedYear = date.getFullYear();
+        this.selectedMonth = date.toLocaleString('default', { month: 'long' })
+      }
+    );
 
     this.paymentConfirmationForm = new FormGroup(
       {
@@ -75,41 +73,6 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
         'fees': new FormControl(null, Validators.required),
         'comments': new FormControl(null),
       });
-  }
-
-  BaseData(data: FeesAuditModel[]){
-    // this.feesAuditList.push({
-    //   feesDate: new Date("2023-01-01"),
-    //   subject: "Science",
-    //   studentId: 1,
-    //   paidOn: new Date("2023-01-04"),
-    //   comments: "",
-    //   fees: 200,
-    // });
-    // this.feesAuditList.push({
-    //   feesDate: new Date("2023-02-01"),
-    //   subject: "Science",
-    //   studentId: 2,
-    //   paidOn: null,
-    //   comments: "",
-    //   fees: 200,
-    // });
-    // this.feesAuditList.push({
-    //   feesDate: new Date("2023-01-01"),
-    //   subject: "Science",
-    //   studentId: 3,
-    //   paidOn: null,
-    //   comments: "",
-    //   fees: 200,
-    // });
-
-    // let feeDates = Array.from(new Set(data.map(m=>m.feesDate).map(date => date.toDateString()))).map(dateString => new Date(dateString));
-    
-    // this.yearList = Array.from(new Set(feeDates.map(e=>e.getFullYear().toString())));
-    // this.monthList = Array.from(new Set(feeDates.map(e=>e.toLocaleDateString('default', {month: 'short'}))));
-    
-    console.log(this.yearList);
-    console.log(this.monthList);    
   }
 
   OnPendingPress(index: number){
@@ -138,6 +101,23 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
     this.feesAuditService.SaveChanges(this.feesDataList[this.selectedIndex]);
   }
 
+  OnYearChange()
+  {
+    let year = this.selectedYear;
+    
+    this.monthList = this.dateList.filter(m=>m.getFullYear() == year).map(m=>m.toLocaleDateString('default', {month: 'short'}));
+    
+    this.selectedMonth = this.monthList[0];
+
+    let month = new Date(this.selectedMonth + " 1 2000").toLocaleDateString('default', {month: '2-digit'});
+    this.feesAuditService.GetFeesAudit(year + "-" + month + "-" + "01");    
+  }
+  OnMonthChange()
+  {
+    let month = new Date(this.selectedMonth + " 1 2000").toLocaleDateString('default', {month: '2-digit'});
+    this.feesAuditService.GetFeesAudit(this.selectedYear + "-" + month + "-" + "01");    
+  }
+
   exportPdf() {
     
   }
@@ -147,6 +127,6 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.studentSubscription.unsubscribe();
+    this.feesDataSubcription.unsubscribe();
   }
 }
