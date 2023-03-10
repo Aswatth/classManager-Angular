@@ -1,17 +1,12 @@
 package com.example.classManagerBackend.Services;
 
 import com.example.classManagerBackend.Models.FeesAuditEntity;
-import com.example.classManagerBackend.Models.FeesDataModel;
 import com.example.classManagerBackend.Repos.FeesAuditRepo;
 import com.example.classManagerBackend.Repos.SessionRepo;
 import com.example.classManagerBackend.Utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +15,6 @@ public class FeesAuditService implements IFeesAuditService
 {
     @Autowired
     FeesAuditRepo feesAuditRepo;
-
-    @Autowired
-    SessionRepo sessionRepo;
 
     @Autowired
     DateUtils dateUtils;
@@ -83,9 +75,8 @@ public class FeesAuditService implements IFeesAuditService
 
     public FeesAuditEntity GetFeesAudit(Date date, int studentId)
     {
-        FeesAuditEntity feesAuditEntity =feesAuditRepo.findByFeesDateAndStudentId(date, studentId);
 
-        return feesAuditEntity;
+        return feesAuditRepo.findByFeesDateAndStudentId(date, studentId);
     }
 
 

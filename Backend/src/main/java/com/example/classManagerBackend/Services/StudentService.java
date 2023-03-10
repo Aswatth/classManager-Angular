@@ -1,12 +1,13 @@
 package com.example.classManagerBackend.Services;
 
-import com.example.classManagerBackend.Models.*;
+import com.example.classManagerBackend.Models.FeesAuditEntity;
+import com.example.classManagerBackend.Models.FeesDataModel;
+import com.example.classManagerBackend.Models.SessionEntity;
+import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Repos.StudentRepo;
-import com.example.classManagerBackend.Utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +25,6 @@ public class StudentService implements IStudentService
 
     @Autowired
     FeesAuditService feesAuditService;
-
-    @Autowired
-    DateUtils dateUtils;
 
     @Override
     public List<StudentEntity> AddStudent(StudentEntity studentEntity)

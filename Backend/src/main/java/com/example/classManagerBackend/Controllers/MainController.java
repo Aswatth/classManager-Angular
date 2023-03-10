@@ -20,7 +20,7 @@ import java.util.logging.SimpleFormatter;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-public class StudentController
+public class MainController
 {
     @Autowired
     StudentService studentService;
@@ -38,9 +38,9 @@ public class StudentController
         studentService.UpdateStudent(id, newStudentEntity);
     }
 
-    @PutMapping("/students/{id}/session")
-    void UpdateSession(@PathVariable int id, @RequestBody List<SessionEntity> sessionEntityList){
-        sessionService.UpdateSession(id, sessionEntityList);
+    @PostMapping("/students/{id}/session")
+    List<SessionEntity> UpdateSession(@PathVariable int id, @RequestBody List<SessionEntity> sessionEntityList){
+        return sessionService.UpdateSession(id, sessionEntityList);
     }
 
     @DeleteMapping("/students/{id}")
