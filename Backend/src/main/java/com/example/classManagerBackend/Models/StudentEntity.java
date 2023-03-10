@@ -2,16 +2,14 @@ package com.example.classManagerBackend.Models;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Student")
-public class StudentModel
+public class StudentEntity
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     int id;
     String studentName;
     String schoolName;
@@ -23,7 +21,11 @@ public class StudentModel
     String parentPhNum2;
     @OneToMany
     @JoinColumn(name = "StudentId")
-    List<SessionModel> sessionList;
+    List<SessionEntity> sessionList;
+
+    @OneToMany
+    @JoinColumn(name = "StudentId")
+    List<FeesAuditEntity> feesAuditEntityList;
 
     public int getId()
     {
@@ -115,14 +117,24 @@ public class StudentModel
         this.parentPhNum2 = parentPhNum2;
     }
 
-    public List<SessionModel> getsessionList()
+    public List<SessionEntity> getSessionList()
     {
         return sessionList;
     }
 
-    public void setsessionList(List<SessionModel> sessionList)
+    public void setSessionList(List<SessionEntity> sessionList)
     {
         this.sessionList = sessionList;
+    }
+
+    public List<FeesAuditEntity> getFeesAuditEntityList()
+    {
+        return feesAuditEntityList;
+    }
+
+    public void setFeesAuditEntityList(List<FeesAuditEntity> feesAuditEntityList)
+    {
+        this.feesAuditEntityList = feesAuditEntityList;
     }
 
     @Override

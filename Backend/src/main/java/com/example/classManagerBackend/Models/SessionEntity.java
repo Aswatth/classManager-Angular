@@ -1,16 +1,16 @@
 package com.example.classManagerBackend.Models;
 
-import com.example.classManagerBackend.StringListConverter;
+import com.example.classManagerBackend.Utils.StringListConverter;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "Session")
-public class SessionModel
+public class SessionEntity
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     int id;
 
     int studentId;

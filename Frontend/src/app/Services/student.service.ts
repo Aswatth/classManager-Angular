@@ -31,8 +31,7 @@ export class StudentService{
     GetAllStudent(){
         this.http.get<StudentModel[]>('http://localhost:9999/students').subscribe({
             next: (data) => {
-                console.log("STUDENT LIST");
-                console.log(data);                
+                console.log("STUDENT LIST");   
                 this.S_StudentDataSource.next(data);
             }
         });

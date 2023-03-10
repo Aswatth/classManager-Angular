@@ -1,4 +1,4 @@
-package com.example.classManagerBackend;
+package com.example.classManagerBackend.Utils;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
