@@ -12,7 +12,7 @@
         </h1>
     </div>
 </p-toolbar>
-<p-table [value]="feesAuditList">
+<p-table [value]="feesDataList">
     <ng-template pTemplate="caption">
         <div style="display: flex;justify-content: space-between;">
             <div style="display: flex;justify-content: start;">
@@ -24,39 +24,52 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th>StudentId</th>
+            <th>Name</th>
+            <th>Class-Board</th>
             <th>Subject</th>
             <th>Fees</th>
             <th>Payment status</th>
             <th>PaidOn</th>
             <th>Comments</th>
-            <!-- <th>Jan</th>
-            <th>Feb</th>
-            <th>Mar</th>
-            <th>Apr</th>
-            <th>May</th>
-            <th>Jun</th>
-            <th>Jul</th>
-            <th>Aug</th>
-            <th>Sep</th>
-            <th>Oct</th>
-            <th>Nov</th>
-            <th>Dec</th> -->
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-feesAudit>
+    <ng-template pTemplate="body" let-feesData>
         <tr>
-            <td>{{ feesAudit.studentId }}</td>
-            <td>{{ feesAudit.subject }}</td>
-            <td>{{ feesAudit.fees }}</td>
-            <td *ngIf="feesAudit.paidOn == null">
+            <td>{{ feesData.studentName }}</td>
+            <td>{{ feesData.className }}-{{feesData.boardName}}</td>
+            <td>{{feesData.subjects}}</td>
+            <ng-container *ngIf="feesData.feesAuditEntity">
+                <td>{{feesData.feesAuditEntity.fees}}</td>
+                <ng-container *ngIf="feesData.feesAuditEntity.paidOn == null">
+                    <td >
+                        <p-button 
+                        styleClass="p-button-danger" 
+                        label="Pending"
+                        (onClick)="OnPendingPress(feesDataList.indexOf(feesData))"></p-button>
+                    </td>
+                    <td> - </td>
+                    <td> - </td>
+                </ng-container>
+                <ng-container *ngIf="feesData.feesAuditEntity.paidOn != null">
+                    <td >
+                        <p-tag value="Paid" severity="success"></p-tag>
+                    </td>
+                    <td>{{ feesData.feesAuditEntity.paidOn | date }}</td>    
+                    <td>{{ feesData.feesAuditEntity.comments }}</td>    
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="!feesData.feesAuditEntity">
+                <td></td>
+                <td></td>
+            </ng-container>
+            <!-- <td *ngIf="feesAudit.paidOn == null">
                 <p-button styleClass="p-button-danger" label="Pending" (onClick)="OnPendingPress(feesAuditList.indexOf(feesAudit))"></p-button>
             </td>
             <td *ngIf="feesAudit.paidOn != null">
                 <p-tag value="Paid" severity="success"></p-tag>
             </td>
             <td>{{ feesAudit.paidOn | date  }}</td>
-            <td>{{ feesAudit.comments }}</td>
+            <td>{{ feesAudit.comments }}</td> -->
         </tr>
     </ng-template>
 </p-table>

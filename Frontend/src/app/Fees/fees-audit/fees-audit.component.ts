@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FeesAuditModel } from 'src/app/Models/fees-audit.model';
-import { DatePipe } from '@angular/common';
 import { FeesAuditService } from 'src/app/Services/fees-audit.service';
-import { finalize, map } from 'rxjs';
+import { finalize, map, Subscription } from 'rxjs';
+import { StudentService } from 'src/app/Services/student.service';
+import { StudentModel } from 'src/app/Models/student.model';
+import { FeesDataModel } from 'src/app/Models/fees-data.model';
 
 @Component({
   selector: 'app-fees-audit',
   templateUrl: './fees-audit.component.html',
   styleUrls: ['./fees-audit.component.css']
 })
-export class FeesAuditComponent implements OnInit{
+export class FeesAuditComponent implements OnInit, OnDestroy{
   
-  feesAuditList: FeesAuditModel[] = [];
+  feesDataList: FeesDataModel[] = [];
+  
+  studentList!: StudentModel[];
+  studentSubscription!: Subscription;
 
   displayPopup: boolean = false;
 
@@ -25,27 +30,44 @@ export class FeesAuditComponent implements OnInit{
 
   datePaid: Date = new Date();
 
-  constructor(private router: Router, private feesAuditService: FeesAuditService){}
+  constructor(private router: Router, 
+    private feesAuditService: FeesAuditService, 
+    private studentService: StudentService){}
 
   ngOnInit(): void {
     //this.BaseData();
 
-    this.feesAuditService.GetFeesAudit()
-    .pipe(
-      map((data) =>{
-        data.forEach(f=>f.feesDate = new Date(f.feesDate));
-        return data;
-      }),
-    ).subscribe(
+    // this.studentSubscription = this.studentService.S_StudentDataSource.subscribe(
+    //   (data) => {
+    //     this.studentList = data;
+    //   }
+    // )
+
+    this.feesAuditService.GetFeesAudit().subscribe(
       (data) => {
-        this.feesAuditList = data;
-        
-        let feeDates = Array.from(new Set(data.map(m=>m.feesDate).map(date => date.toDateString()))).map(dateString => new Date(dateString));
+        this.feesDataList = data;
+        console.log(data);
+
+        // let feeDates = Array.from(new Set(data.map(m=>m.feesAuditEntity.feesDate).map(date => date.toDateString()))).map(dateString => new Date(dateString));
     
-        this.yearList = Array.from(new Set(feeDates.map(e=>e.getFullYear().toString())));
-        this.monthList = Array.from(new Set(feeDates.map(e=>e.toLocaleDateString('default', {month: 'short'}))));
+        // this.yearList = Array.from(new Set(feeDates.map(e=>e.getFullYear().toString())));
+        // this.monthList = Array.from(new Set(feeDates.map(e=>e.toLocaleDateString('default', {month: 'short'}))));
       }
     );
+
+    // this.feesAuditService.GetFeesAudit()
+    // .pipe(
+    //   map((data) =>{
+    //     data.forEach(f=>f.feesDate = new Date(f.feesDate));
+    //     return data;
+    //   }),
+    // ).subscribe(
+    //   (data) => {
+    //     this.feesAuditList = data;
+        
+        
+    //   }
+    // );
 
     this.paymentConfirmationForm = new FormGroup(
       {
@@ -92,8 +114,12 @@ export class FeesAuditComponent implements OnInit{
 
   OnPendingPress(index: number){
     this.selectedIndex = index;
+    console.log(index);
+    
     this.displayPopup = true;
-    this.paymentConfirmationForm.controls["fees"].setValue(this.feesAuditList[index].fees);
+    console.log(this.feesDataList[index]!.feesAuditEntity.fees);
+    
+    this.paymentConfirmationForm.controls["fees"].setValue(this.feesDataList[index].feesAuditEntity.fees);
   }
 
   ConfirmPayment(){
@@ -103,13 +129,13 @@ export class FeesAuditComponent implements OnInit{
     
     let selectedValue = this.paymentConfirmationForm.controls['paidOn'].value;
 
-    this.feesAuditList[this.selectedIndex].paidOn = selectedValue?selectedValue : new Date();
-    this.feesAuditList[this.selectedIndex].comments = this.paymentConfirmationForm.controls['comments'].value;
-    this.feesAuditList[this.selectedIndex].fees = this.paymentConfirmationForm.controls['fees'].value;
+    this.feesDataList[this.selectedIndex].feesAuditEntity.paidOn = selectedValue?selectedValue : new Date();
+    this.feesDataList[this.selectedIndex].feesAuditEntity.comments = this.paymentConfirmationForm.controls['comments'].value;
+    this.feesDataList[this.selectedIndex].feesAuditEntity.fees = this.paymentConfirmationForm.controls['fees'].value;
 
-    console.log(this.feesAuditList);
+    console.log(this.feesDataList);
     
-    this.feesAuditService.SaveChanges(this.feesAuditList);
+    this.feesAuditService.SaveChanges(this.feesDataList[this.selectedIndex]);
   }
 
   exportPdf() {
@@ -118,5 +144,9 @@ export class FeesAuditComponent implements OnInit{
 
   GoBack(){
     this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.studentSubscription.unsubscribe();
   }
 }

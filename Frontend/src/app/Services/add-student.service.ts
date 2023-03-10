@@ -17,5 +17,6 @@ export class AddStudentService{
         this.studentInfo!.sessionList = this.sessionList;
         this.studentService.AddStudent(this.studentInfo!);
         this.studentInfo = undefined;
+        this.sessionList = [];
     }
 }

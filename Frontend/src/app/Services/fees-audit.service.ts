@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FeesAuditModel } from "../Models/fees-audit.model";
+import { FeesDataModel } from "../Models/fees-data.model";
 
 @Injectable({providedIn: 'root'})
 export class FeesAuditService{
@@ -8,37 +9,16 @@ export class FeesAuditService{
     constructor(private http: HttpClient){}
 
     GetFeesAudit(){
-        return this.http.get<FeesAuditModel[]>("http://localhost:9999/fees")
+        let date = new Date();
+        let month  = date.getMonth() + 1;
+        let year = date.getFullYear();
+        
+        return this.http.post<FeesDataModel[]>("http://localhost:9999/fees",year + "-"+month + "-"+"1");
     }
 
-    SaveChanges(feesAuditList: FeesAuditModel[]){
+    SaveChanges(feesAuditList: FeesDataModel){
         console.log("Saving changes");
-        
-        type DataToSend = {
-            feesDate: string,
-            subject: string,
-            studentId: number,
-            paidOn: string,
-            fees: number,
-            comments: string
-        }
 
-        const dataList: DataToSend[] = [];
-
-        feesAuditList.forEach(e => {
-            const tempData: DataToSend = {
-                feesDate: e.feesDate.toISOString().split('T')[0].toString(),
-                subject: e.subject,
-                studentId: e.studentId,
-                fees: e.fees,
-                paidOn : e.paidOn.toISOString().split('T')[0].toString(),
-                comments: e.comments
-            };
-            dataList.push(tempData);
-        })
-
-        console.log(dataList);       
-
-        this.http.put<DataToSend[]>("http://localhost:9999/fees", dataList).subscribe();
+        this.http.put<FeesDataModel>("http://localhost:9999/fees", feesAuditList).subscribe();
     }
 }
