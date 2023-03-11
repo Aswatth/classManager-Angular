@@ -18,6 +18,7 @@ public class FeesAuditEntity
     double fees;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date paidOn;
+    String modeOfPayment;
     String comments;
 
     public FeesAuditEntity()
@@ -72,6 +73,16 @@ public class FeesAuditEntity
     public void setPaidOn(Date paidOn)
     {
         this.paidOn = paidOn;
+    }
+
+    public String getModeOfPayment()
+    {
+        return modeOfPayment;
+    }
+
+    public void setModeOfPayment(String modeOfPayment)
+    {
+        this.modeOfPayment = modeOfPayment;
     }
 
     public String getComments()

@@ -3,6 +3,7 @@ package com.example.classManagerBackend.Controllers;
 import com.example.classManagerBackend.Models.FeesDataModel;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
+import com.example.classManagerBackend.Services.FeesAuditService;
 import com.example.classManagerBackend.Services.SessionService;
 import com.example.classManagerBackend.Services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -27,6 +25,9 @@ public class MainController
 
     @Autowired
     SessionService sessionService;
+
+    @Autowired
+    FeesAuditService feesAuditService;
 
     @PostMapping("/student")
     void AddStudent(@RequestBody StudentEntity studentEntity){
@@ -73,6 +74,12 @@ public class MainController
     @PutMapping("/fees")
     public void GetFeesAuditList(@RequestBody FeesDataModel feesAuditModel){
         studentService.SaveFeesAudit(feesAuditModel);
+    }
+
+    @GetMapping("/dates")
+    public List<Date> GetDateList()
+    {
+        return feesAuditService.GetDateList();
     }
 
     @GetMapping("/students/{id}")

@@ -31,10 +31,10 @@ import {ToastModule} from 'primeng/toast';
 import {CalendarModule} from 'primeng/calendar';
 import {SplitterModule} from 'primeng/splitter';
 import {MultiSelectModule} from 'primeng/multiselect';
-import {InplaceModule} from 'primeng/inplace';
 import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
-import { TagModule } from 'primeng/tag';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {CheckboxModule} from 'primeng/checkbox';
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -100,10 +100,10 @@ const routes: Routes = [
     CalendarModule,
     SplitterModule,
     MultiSelectModule,
-    InplaceModule,
     ChartModule,
     CardModule,
-    TagModule
+    RadioButtonModule,
+    CheckboxModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
