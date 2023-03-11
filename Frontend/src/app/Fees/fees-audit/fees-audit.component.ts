@@ -1,19 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FeesAuditModel } from 'src/app/Models/fees-audit.model';
 import { FeesAuditService } from 'src/app/Services/fees-audit.service';
-import { finalize, map, Subscription } from 'rxjs';
-import { StudentService } from 'src/app/Services/student.service';
-import { StudentModel } from 'src/app/Models/student.model';
+import { Subscription } from 'rxjs';
 import { FeesDataModel } from 'src/app/Models/fees-data.model';
+
+import { Table } from 'primeng/table';
+import { DomHandler } from 'primeng/dom';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-fees-audit',
   templateUrl: './fees-audit.component.html',
   styleUrls: ['./fees-audit.component.css']
 })
-export class FeesAuditComponent implements OnInit, OnDestroy{
+export class FeesAuditComponent implements OnInit, OnDestroy {
   
   feesDataList: FeesDataModel[] = [];
   feesDataSubcription!: Subscription;
@@ -23,14 +25,18 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
   paymentConfirmationForm!: FormGroup;
   selectedIndex!: number;
 
+  //Filters
   yearList: number[] = [];
   selectedYear!: number;
   monthList: string[] = [];
   selectedMonth!: string;
-  
   dateList: Date[] = [];
-
+  showPendingOnly = false;
+  showPaidOnly = false;
+  
   datePaid: Date = new Date();
+
+  @ViewChild('dt') table!: Table;
 
   constructor(private router: Router, 
     private feesAuditService: FeesAuditService){}
@@ -48,31 +54,53 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
         data.forEach(e=>{
           let date = new Date(e);
           let year = date.getFullYear();
-          let month = date.toLocaleString('default', { month: 'long' });
-
+          
           if(!this.yearList.includes(year))
           {
             this.yearList.push(year);
           }
-          if(!this.monthList.includes(month))
-          {
-            this.monthList.push(month);
-          }
           this.dateList.push(date);
         });
-
+        
         let date = new Date();
         this.selectedYear = date.getFullYear();
-        this.selectedMonth = date.toLocaleString('default', { month: 'long' })
+        this.monthList = this.dateList.filter(m=>m.getFullYear() == this.selectedYear).map(m=>m.toLocaleDateString('default', {month: 'short'}));
+        this.selectedMonth = date.toLocaleString('default', { month: 'short' })
       }
     );
 
     this.paymentConfirmationForm = new FormGroup(
       {
-        'paidOn': new FormControl(null, Validators.required),
+        'paidOn': new FormControl(this.datePaid, Validators.required),
+        'modeOfPayment': new FormControl("Cash", Validators.required),
         'fees': new FormControl(null, Validators.required),
         'comments': new FormControl(null),
       });
+  }
+
+  PaidCbChange()
+  {
+    if(this.showPendingOnly && this.showPaidOnly)
+    {
+      this.showPendingOnly = false;
+    }
+  }
+
+  PendingCbChange()
+  {
+    if(this.showPaidOnly && this.showPendingOnly)
+    {
+      this.showPaidOnly = false;
+    }
+  }
+
+  GetDataBasedOnFilters() : FeesDataModel[]
+  {
+    if(this.showPaidOnly)
+      return this.feesDataList.filter(f=>f.feesAuditEntity.paidOn!=null);
+    if(this.showPendingOnly)
+      return this.feesDataList.filter(f=>f.feesAuditEntity.paidOn==null)  
+    return this.feesDataList;
   }
 
   OnPendingPress(index: number){
@@ -95,6 +123,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
     this.feesDataList[this.selectedIndex].feesAuditEntity.paidOn = selectedValue?selectedValue : new Date();
     this.feesDataList[this.selectedIndex].feesAuditEntity.comments = this.paymentConfirmationForm.controls['comments'].value;
     this.feesDataList[this.selectedIndex].feesAuditEntity.fees = this.paymentConfirmationForm.controls['fees'].value;
+    this.feesDataList[this.selectedIndex].feesAuditEntity.modeOfPayment = this.paymentConfirmationForm.controls['modeOfPayment'].value;
 
     console.log(this.feesDataList);
     
@@ -118,8 +147,14 @@ export class FeesAuditComponent implements OnInit, OnDestroy{
     this.feesAuditService.GetFeesAudit(this.selectedYear + "-" + month + "-" + "01");    
   }
 
-  exportPdf() {
-    
+  exportToPdf() {
+    const doc = new jsPDF({
+      orientation: "portrait"
+    });
+    doc.html('This is a table',{
+      callback: (doc)=>doc.save('table.pdf'),
+      width: 100
+    });
   }
 
   GoBack(){

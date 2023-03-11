@@ -3,5 +3,6 @@ export class FeesAuditModel{
     studentId!: number;
     fees!: number;
     paidOn!: Date;
+    modeOfPayment!: string;
     comments!: string;
 }

@@ -11,6 +11,6 @@ public interface FeesAuditRepo extends JpaRepository<FeesAuditEntity, Integer>
 {
     FeesAuditEntity findByFeesDateAndStudentId(Date feesDate, int studentId);
     FeesAuditEntity findByStudentIdAndPaidOn(int studentId, Date paidOn);
-    @Query(value = "SELECT DISTINCT f.Fees_Date FROM fees_Audit f",nativeQuery = true)
+    @Query(value = "SELECT DISTINCT f.Fees_Date FROM fees_Audit f ORDER BY f.Fees_date ASC",nativeQuery = true)
     List<Date> findDistinctFeesDate();
 }
