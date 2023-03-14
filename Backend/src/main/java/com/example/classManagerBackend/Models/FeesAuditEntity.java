@@ -14,6 +14,7 @@ public class FeesAuditEntity
     int id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date feesDate;
+    String subjects;
     int studentId;
     double fees;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -43,6 +44,16 @@ public class FeesAuditEntity
     public void setFeesDate(Date feesDate)
     {
         this.feesDate = feesDate;
+    }
+
+    public String getSubjects()
+    {
+        return subjects;
+    }
+
+    public void setSubjects(String subjects)
+    {
+        this.subjects = subjects;
     }
 
     public int getStudentId()

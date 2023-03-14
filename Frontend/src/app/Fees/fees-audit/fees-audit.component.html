@@ -41,7 +41,7 @@
             <td>{{ feesData.studentName }}</td>
             <td>{{ feesData.className }}-{{feesData.boardName}}</td>
             <td>
-                <ng-container *ngFor="let subject of feesData.subjects.split(',')">
+                <ng-container *ngFor="let subject of feesData.feesAuditEntity.subjects.split(',')">
                     <p>{{subject}}</p>
                 </ng-container>
             </td>

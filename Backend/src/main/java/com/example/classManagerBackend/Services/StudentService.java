@@ -40,8 +40,12 @@ public class StudentService implements IStudentService
         //Use the student id to insert corresponding session
         sessionService.AddSessions(sessionEntityList, addedStudentId);
 
+        List<String> subjectList = new ArrayList<>();
+
+        sessionEntityList.forEach(e -> subjectList.add(e.getSubject()));
+
         //Create audit once a new student is created
-        feesAuditService.CreateAudit(addedStudentId, sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
+        feesAuditService.CreateAudit(addedStudentId, String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
 
         //Return list of all students
         return GetAllStudents();
@@ -100,11 +104,6 @@ public class StudentService implements IStudentService
             feesDataModel.setClassName(stu.getClassName());
             feesDataModel.setBoardName(stu.getBoardName());
 
-            List<String> subjectList = stu.getSessionList().stream().map(SessionEntity::getSubject).collect(Collectors.toList());
-            String subjects = String.join(",",subjectList);
-
-            feesDataModel.setSubjects(subjects);
-
             FeesAuditEntity feesAuditEntity = feesAuditService.GetFeesAudit(date, stu.getId());
 
             feesDataModel.setFeesAuditEntity(feesAuditEntity);
@@ -117,8 +116,10 @@ public class StudentService implements IStudentService
 
     public void SaveFeesAudit(FeesDataModel feesDataModel)
     {
-        double actualFees = studentRepo.findById(feesDataModel.getStudentId()).get().getSessionList().stream().map(SessionEntity::getFees).mapToDouble(m->m).sum();
-        feesAuditService.SaveChanges(feesDataModel.getFeesAuditEntity(), actualFees);
+        List<SessionEntity> sessionList = studentRepo.findById(feesDataModel.getStudentId()).get().getSessionList();
+        double actualFees = sessionList.stream().map(SessionEntity::getFees).mapToDouble(m->m).sum();
+        List<String> subjectList = new ArrayList<>();
+        sessionList.forEach(e->subjectList.add(e.getSubject()));
+        feesAuditService.SaveChanges(feesDataModel.getFeesAuditEntity(), String.join(",",subjectList),actualFees);
     }
-
 }

@@ -7,8 +7,6 @@ public class FeesDataModel
     String className;
     String boardName;
 
-    String subjects;
-
     FeesAuditEntity feesAuditEntity;
 
     public int getStudentId()
@@ -49,16 +47,6 @@ public class FeesDataModel
     public void setBoardName(String boardName)
     {
         this.boardName = boardName;
-    }
-
-    public String getSubjects()
-    {
-        return subjects;
-    }
-
-    public void setSubjects(String subjects)
-    {
-        this.subjects = subjects;
     }
 
     public FeesAuditEntity getFeesAuditEntity()

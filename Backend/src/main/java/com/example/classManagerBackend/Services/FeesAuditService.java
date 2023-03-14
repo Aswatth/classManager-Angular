@@ -25,11 +25,13 @@ public class FeesAuditService implements IFeesAuditService
         feesAuditRepo.saveAll(feesAuditEntityList);
     }
 
-    public void CreateAudit(int studentId, double totalFees)
+    @Override
+    public void CreateAudit(int studentId, String subjects, double totalFees)
     {
         FeesAuditEntity feesAuditEntity = new FeesAuditEntity();
 
         feesAuditEntity.setFeesDate(dateUtils.GetCurrentDate());
+        feesAuditEntity.setSubjects(subjects);
         feesAuditEntity.setStudentId(studentId);
         feesAuditEntity.setFees(totalFees);
         feesAuditEntity.setPaidOn(null);
@@ -38,24 +40,27 @@ public class FeesAuditService implements IFeesAuditService
         feesAuditRepo.save(feesAuditEntity);
     }
 
-    public void UpdateFeesAudit(int studentId, double totalFees)
+    @Override
+    public void UpdateFeesAudit(int studentId, String subjects, double totalFees)
     {
         Date currentDate = dateUtils.GetCurrentDate();
 
         FeesAuditEntity feesAuditEntity = feesAuditRepo.findByFeesDateAndStudentId(currentDate, studentId);
         if(feesAuditEntity.getPaidOn() == null)
+        {
             feesAuditEntity.setFees(totalFees);
+        }
         else
         {
-            FeesAuditEntity entity = feesAuditRepo.findByStudentIdAndPaidOn(studentId, null);
-            entity.setFees(totalFees);
-            feesAuditRepo.save(entity);
+            feesAuditEntity = feesAuditRepo.findByStudentIdAndPaidOn(studentId, null);
+            feesAuditEntity.setFees(totalFees);
         }
 
+        feesAuditEntity.setSubjects(subjects);
         feesAuditRepo.save(feesAuditEntity);
     }
 
-    public void SaveChanges(FeesAuditEntity feesAuditEntity, double actualFees)
+    public void SaveChanges(FeesAuditEntity feesAuditEntity, String subjects, double actualFees)
     {
         //Save changes for current month
         feesAuditRepo.save(feesAuditEntity);
@@ -65,6 +70,7 @@ public class FeesAuditService implements IFeesAuditService
 
         FeesAuditEntity nextFeesAuditEntity = new FeesAuditEntity();
         nextFeesAuditEntity.setFees(actualFees);
+        nextFeesAuditEntity.setSubjects(subjects);
         nextFeesAuditEntity.setFeesDate(nextDate);
         nextFeesAuditEntity.setStudentId(feesAuditEntity.getStudentId());
 
