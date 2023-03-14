@@ -27,6 +27,8 @@ public class StudentEntity
     @JoinColumn(name = "StudentId")
     List<FeesAuditEntity> feesAuditEntityList;
 
+    boolean isActive;
+
     public int getId()
     {
         return id;
@@ -135,6 +137,16 @@ public class StudentEntity
     public void setFeesAuditEntityList(List<FeesAuditEntity> feesAuditEntityList)
     {
         this.feesAuditEntityList = feesAuditEntityList;
+    }
+
+    public boolean isActive()
+    {
+        return isActive;
+    }
+
+    public void setActive(boolean active)
+    {
+        isActive = active;
     }
 
     @Override

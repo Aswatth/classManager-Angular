@@ -37,43 +37,45 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-feesData>
-        <tr>
-            <td>{{ feesData.studentName }}</td>
-            <td>{{ feesData.className }}-{{feesData.boardName}}</td>
-            <td>
-                <ng-container *ngFor="let subject of feesData.subjects.split(',')">
-                    <p>{{subject}}</p>
+        <ng-container *ngIf="feesData.feesAuditEntity != null">
+            <tr>
+                <td>{{ feesData.studentName }}</td>
+                <td>{{ feesData.className }}-{{feesData.boardName}}</td>
+                <td>
+                    <ng-container *ngFor="let subject of feesData.feesAuditEntity.subjects.split(',')">
+                        <p>{{subject}}</p>
+                    </ng-container>
+                </td>
+                <ng-container *ngIf="feesData.feesAuditEntity">
+                    <td>{{feesData.feesAuditEntity.fees}}</td>
+                    <ng-container *ngIf="feesData.feesAuditEntity.paidOn == null">
+                        <td >
+                            <p-button 
+                            styleClass="p-button-danger" 
+                            label="Pending"
+                            (onClick)="OnPendingPress(feesDataList.indexOf(feesData))"></p-button>
+                        </td>
+                        <td> - </td>
+                        <td> - </td>
+                    </ng-container>
+                    <ng-container *ngIf="feesData.feesAuditEntity.paidOn != null">
+                        <td>
+                            <p style="display: inline-block;" class="paid">Paid</p>
+                        </td>
+                        <td>
+                            <p *ngIf="feesData.feesAuditEntity.modeOfPayment == 'Cash'">Cash</p>
+                            <p *ngIf="feesData.feesAuditEntity.modeOfPayment == 'Account'">Account</p>
+                        </td>
+                        <td>{{ feesData.feesAuditEntity.paidOn | date }}</td>    
+                        <td>{{ feesData.feesAuditEntity.comments }}</td>    
+                    </ng-container>
                 </ng-container>
-            </td>
-            <ng-container *ngIf="feesData.feesAuditEntity">
-                <td>{{feesData.feesAuditEntity.fees}}</td>
-                <ng-container *ngIf="feesData.feesAuditEntity.paidOn == null">
-                    <td >
-                        <p-button 
-                        styleClass="p-button-danger" 
-                        label="Pending"
-                        (onClick)="OnPendingPress(feesDataList.indexOf(feesData))"></p-button>
-                    </td>
-                    <td> - </td>
-                    <td> - </td>
+                <ng-container *ngIf="!feesData.feesAuditEntity">
+                    <td></td>
+                    <td></td>
                 </ng-container>
-                <ng-container *ngIf="feesData.feesAuditEntity.paidOn != null">
-                    <td>
-                        <p style="display: inline-block;" class="paid">Paid</p>
-                    </td>
-                    <td>
-                        <p *ngIf="feesData.feesAuditEntity.modeOfPayment == 'Cash'">Cash</p>
-                        <p *ngIf="feesData.feesAuditEntity.modeOfPayment == 'Account'">Account</p>
-                    </td>
-                    <td>{{ feesData.feesAuditEntity.paidOn | date }}</td>    
-                    <td>{{ feesData.feesAuditEntity.comments }}</td>    
-                </ng-container>
-            </ng-container>
-            <ng-container *ngIf="!feesData.feesAuditEntity">
-                <td></td>
-                <td></td>
-            </ng-container>
-        </tr>
+            </tr>
+        </ng-container>
     </ng-template>
 </p-table>
 

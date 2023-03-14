@@ -5,6 +5,7 @@ import com.example.classManagerBackend.Repos.SessionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,7 +66,10 @@ public class SessionService implements ISessionService
         }
 
         //If sessions are updated then update fees audit
-        feesAuditService.UpdateFeesAudit(studentId, sessionEntityList.stream().map(SessionEntity::getFees).mapToDouble(Double::valueOf).sum());
+        List<String> subjectList = new ArrayList<>();
+        sessionEntityList.forEach(e-> subjectList.add(e.getSubject()));
+
+        feesAuditService.UpdateFeesAudit(studentId, String.join(",",subjectList),sessionEntityList.stream().map(SessionEntity::getFees).mapToDouble(Double::valueOf).sum());
 
         return sessionRepo.findByStudentId(studentId);
     }

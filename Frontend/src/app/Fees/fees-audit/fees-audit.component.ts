@@ -6,9 +6,6 @@ import { Subscription } from 'rxjs';
 import { FeesDataModel } from 'src/app/Models/fees-data.model';
 
 import { Table } from 'primeng/table';
-import { DomHandler } from 'primeng/dom';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-fees-audit',
@@ -148,13 +145,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
   }
 
   exportToPdf() {
-    const doc = new jsPDF({
-      orientation: "portrait"
-    });
-    doc.html('This is a table',{
-      callback: (doc)=>doc.save('table.pdf'),
-      width: 100
-    });
+    
   }
 
   GoBack(){

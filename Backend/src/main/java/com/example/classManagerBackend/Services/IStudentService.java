@@ -9,6 +9,6 @@ public interface IStudentService
     public List<StudentEntity> AddStudent(StudentEntity studentEntity);
     public void UpdateStudent(int id, StudentEntity newStudentEntity);
     public List<StudentEntity> DeleteStudent(int id);
-    public List<StudentEntity> GetAllStudents();
+    public List<StudentEntity> GetAllStudents(boolean fetchActive);
     public StudentEntity GetStudent(int id);
 }

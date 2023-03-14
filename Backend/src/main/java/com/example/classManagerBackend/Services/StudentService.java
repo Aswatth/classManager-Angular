@@ -34,17 +34,22 @@ public class StudentService implements IStudentService
         studentEntity.setSessionList(null);
 
         //Get student after successfully inserting student data
+        studentEntity.setActive(true);
         int addedStudentId = studentRepo.save((studentEntity)).getId();
         //studentEntity.setSessionList(sessionEntityList);
 
         //Use the student id to insert corresponding session
         sessionService.AddSessions(sessionEntityList, addedStudentId);
 
+        List<String> subjectList = new ArrayList<>();
+
+        sessionEntityList.forEach(e -> subjectList.add(e.getSubject()));
+
         //Create audit once a new student is created
-        feesAuditService.CreateAudit(addedStudentId, sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
+        feesAuditService.CreateAudit(addedStudentId, String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
 
         //Return list of all students
-        return GetAllStudents();
+        return GetAllStudents(true);
     }
 
     @Override
@@ -60,25 +65,44 @@ public class StudentService implements IStudentService
     @Override
     public List<StudentEntity> DeleteStudent(int id)
     {
-        //Delete all sessions before deleting student as session is associated with student data
-        List<SessionEntity> sessionEntityList = studentRepo.findById(id).get().getSessionList();
-        sessionService.DeleteSessions(sessionEntityList);
-
-        //Delete all fees audit before deleting student
-        List<FeesAuditEntity> feesAuditEntityList = studentRepo.findById(id).get().getFeesAuditEntityList();
-        feesAuditService.DeleteAudits(feesAuditEntityList);
-
         //Delete student data after all sessions is deleted
-        studentRepo.deleteById(id);
+        Optional<StudentEntity> studentEntity = studentRepo.findById(id);
+        if(studentEntity.isPresent())
+        {
+            //Delete all sessions before deleting student as session is associated with student data
+            List<SessionEntity> sessionEntityList =studentEntity.get().getSessionList();
+            sessionService.DeleteSessions(sessionEntityList);
+            studentEntity.get().setSessionList(null);
+
+            //Delete all fees audit before deleting student
+            List<FeesAuditEntity> feesAuditEntityList = studentEntity.get().getFeesAuditEntityList();
+
+            Optional<FeesAuditEntity> feesAuditEntityToDelete = feesAuditEntityList.stream().filter(e->e.getPaidOn() == null).collect(Collectors.toList()).stream().findFirst();
+
+            if(feesAuditEntityToDelete.isPresent())
+            {
+                feesAuditService.DeleteAudit(feesAuditEntityToDelete.get());
+                feesAuditEntityList.remove(feesAuditEntityToDelete.get());
+                studentEntity.get().setFeesAuditEntityList(feesAuditEntityList);
+            }
+
+            studentEntity.get().setActive(false);
+            studentRepo.save(studentEntity.get());
+        }
+        //studentRepo.deleteById(id);
 
         //Return updated list of all students
-        return GetAllStudents();
+        return GetAllStudents(true);
     }
 
     @Override
-    public List<StudentEntity> GetAllStudents()
+    public List<StudentEntity> GetAllStudents(boolean fetchActive)
     {
-        return studentRepo.findAll();
+        if(!fetchActive)
+        {
+            return studentRepo.findAll();
+        }
+        return studentRepo.findAll().stream().filter(StudentEntity::isActive).collect(Collectors.toList());
     }
 
     @Override
@@ -91,7 +115,7 @@ public class StudentService implements IStudentService
     {
         List<FeesDataModel> feesDataModelList = new ArrayList<>();
 
-        List<StudentEntity> studentEntityList = GetAllStudents();
+        List<StudentEntity> studentEntityList = GetAllStudents(false);
 
         studentEntityList.forEach(stu -> {
             FeesDataModel feesDataModel = new FeesDataModel();
@@ -99,11 +123,6 @@ public class StudentService implements IStudentService
             feesDataModel.setStudentName(stu.getStudentName());
             feesDataModel.setClassName(stu.getClassName());
             feesDataModel.setBoardName(stu.getBoardName());
-
-            List<String> subjectList = stu.getSessionList().stream().map(SessionEntity::getSubject).collect(Collectors.toList());
-            String subjects = String.join(",",subjectList);
-
-            feesDataModel.setSubjects(subjects);
 
             FeesAuditEntity feesAuditEntity = feesAuditService.GetFeesAudit(date, stu.getId());
 
@@ -117,8 +136,10 @@ public class StudentService implements IStudentService
 
     public void SaveFeesAudit(FeesDataModel feesDataModel)
     {
-        double actualFees = studentRepo.findById(feesDataModel.getStudentId()).get().getSessionList().stream().map(SessionEntity::getFees).mapToDouble(m->m).sum();
-        feesAuditService.SaveChanges(feesDataModel.getFeesAuditEntity(), actualFees);
+        List<SessionEntity> sessionList = studentRepo.findById(feesDataModel.getStudentId()).get().getSessionList();
+        double actualFees = sessionList.stream().map(SessionEntity::getFees).mapToDouble(m->m).sum();
+        List<String> subjectList = new ArrayList<>();
+        sessionList.forEach(e->subjectList.add(e.getSubject()));
+        feesAuditService.SaveChanges(feesDataModel.getFeesAuditEntity(), String.join(",",subjectList),actualFees);
     }
-
 }

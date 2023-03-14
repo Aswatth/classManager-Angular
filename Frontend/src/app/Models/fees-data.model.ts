@@ -5,6 +5,5 @@ export class FeesDataModel{
     studentName!: string;
     className!: string;
     boardName!: string;
-    subjects!: string;
     feesAuditEntity!: FeesAuditModel;
 }
