@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { FeesDataModel } from 'src/app/Models/fees-data.model';
 
 import { Table } from 'primeng/table';
+import jsPDF from 'jspdf'
+import autoTable, { CellInput, RowInput } from 'jspdf-autotable'
 
 @Component({
   selector: 'app-fees-audit',
@@ -34,7 +36,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
   
   datePaid: Date = new Date();
 
-  @ViewChild('dt') table!: Table;
+  //@ViewChild('dt') table!: Table;
 
   constructor(private router: Router, 
     private feesAuditService: FeesAuditService){}
@@ -149,7 +151,47 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
   }
 
   exportToPdf() {
+    // const doc = new jsPDF();
+
+    let header = ['Student name', 'Class-Board', 'Subjects', "Fees", "Payment status", "Paid On", "Mode of payment", "Comments"];
+    let content = [{}];
+
+    this.feesDataList.forEach(e=>{
+      let paymentStatus = "Pending";
+      let paidDate = null;
+
+      if(e.feesAuditEntity.paidOn != null)
+      {
+        paymentStatus = "Paid";
+        paidDate = new Date(e.feesAuditEntity.paidOn).toLocaleDateString('default', {year: 'numeric', month: 'short', day: '2-digit'});
+      }
+
+      content.push([
+        e.studentName, e.className+"-"+e.boardName, e.feesAuditEntity.subjects.replace(/,/g,"\n"), 
+        e.feesAuditEntity.fees, paymentStatus, paidDate,
+        e.feesAuditEntity.modeOfPayment, e.feesAuditEntity.comments]);
+    });
+    console.log(content);
     
+    const doc = new jsPDF('p','pt');
+    autoTable(doc, { 
+    margin: 10,
+    head: [header],
+    body: content,
+    didParseCell(data) {
+      console.log(data.cell.raw);
+      if(data.cell.raw == "Pending")
+      {
+        data.cell.styles.textColor = [255,0,0];
+      }
+      else if(data.cell.raw == "Paid")
+      {
+        data.cell.styles.textColor = [0,255,0];
+      }
+    }
+  });
+    // doc.autoTable(this.exportColumns, this.products);
+    doc.save("feesAudit.pdf");
   }
 
   GoBack(){
