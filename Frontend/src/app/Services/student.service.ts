@@ -57,14 +57,7 @@ export class StudentService{
     UpdateStudent(newStudentModel: StudentModel){
         this.http.put<StudentModel>('http://localhost:9999/students/'+newStudentModel.id!, newStudentModel).subscribe({
             complete: () => {
-                this.S_StudentDataSource.subscribe(
-                    data => {
-                        let studentList = data;
-                        let studentModel = studentList.find(f=>f.id == newStudentModel.id)
-                        let index = studentList.indexOf(studentModel!);
-                        studentList[index] = newStudentModel;
-                    }
-                );
+                this.GetAllStudent();
                 this.S_IsPopupOpen.next(false);
             }
         });

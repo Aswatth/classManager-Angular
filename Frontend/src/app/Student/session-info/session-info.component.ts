@@ -127,6 +127,7 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
         this.sessionList = data;
       }
     );
+    this.studentService.S_IsPopupOpen.next(false);
   }
 
   ngOnDestroy(){

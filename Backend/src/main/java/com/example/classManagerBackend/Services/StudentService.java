@@ -8,6 +8,7 @@ import com.example.classManagerBackend.Repos.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,17 +56,23 @@ public class StudentService implements IStudentService
     @Override
     public void UpdateStudent(int id, StudentEntity newStudentEntity)
     {
-        newStudentEntity.setSessionList(null);
-        newStudentEntity.setFeesAuditEntityList(null);
+        //System.out.println("Updating: "+newStudentEntity.toString());
+        Optional<StudentEntity> studentEntity = studentRepo.findById(id);
+        if(studentEntity.isPresent())
+        {
+             newStudentEntity.setFeesAuditEntityList(studentEntity.get().getFeesAuditEntityList());
+        }
 
         //Update existing student data
+        newStudentEntity.setActive(true);
+
         studentRepo.save(newStudentEntity);
     }
 
     @Override
     public List<StudentEntity> DeleteStudent(int id)
     {
-        //Delete student data after all sessions is deleted
+        //Set active to false for student to delete
         Optional<StudentEntity> studentEntity = studentRepo.findById(id);
         if(studentEntity.isPresent())
         {
