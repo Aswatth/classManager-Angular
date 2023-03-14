@@ -4,6 +4,7 @@ import { MessageService } from "primeng/api";
 import { BehaviorSubject, map, Observable, of, Subject } from "rxjs";
 import { SessionModel } from "../Models/session.model";
 import { StudentModel } from "../Models/student.model";
+import { FeesAuditService } from "./fees-audit.service";
 
 @Injectable({providedIn: 'root'})
 export class StudentService{
@@ -22,7 +23,7 @@ export class StudentService{
     //Fees data
     //S_totalFees = new BehaviorSubject<number>(0);
 
-    constructor(private http: HttpClient, private messageService: MessageService){
+    constructor(private http: HttpClient, private messageService: MessageService, private feesAuditService: FeesAuditService){
         console.log("Student service cons");
         this.GetAllStudent();
     }
@@ -56,14 +57,7 @@ export class StudentService{
     UpdateStudent(newStudentModel: StudentModel){
         this.http.put<StudentModel>('http://localhost:9999/students/'+newStudentModel.id!, newStudentModel).subscribe({
             complete: () => {
-                this.S_StudentDataSource.subscribe(
-                    data => {
-                        let studentList = data;
-                        let studentModel = studentList.find(f=>f.id == newStudentModel.id)
-                        let index = studentList.indexOf(studentModel!);
-                        studentList[index] = newStudentModel;
-                    }
-                );
+                this.GetAllStudent();
                 this.S_IsPopupOpen.next(false);
             }
         });
@@ -79,5 +73,14 @@ export class StudentService{
                 complete: () => this.GetAllStudent()
             }
         );
+    }
+
+    GetFees()
+    {
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+
+        this.feesAuditService.GetFeesAudit(year + "-" + month + "-" + "1");
     }
 }

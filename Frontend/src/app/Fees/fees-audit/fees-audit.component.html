@@ -16,10 +16,10 @@
     <ng-template pTemplate="caption">
         <div style="display: flex;justify-content: space-between;">
             <div style="display: flex;flex-direction: row; justify-content: space-between;">
-                <p-dropdown style="flex: 1" [options]="yearList" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
-                <p-dropdown style="flex: 1" [options]="monthList" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
-                <p-checkbox style="flex: 1" [(ngModel)]="showPendingOnly" [binary]="true" label="Pending only" (onChange)="PendingCbChange()"></p-checkbox>
-                <p-checkbox style="flex: 1" [(ngModel)]="showPaidOnly" [binary]="true" label="Paid only" (onChange)="PaidCbChange()"></p-checkbox>
+                <p-dropdown [options]="yearList" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
+                <p-dropdown [options]="monthList" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
+                <p-checkbox [(ngModel)]="showPendingOnly" [binary]="true" label="Pending only" (onChange)="PendingCbChange()"></p-checkbox>
+                <p-checkbox [(ngModel)]="showPaidOnly" [binary]="true" label="Paid only" (onChange)="PaidCbChange()"></p-checkbox>
             </div>
             <p-button icon="pi pi-file-pdf" styleClass="p-button-danger" (onClick)="exportToPdf()"></p-button>
         </div>

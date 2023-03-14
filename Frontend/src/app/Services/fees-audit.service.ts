@@ -9,13 +9,7 @@ export class FeesAuditService implements OnInit{
 
     S_FeesAuditData = new BehaviorSubject<FeesDataModel[]>([]);
 
-    constructor(private http: HttpClient){
-        let date = new Date();
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-
-        this.GetFeesAudit(year + "-" + month + "-" + "1");
-    }
+    constructor(private http: HttpClient){}
 
     ngOnInit(): void {
         // let date = new Date();
