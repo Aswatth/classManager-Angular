@@ -28,6 +28,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
   monthList: string[] = [];
   selectedMonth!: string;
   dateList: Date[] = [];
+
   showPendingOnly = false;
   showPaidOnly = false;
   
@@ -39,7 +40,8 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     private feesAuditService: FeesAuditService){}
 
   ngOnInit(): void {
-
+    console.log("Fees init");
+    
     this.feesDataSubcription = this.feesAuditService.S_FeesAuditData.subscribe(
       (data) => {
         this.feesDataList = data;
@@ -63,6 +65,8 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
         this.selectedYear = date.getFullYear();
         this.monthList = this.dateList.filter(m=>m.getFullYear() == this.selectedYear).map(m=>m.toLocaleDateString('default', {month: 'short'}));
         this.selectedMonth = date.toLocaleString('default', { month: 'short' })
+        console.log(date);
+        
       }
     );
 
@@ -154,5 +158,6 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.feesDataSubcription.unsubscribe();
+    console.log("Fees destroy");    
   }
 }

@@ -54,6 +54,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   }
 
   ShowsFees(){
+    this.studentService.GetFees();
     this.router.navigate(['/fees']);
   }
 
