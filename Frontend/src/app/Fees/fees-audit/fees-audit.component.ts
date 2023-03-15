@@ -171,7 +171,6 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
         e.feesAuditEntity.fees, paymentStatus, paidDate,
         e.feesAuditEntity.modeOfPayment, e.feesAuditEntity.comments]);
     });
-    console.log(content);
     
     const doc = new jsPDF('p','pt');
     autoTable(doc, { 
@@ -179,7 +178,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     head: [header],
     body: content,
     didParseCell(data) {
-      console.log(data.cell.raw);
+      //console.log(data.cell.raw);
       if(data.cell.raw == "Pending")
       {
         data.cell.styles.textColor = [255,0,0];
@@ -190,8 +189,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
       }
     }
   });
-    // doc.autoTable(this.exportColumns, this.products);
-    doc.save("feesAudit.pdf");
+    doc.save(this.selectedYear+"-"+ this.selectedMonth + ".pdf");
   }
 
   GoBack(){
