@@ -1,11 +1,14 @@
 package com.example.classManagerBackend.Controllers;
 
-import com.example.classManagerBackend.Models.FeesDataModel;
+import com.example.classManagerBackend.Services.FilterService;
+import com.example.classManagerBackend.View.FeesDataModel;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Services.FeesAuditService;
 import com.example.classManagerBackend.Services.SessionService;
 import com.example.classManagerBackend.Services.StudentService;
+import com.example.classManagerBackend.View.SessionDataModel;
+import com.example.classManagerBackend.View.StudentDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,19 +32,22 @@ public class MainController
     @Autowired
     FeesAuditService feesAuditService;
 
+    @Autowired
+    FilterService filterService;
+
     @PostMapping("/student")
-    void AddStudent(@RequestBody StudentEntity studentEntity){
-        studentService.AddStudent(studentEntity);
+    void AddStudent(@RequestBody StudentDataModel studentDataModel){
+        studentService.AddStudent(studentDataModel);
     }
 
     @PutMapping("/students/{id}")
-    void UpdateStudent(@PathVariable int id, @RequestBody StudentEntity newStudentEntity){
-        studentService.UpdateStudent(id, newStudentEntity);
+    void UpdateStudent(@PathVariable int id, @RequestBody StudentDataModel studentDataModel){
+        studentService.UpdateStudent(id, studentDataModel);
     }
 
     @PostMapping("/students/{id}/session")
-    List<SessionEntity> UpdateSession(@PathVariable int id, @RequestBody List<SessionEntity> sessionEntityList){
-        return sessionService.UpdateSession(id, sessionEntityList);
+    List<SessionDataModel> UpdateSession(@PathVariable int id, @RequestBody List<SessionDataModel> sessionDataModelList){
+        return sessionService.UpdateSession(id, sessionDataModelList);
     }
 
     @DeleteMapping("/students/{id}")
@@ -50,7 +56,7 @@ public class MainController
     }
 
     @GetMapping("/students")
-    ResponseEntity<List<StudentEntity>> GetAllStudent(){
+    ResponseEntity<List<StudentDataModel>> GetAllStudent(){
         return ResponseEntity.status(HttpStatus.OK).body(studentService.GetAllStudents(true));
     }
 
@@ -80,6 +86,24 @@ public class MainController
     public List<Date> GetDateList()
     {
         return feesAuditService.GetDateList();
+    }
+
+    @GetMapping("/class")
+    public List<String> GetClassList()
+    {
+        return filterService.GetClassList();
+    }
+
+    @GetMapping("/board")
+    public List<String> GetBoardList()
+    {
+        return filterService.GetBoardList();
+    }
+
+    @GetMapping("/subject")
+    public List<String> GetSubjectList()
+    {
+        return filterService.GetSubjectList();
     }
 
     @GetMapping("/students/{id}")

@@ -25,7 +25,38 @@ export class StudentService{
 
     constructor(private http: HttpClient, private messageService: MessageService, private feesAuditService: FeesAuditService){
         console.log("Student service cons");
+        //Getting all student data
         this.GetAllStudent();
+
+        //Get list of classes
+        this.http.get<string[]>('http://localhost:9999/class').subscribe({
+            next: (data) => {
+                console.log("Class list");
+                console.log(data);
+                
+                this.classList = data;
+            }
+        });
+
+        //Get list of boards
+        this.http.get<string[]>('http://localhost:9999/board').subscribe({
+            next: (data) => {
+                console.log("Board list");
+                console.log(data);
+
+                this.boardList = data;
+            }
+        });
+
+        //Get list of subjects
+        this.http.get<string[]>('http://localhost:9999/subject').subscribe({
+            next: (data) => {
+                console.log("Subject list");
+                console.log(data);
+
+                this.subjectList = data;
+            }
+        });
     }
 
     //Fetch all student data from DB
@@ -43,6 +74,8 @@ export class StudentService{
     }
 
     AddStudent(student: StudentModel){        
+        console.log(student);
+        
         this.http.post('http://localhost:9999/student', student).subscribe(
             {
                 complete: () => {

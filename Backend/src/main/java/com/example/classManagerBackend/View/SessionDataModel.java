@@ -1,35 +1,25 @@
-package com.example.classManagerBackend.Models;
+package com.example.classManagerBackend.View;
 
+import com.example.classManagerBackend.Models.SubjectEntity;
 import com.example.classManagerBackend.Utils.StringListConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import jakarta.persistence.Convert;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "Session")
-public class SessionEntity
+public class SessionDataModel
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     int id;
-
     int studentId;
-
-    @OneToOne
-    @JoinColumn(name = "subjectId")
-    SubjectEntity subjectEntity;
-
-    @Convert(converter = StringListConverter.class)
+    String subject;
     List<String> days;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date startTime;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date endTime;
-
     float fees;
 
     public int getId()
@@ -52,17 +42,7 @@ public class SessionEntity
         this.studentId = studentId;
     }
 
-    public SubjectEntity getSubjectEntity()
-    {
-        return subjectEntity;
-    }
-
-    public void setSubjectEntity(SubjectEntity subjectEntity)
-    {
-        this.subjectEntity = subjectEntity;
-    }
-
-    /*public String getSubject()
+    public String getSubject()
     {
         return subject;
     }
@@ -70,7 +50,7 @@ public class SessionEntity
     public void setSubject(String subject)
     {
         this.subject = subject;
-    }*/
+    }
 
     public List<String> getDays()
     {
@@ -110,18 +90,5 @@ public class SessionEntity
     public void setFees(float fees)
     {
         this.fees = fees;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "SessionModel{" +
-                "id=" + id +
-                ", studentId=" + studentId +
-                ", days=" + days +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", fees=" + fees +
-                '}';
     }
 }

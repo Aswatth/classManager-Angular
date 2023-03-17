@@ -3,7 +3,7 @@ export class SessionModel{
     studentId?: number;
     subject!: string;
     days!: string[];
-    startTime!: Date | string;
-    endTime!: Date | string;
+    startTime!: Date;
+    endTime!: Date;
     fees!: number;
 }
