@@ -12,7 +12,7 @@ import java.util.List;
 public class SessionEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     int studentId;

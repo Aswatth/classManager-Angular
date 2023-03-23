@@ -9,7 +9,7 @@ import java.util.List;
 public class StudentEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     String studentName;
     String schoolName;
@@ -18,7 +18,7 @@ public class StudentEntity
     @OneToOne
     @JoinColumn(name = "classId")
     ClassEntity classEntity;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "boardId")
     BoardEntity boardEntity;
     //String boardName;
@@ -26,11 +26,11 @@ public class StudentEntity
     String studentPhNum;
     String parentPhNum1;
     String parentPhNum2;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "StudentId")
     List<SessionEntity> sessionList;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "StudentId")
     List<FeesAuditEntity> feesAuditEntityList;
 

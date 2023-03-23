@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class SubjectEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     String subject;
 
