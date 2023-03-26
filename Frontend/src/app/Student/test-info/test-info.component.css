@@ -1,7 +1,14 @@
-:host ::ng-deep .p-toolbar {
-    padding: 5px;
-    border: none;
+:host ::ng-deep .p-button-delete {
     background-color: transparent;
+    color: red;
+    border: none;
+}
+:host ::ng-deep .p-button-delete:hover{
+    background-color: transparent;
+    color: red;
+    border: solid;
+    border-width: 1px;
+    border-color: red;
 }
 :host ::ng-deep .general-button{
     background-color: transparent;
@@ -14,15 +21,4 @@
     border-color: transparent;
     border: solid 0.5px;
     color: black;
-}
-
-:host ::ng-deep .p-card-card-item{
-    margin: 2px;
-    padding: 20px;
-}
-h1{
-    margin: 0px;
-}
-h3, p{
-    margin: 5px;
 }

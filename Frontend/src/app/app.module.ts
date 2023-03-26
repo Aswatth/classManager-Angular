@@ -35,6 +35,10 @@ import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {CheckboxModule} from 'primeng/checkbox';
+import { TestInfoComponent } from './Student/test-info/test-info.component';
+
+import {CascadeSelectModule} from 'primeng/cascadeselect';
+
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -75,7 +79,8 @@ const routes: Routes = [
     StudentDetailComponent,
     SessionData,
     FeesAuditComponent,
-    Date2Time
+    Date2Time,
+    TestInfoComponent
   ],
   imports: [
     //Angular Modules
@@ -103,7 +108,8 @@ const routes: Routes = [
     ChartModule,
     CardModule,
     RadioButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    CascadeSelectModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

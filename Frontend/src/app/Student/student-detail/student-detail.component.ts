@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StudentModel } from 'src/app/Models/student.model';
 import { StudentService } from 'src/app/Services/student.service';
+import { TestService } from 'src/app/Services/test.service';
 
 @Component({
   selector: 'app-student-detail',
@@ -26,7 +27,8 @@ export class StudentDetailComponent implements OnInit, OnDestroy{
   constructor(
     private router: Router,
     private route: ActivatedRoute, 
-    private studentService: StudentService){}
+    private studentService: StudentService,
+    private testService: TestService){}
 
   ngOnInit(): void {
     let id = this.route.snapshot.params['id'];
@@ -35,6 +37,8 @@ export class StudentDetailComponent implements OnInit, OnDestroy{
       next: (data) => {
           this.oldStudentModel = data.filter(f=>f.id == id)[0] as StudentModel;  
           this.newStudentModel = this.oldStudentModel;
+          
+          this.testService.S_studentData.next(this.newStudentModel);
         }
       }
     );
@@ -60,6 +64,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy{
 
   OnDialogClose(){
     this.studentService.S_IsPopupOpen.next(false);
+    this.testService.S_studentData.next(this.newStudentModel);    
   }
 
   ngOnDestroy(): void {

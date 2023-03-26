@@ -77,7 +77,7 @@ public class StudentService implements IStudentService
     }
 
     @Override
-    public void UpdateStudent(int id, StudentDataModel studentDataModel)
+    public StudentDataModel UpdateStudent(int id, StudentDataModel studentDataModel)
     {
         //System.out.println("Updating: "+newStudentEntity.toString());
         Optional<StudentEntity> studentEntity = studentRepo.findById(id);
@@ -94,7 +94,7 @@ public class StudentService implements IStudentService
         //Update existing student data
         newStudentEntity.setActive(true);
 
-        studentRepo.save(newStudentEntity);
+        return StudentMapper.EntityToData(studentRepo.save(newStudentEntity), newStudentEntity.getClassEntity().getClassName(), newStudentEntity.getBoardEntity().getBoardName());
     }
 
     @Override

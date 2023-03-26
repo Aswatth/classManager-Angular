@@ -14,75 +14,63 @@
         <p-card styleClass="p-card-card-item">
             <ng-template pTemplate="header">
                 <div style="display: flex;">
-                    <div style="flex: 3;">
-                        <h1 style="display: inline-block;width: 80%;">Personal Info: </h1>
-                    </div>
-                    <div style="flex: 1;text-align: center;">
-                        <p-button 
-                            icon="pi pi-pencil" 
-                            styleClass="general-button editButton"
-                            (onClick)="OnPersonalInfoEdit()">
-                        </p-button>
-                    </div>
+                    <h1 style="flex: 2;">Personal Info: </h1>
+                    <p-button 
+                        icon="pi pi-pencil" 
+                        styleClass="general-button"
+                        (onClick)="OnPersonalInfoEdit()">
+                    </p-button>
                 </div>
             </ng-template>
             <ng-template pTemplate="content">
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>Name: </h3></div>
-                    <div style="flex: 1;"><p>{{ oldStudentModel.studentName }} </p></div>
+                    <h3 style="flex: 2;">Name: </h3>
+                    <p style="flex: 1;">{{ oldStudentModel.studentName }} </p>
                 </div>
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>Class - Board: </h3></div>
-                    <div style="flex: 1;"><p>{{ oldStudentModel.className }} - {{ oldStudentModel.boardName }} </p></div>
+                    <h3 style="flex: 2;">Class - Board: </h3>
+                    <p style="flex: 1;">{{ oldStudentModel.className }} - {{ oldStudentModel.boardName }} </p>
                 </div>
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>SchoolName: </h3></div>
-                    <div style="flex: 1;"><p>{{ oldStudentModel.schoolName }} </p></div>
+                    <h3 style="flex: 2;">SchoolName: </h3>
+                    <p style="flex: 1;">{{ oldStudentModel.schoolName }} </p>
                 </div>
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>Location: </h3></div>
-                    <div style="flex: 1;"><p>{{ oldStudentModel.location }} </p></div>
+                    <h3 style="flex: 2;">Location: </h3>
+                    <p style="flex: 1;">{{ oldStudentModel.location }} </p>
                 </div>
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>Student Ph Number: </h3></div>
-                    <div style="flex: 1;">
-                        <ng-container *ngIf="oldStudentModel.studentPhNum">
-                            <p>{{ oldStudentModel.studentPhNum }} </p>
-                        </ng-container>
-                        <ng-container *ngIf="!oldStudentModel.studentPhNum">
-                            <p> - </p>
-                        </ng-container>
-                    </div>
+                    <h3 style="flex: 2;">Student Ph Number: </h3>
+                    <ng-container *ngIf="oldStudentModel.studentPhNum">
+                        <p style="flex: 1;">{{ oldStudentModel.studentPhNum }} </p>
+                    </ng-container>
+                    <ng-container *ngIf="!oldStudentModel.studentPhNum">
+                        <p style="flex: 1;"> - </p>
+                    </ng-container>
                 </div>
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>Parent Ph Number 1: </h3></div>
-                    <div style="flex: 1;"><p>{{ oldStudentModel.parentPhNum1 }} </p></div>
+                    <h3 style="flex: 2;">Parent Ph Number 1: </h3>
+                    <p style="flex: 1;">{{ oldStudentModel.parentPhNum1 }} </p>
                 </div>
                 <div style="display: flex;">
-                    <div style="flex: 2;"><h3>Parent Ph Number 2: </h3></div>
-                    <div style="flex: 1;">
-                        <ng-container *ngIf="oldStudentModel.parentPhNum2">
-                            <p>{{ oldStudentModel.parentPhNum2 }} </p>
-                        </ng-container>
-                        <ng-container *ngIf="!oldStudentModel.parentPhNum2">
-                            <p> - </p>
-                        </ng-container>
-                    </div>
+                    <h3 style="flex: 2;">Parent Ph Number 2: </h3>
+                    <ng-container *ngIf="oldStudentModel.parentPhNum2">
+                        <p style="flex: 1;">{{ oldStudentModel.parentPhNum2 }} </p>
+                    </ng-container>
+                    <ng-container *ngIf="!oldStudentModel.parentPhNum2">
+                        <p style="flex: 1;"> - </p>
+                    </ng-container>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <hr>
                 <div style="display: flex;">
-                    <div style="flex: 3;">
-                        <h1 style="display: inline-block;width: 80%;">Sessions: </h1>
-                    </div>
-                    <div style="flex: 1;text-align: center;">
-                        <p-button 
-                            icon="pi pi-pencil" 
-                            styleClass="general-button editButton" 
-                            (onClick)="OnSessionInfoEdit()">
-                        </p-button>
-                    </div>
+                    <h1 style="flex: 2;">Sessions: </h1>
+                    <p-button 
+                        icon="pi pi-pencil" 
+                        styleClass="general-button" 
+                        (onClick)="OnSessionInfoEdit()">
+                    </p-button>
                 </div><br>
                 <ng-container *ngIf="oldStudentModel.sessionList">
                     <div style="width: 100%; padding: 5px;">
@@ -95,16 +83,7 @@
         </p-card>
     </div>
     <div style="flex: 2;">
-        <p-card styleClass="p-card-card-item">
-            <ng-template pTemplate="header">
-                <h3>Personal Info: </h3>
-            </ng-template>
-            <ng-template pTemplate="content">
-                <p>
-                    {{ oldStudentModel.studentName }}
-                </p>
-            </ng-template>
-        </p-card>
+        <app-test-info></app-test-info>
     </div>
 </div>
 <p-dialog 

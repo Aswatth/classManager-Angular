@@ -8,7 +8,7 @@ import java.util.List;
 public interface IStudentService
 {
     public List<StudentDataModel> AddStudent(StudentDataModel studentDataModel);
-    public void UpdateStudent(int id, StudentDataModel studentDataModel);
+    public StudentDataModel UpdateStudent(int id, StudentDataModel studentDataModel);
     public List<StudentDataModel> DeleteStudent(int id);
     public List<StudentDataModel> GetAllStudents(boolean fetchActive);
     public StudentEntity GetStudent(int id);

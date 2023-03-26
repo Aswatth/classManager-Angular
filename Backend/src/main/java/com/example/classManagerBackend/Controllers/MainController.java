@@ -1,14 +1,12 @@
 package com.example.classManagerBackend.Controllers;
 
-import com.example.classManagerBackend.Services.FilterService;
+import com.example.classManagerBackend.Services.*;
 import com.example.classManagerBackend.View.FeesDataModel;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
-import com.example.classManagerBackend.Services.FeesAuditService;
-import com.example.classManagerBackend.Services.SessionService;
-import com.example.classManagerBackend.Services.StudentService;
 import com.example.classManagerBackend.View.SessionDataModel;
 import com.example.classManagerBackend.View.StudentDataModel;
+import com.example.classManagerBackend.View.TestDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +33,17 @@ public class MainController
     @Autowired
     FilterService filterService;
 
+    @Autowired
+    TestService testService;
+
     @PostMapping("/student")
     void AddStudent(@RequestBody StudentDataModel studentDataModel){
         studentService.AddStudent(studentDataModel);
     }
 
     @PutMapping("/students/{id}")
-    void UpdateStudent(@PathVariable int id, @RequestBody StudentDataModel studentDataModel){
-        studentService.UpdateStudent(id, studentDataModel);
+    StudentDataModel UpdateStudent(@PathVariable int id, @RequestBody StudentDataModel studentDataModel){
+        return studentService.UpdateStudent(id, studentDataModel);
     }
 
     @PostMapping("/students/{id}/session")
@@ -109,5 +110,23 @@ public class MainController
     @GetMapping("/students/{id}")
     StudentEntity GetStudent(@PathVariable int id){
         return studentService.GetStudent(id);
+    }
+
+    @GetMapping("/tests/{studentId}")
+    List<TestDataModel> GetTests(@PathVariable int studentId)
+    {
+        return testService.GetTests(studentId);
+    }
+
+    @PutMapping("/test")
+    void AddTest(@RequestBody TestDataModel testDataModel)
+    {
+        testService.AddTest(testDataModel);
+    }
+
+    @DeleteMapping("/test/{testId}")
+    void DeleteTest(@PathVariable int testId)
+    {
+        testService.DeleteTest(testId);
     }
 }
