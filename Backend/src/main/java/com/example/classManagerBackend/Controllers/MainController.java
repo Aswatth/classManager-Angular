@@ -31,9 +31,6 @@ public class MainController
     FeesAuditService feesAuditService;
 
     @Autowired
-    FilterService filterService;
-
-    @Autowired
     TestService testService;
 
     @PostMapping("/student")
@@ -87,24 +84,6 @@ public class MainController
     public List<Date> GetDateList()
     {
         return feesAuditService.GetDateList();
-    }
-
-    @GetMapping("/class")
-    public List<String> GetClassList()
-    {
-        return filterService.GetClassList();
-    }
-
-    @GetMapping("/board")
-    public List<String> GetBoardList()
-    {
-        return filterService.GetBoardList();
-    }
-
-    @GetMapping("/subject")
-    public List<String> GetSubjectList()
-    {
-        return filterService.GetSubjectList();
     }
 
     @GetMapping("/students/{id}")

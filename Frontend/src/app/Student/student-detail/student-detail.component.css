@@ -1,7 +1,24 @@
 :host ::ng-deep .p-toolbar {
     padding: 5px;
     border: none;
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+.toolbar{
+    padding: 10px;
+    font-size: 25px;
+}
+:host ::ng-deep .backButton{
     background-color: transparent;
+    border-color: transparent;
+    border: none;
+    color: white;
+}
+:host ::ng-deep .backButton:hover{
+    background-color: transparent;
+    border-color: transparent;
+    border: solid 0.5px;
+    color:white;
 }
 :host ::ng-deep .general-button{
     background-color: transparent;
@@ -13,7 +30,7 @@
     background-color: transparent;
     border-color: transparent;
     border: solid 0.5px;
-    color: black;
+    color:black;
 }
 
 :host ::ng-deep .p-card-card-item{

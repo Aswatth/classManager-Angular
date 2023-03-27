@@ -10,15 +10,22 @@
     border-width: 1px;
     border-color: red;
 }
-:host ::ng-deep .general-button{
-    background-color: transparent;
-    border-color: transparent;
-    border: none;
-    color: black;
+:host ::ng-deep .button{
+    margin-left: 5px;
 }
-:host ::ng-deep .general-button:hover{
+input[type=date]{
+    padding: 10px;
     background-color: transparent;
-    border-color: transparent;
-    border: solid 0.5px;
     color: black;
+    border: solid;
+    border-color: grey;
+    border-width: 0.5px;
+}
+input[type=date]:focus :hover{
+    border-color: blue;
+    border-width: 0.2px;
+}
+input[type=date]:hover{
+    border-color: blue;
+    border-width: 0.2px;
 }

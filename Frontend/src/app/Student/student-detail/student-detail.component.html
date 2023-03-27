@@ -1,14 +1,15 @@
 <p-toolbar>
     <div class="p-toolbar-group-start">
         <p-button 
-            styleClass="general-button"
+            styleClass="backButton toolbar"
             iconPos="left" 
             icon="pi pi-chevron-left" 
-            label="Back" 
             (onClick)="GoBack()">
         </p-button>
-    </div>  
-</p-toolbar>
+        <h1 class="toolbar">Student detail</h1>
+    </div>
+  </p-toolbar>
+  <hr>
 <div style="display: flex; flex-direction: row;">
     <div style="flex: 1;">
         <p-card styleClass="p-card-card-item">
@@ -25,39 +26,39 @@
             <ng-template pTemplate="content">
                 <div style="display: flex;">
                     <h3 style="flex: 2;">Name: </h3>
-                    <p style="flex: 1;">{{ oldStudentModel.studentName }} </p>
+                    <p style="flex: 1;">{{ studentModel.studentName }} </p>
                 </div>
                 <div style="display: flex;">
                     <h3 style="flex: 2;">Class - Board: </h3>
-                    <p style="flex: 1;">{{ oldStudentModel.className }} - {{ oldStudentModel.boardName }} </p>
+                    <p style="flex: 1;">{{ studentModel.className }} - {{ studentModel.boardName }} </p>
                 </div>
                 <div style="display: flex;">
                     <h3 style="flex: 2;">SchoolName: </h3>
-                    <p style="flex: 1;">{{ oldStudentModel.schoolName }} </p>
+                    <p style="flex: 1;">{{ studentModel.schoolName }} </p>
                 </div>
                 <div style="display: flex;">
                     <h3 style="flex: 2;">Location: </h3>
-                    <p style="flex: 1;">{{ oldStudentModel.location }} </p>
+                    <p style="flex: 1;">{{ studentModel.location }} </p>
                 </div>
                 <div style="display: flex;">
                     <h3 style="flex: 2;">Student Ph Number: </h3>
-                    <ng-container *ngIf="oldStudentModel.studentPhNum">
-                        <p style="flex: 1;">{{ oldStudentModel.studentPhNum }} </p>
+                    <ng-container *ngIf="studentModel.studentPhNum">
+                        <p style="flex: 1;">{{ studentModel.studentPhNum }} </p>
                     </ng-container>
-                    <ng-container *ngIf="!oldStudentModel.studentPhNum">
+                    <ng-container *ngIf="!studentModel.studentPhNum">
                         <p style="flex: 1;"> - </p>
                     </ng-container>
                 </div>
                 <div style="display: flex;">
                     <h3 style="flex: 2;">Parent Ph Number 1: </h3>
-                    <p style="flex: 1;">{{ oldStudentModel.parentPhNum1 }} </p>
+                    <p style="flex: 1;">{{ studentModel.parentPhNum1 }} </p>
                 </div>
                 <div style="display: flex;">
                     <h3 style="flex: 2;">Parent Ph Number 2: </h3>
-                    <ng-container *ngIf="oldStudentModel.parentPhNum2">
-                        <p style="flex: 1;">{{ oldStudentModel.parentPhNum2 }} </p>
+                    <ng-container *ngIf="studentModel.parentPhNum2">
+                        <p style="flex: 1;">{{ studentModel.parentPhNum2 }} </p>
                     </ng-container>
-                    <ng-container *ngIf="!oldStudentModel.parentPhNum2">
+                    <ng-container *ngIf="!studentModel.parentPhNum2">
                         <p style="flex: 1;"> - </p>
                     </ng-container>
                 </div>
@@ -72,9 +73,9 @@
                         (onClick)="OnSessionInfoEdit()">
                     </p-button>
                 </div><br>
-                <ng-container *ngIf="oldStudentModel.sessionList">
+                <ng-container *ngIf="studentModel.sessionList">
                     <div style="width: 100%; padding: 5px;">
-                        <ng-container *ngFor="let session of oldStudentModel.sessionList">
+                        <ng-container *ngFor="let session of studentModel.sessionList">
                             <session-data [sessionModel]="session" [displayDelete]="false"></session-data>
                         </ng-container>
                     </div>
@@ -95,6 +96,7 @@
     [ngSwitch]="popupType"
     (onHide)="OnDialogClose()"
     >
-    <app-personal-info *ngSwitchCase="'personal info'" [existingStudentData]="newStudentModel"></app-personal-info>
-    <app-session-info *ngSwitchCase="'session info'" [existingStudentData]="newStudentModel"></app-session-info>
+    <app-personal-info *ngSwitchCase="'personal info'" [existingStudentData]="studentModel" (onStudentUpdate)="UpdatePersonalInfo($event)"></app-personal-info>
+    <app-session-info *ngSwitchCase="'session info'" [existingStudentData]="studentModel" (onSessionUpdate)="UpdateSession($event)"></app-session-info>
 </p-dialog>
+<p-toast position="bottom-center" key="student-detail"></p-toast>

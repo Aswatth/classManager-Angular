@@ -1,0 +1,28 @@
+<div style="display: flex;flex-direction: row;">
+    <div style="flex: 1;margin: 5px;">
+        <!-- <p-listbox [options]="GetData()" [(ngModel)]="selectedData"></p-listbox>
+        <ng-container *ngFor="let data of GetData()">
+            <p>{{ data }}</p>
+        </ng-container> -->
+        <div style="width: 200px; border-color: rebeccapurple;border: solid;border-width: 0.5px;">
+            <p-scroller [items]="dataList" [itemSize]="dataList.length" scrollHeight="200px">
+                <ng-template pTemplate="item" let-item>
+                    <div class="item">
+                        <p style="flex: 2;" (click)="OnClick(item)">{{item}}</p>
+                        <button 
+                        style="flex: 1;background-color: transparent;color: red;border: none;" 
+                        pButton 
+                        icon="pi pi-trash"
+                        (click)="DeleteItem(item)">
+                        </button>
+                    </div>
+                </ng-template>
+            </p-scroller>
+        </div>
+    </div>
+    <div style="flex: 2;margin: 5px;">
+        <input style="display: block; margin-bottom: 10px;" type="text" placeholder="Update data" [(ngModel)]="inputData" pInputText>
+        <p-button label="Add" (onClick)="UpdateData()"></p-button>
+    </div>
+</div>
+<p-toast key="filter-add"></p-toast>

@@ -4,6 +4,9 @@ import { StudentModel } from 'src/app/Models/student.model';
 import { TestModel } from 'src/app/Models/test.model';
 import { TestService } from 'src/app/Services/test.service';
 
+import jsPDF from 'jspdf'
+import autoTable, { CellInput, RowInput } from 'jspdf-autotable'
+
 @Component({
   selector: 'app-test-info',
   templateUrl: './test-info.component.html',
@@ -17,10 +20,21 @@ export class TestInfoComponent implements OnInit{
 
   addTestFormGroup!: FormGroup;
 
-  testTypeList = [{
-    name: 'Midterm',
-    subTypes: ['Midterm 1', 'Midterm 2', 'Midterm 3']
-  }];
+  // testTypeList = [
+  //   {
+  //   name: 'Midterm',
+  //   subTypes: ['Midterm 1', 'Midterm 2', 'Midterm 3']
+  //   },
+  //   {name: 'Quaterly', subTypes: null},
+  //   {name: 'Halfyearly', subTypes: null},
+  //   {name: 'Pre-Annual', subTypes: null},
+  //   {name: 'Annual', subTypes: null},
+  //   {
+  //     name: 'Revision',
+  //     subTypes: ['Revision 1', 'Revision 2', 'Revision 3']
+  //   },
+  // ];
+  testNames = ['Midterm 1', 'Midterm 2', 'Midterm 3', 'Revision 1','Revision 2','Revision 3', 'Quaterly', 'Halfyearly', 'Pre-Annual', 'Annual'];
 
   testDataList: TestModel[] = [];
 
@@ -79,5 +93,34 @@ export class TestInfoComponent implements OnInit{
   {
     console.log(this.addTestFormGroup.getRawValue());
     this.AddTest();
+  }
+
+  ExportToPdf()
+  {
+    let header = ['Test name', 'Subject','Marks scored', 'Total marks', 'Test date'];
+    let content = [{}];
+
+    this.testDataList.forEach(e=>{
+
+      let testDate;
+
+      testDate = new Date(e.testDate).toLocaleDateString('default', {year: 'numeric', month: 'short', day: '2-digit'});
+
+      content.push([
+        e.testName,
+        e.subject,
+        e.marksScored,
+        e.totalMarks,
+        testDate
+      ]);
+    });
+
+    const doc = new jsPDF('p','pt');
+    autoTable(doc, { 
+    margin: 10,
+    head: [header],
+    body: content});
+
+    doc.save(this.studentData.studentName+"- Tests.pdf");
   }
 }

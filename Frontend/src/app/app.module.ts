@@ -7,14 +7,18 @@ import {Routes, RouterModule, Route} from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { HomepageHeaderComponent } from './homepage-header/homepage-header.component';
 import { StudentListComponent } from './Student/student-list/student-list.component';
 import { AddStudentComponent } from './Student/add-student/add-student.component';
 import { PersonalInfoComponent } from './Student/personal-info/personal-info.component';
 import { SessionInfoComponent } from './Student/session-info/session-info.component';
 import { ReviewSubmitComponent } from './Student/review-submit/review-submit.component';
 import { StudentDetailComponent } from './Student/student-detail/student-detail.component';
-import { SessionData } from './Student/session-info/session-data/session-data.component';
+import { TestInfoComponent } from './Student/test-info/test-info.component';
+import { SessionDataComponent } from './Student/session-info/session-data/session-data.component';
 import { FeesAuditComponent } from './Fees/fees-audit/fees-audit.component';
+import { TemplateHandlerComponent } from './homepage-header/template-handler/template-handler.component';
+import { CbsHandlerComponent } from './cbs-handler/cbs-handler.component';
 import { Date2Time } from './Pipes/date2time.pipe';
 
 import {TableModule} from 'primeng/table';
@@ -35,10 +39,11 @@ import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {CheckboxModule} from 'primeng/checkbox';
-import { TestInfoComponent } from './Student/test-info/test-info.component';
-
 import {CascadeSelectModule} from 'primeng/cascadeselect';
-
+import { MenuModule } from 'primeng/menu';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ListboxModule } from 'primeng/listbox';
+import { ScrollerModule } from 'primeng/scroller';
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -77,10 +82,13 @@ const routes: Routes = [
     SessionInfoComponent,
     ReviewSubmitComponent,
     StudentDetailComponent,
-    SessionData,
+    SessionDataComponent,
     FeesAuditComponent,
     Date2Time,
-    TestInfoComponent
+    TestInfoComponent,
+    HomepageHeaderComponent,
+    TemplateHandlerComponent,
+    CbsHandlerComponent
   ],
   imports: [
     //Angular Modules
@@ -109,7 +117,11 @@ const routes: Routes = [
     CardModule,
     RadioButtonModule,
     CheckboxModule,
-    CascadeSelectModule
+    CascadeSelectModule,
+    MenuModule,
+    FileUploadModule,
+    ListboxModule,
+    ScrollerModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

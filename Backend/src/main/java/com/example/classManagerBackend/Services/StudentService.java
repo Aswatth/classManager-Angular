@@ -167,4 +167,9 @@ public class StudentService implements IStudentService
             feesAuditService.SaveChanges(studentEntity.get().isActive(), feesDataModel.getFeesAuditEntity(), String.join(",",subjectList),actualFees);
         }
     }
+
+    public List<StudentEntity> ExportStudents()
+    {
+        return studentRepo.findAll();
+    }
 }

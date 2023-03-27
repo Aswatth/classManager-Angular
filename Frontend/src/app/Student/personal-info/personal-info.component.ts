@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,6 +20,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
   classList: string[] = [];
 
   @Input() existingStudentData!: StudentModel;
+  @Output() onStudentUpdate = new EventEmitter<StudentModel>();
 
   constructor(private router: Router,
     private addStudentService: AddStudentService,
@@ -75,8 +76,11 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
     this.existingStudentData.id = id;
     this.existingStudentData.sessionList = sessionList;
 
+    console.log("Existing student data");    
     console.log(this.existingStudentData);
-    this.studentService.UpdateStudent(this.existingStudentData)
+
+    this.studentService.UpdateStudent(this.existingStudentData);
+    this.onStudentUpdate.emit(this.existingStudentData);
   }
 
   OnNextClick(){

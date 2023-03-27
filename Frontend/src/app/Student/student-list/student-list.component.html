@@ -1,12 +1,4 @@
-<p-toolbar>
-    <div class="p-toolbar-group-start">
-        <h1 class="information">Home</h1>
-    </div>
-    <div class="p-toolbar-group-end">
-        <i class="pi pi-users information"></i><p class="information">{{ studentList.length }}</p>
-        <p class="information">&#8377; {{ totalFees }}</p>
-    </div>   
-  </p-toolbar>
+<app-homepage-header [totalFees]="CalculateTotalFees()" [totalStudents]="studentList.length"></app-homepage-header>
   <hr>
 <p-table #dt [value]="studentList"
 selectionMode="single"
@@ -27,6 +19,8 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                 <div style="margin-right: 5px;">
                     <p-button label="Fees" styleClass="p-button-fees" (onClick)="ShowsFees()"></p-button>
                 </div>
+                <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body"></p-menu>
+                <p-button type="button" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"></p-button>
             </div>
         </div>
     </ng-template>
@@ -41,7 +35,6 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                 Class-Board
                 <p-columnFilter type="text" field="class-board" display="menu"></p-columnFilter>
             </th>
-            <!-- <th>Board</th> -->
             <th>
                 Subjects
                 <p-columnFilter type="text" field="subject" display="menu"></p-columnFilter>
@@ -49,7 +42,6 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <th>Days</th>
             <th>Timing</th>
             <th>Fees</th>
-            <!-- <th>Payment status</th> -->
             <th>Actions</th>
         </tr>
     </ng-template>
@@ -83,8 +75,17 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         </tr>
     </ng-template>
 </p-table>
-<p-dialog header="Add student" [modal]="true" [closeOnEscape]="false" [(visible)]="displayPopup" styleClass="p-dialog-style" (onHide)="OnDialogClose()">
+<p-dialog 
+header="Add student" 
+[modal]="true" 
+[closeOnEscape]="false" 
+[(visible)]="displayPopup" 
+styleClass="p-dialog-style" 
+(onHide)="OnDialogClose()">
     <router-outlet></router-outlet>
 </p-dialog>
-<p-toast position="bottom-center"></p-toast>
+<p-toast position="bottom-center" key="student-list"></p-toast>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-dialog [(visible)]="showCbsHandler" header="{{cbsType | titlecase}} list">
+    <app-cbs-handler [dataList]="cbsDataList" [type]="cbsType"></app-cbs-handler>    
+</p-dialog>

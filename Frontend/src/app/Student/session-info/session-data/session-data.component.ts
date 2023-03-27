@@ -6,7 +6,7 @@ import { SessionModel } from "src/app/Models/session.model";
     templateUrl: './session-data.component.html',
     styleUrls: ['./session-data.component.css']
 })
-export class SessionData{
+export class SessionDataComponent{
     @Input() sessionModel!: SessionModel;
     @Input() displayDelete = true;
     @Output() sessionDelete = new EventEmitter<SessionModel>();

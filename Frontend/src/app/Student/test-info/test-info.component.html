@@ -1,12 +1,13 @@
 <p-card styleClass="p-card-card-item">
     <ng-template pTemplate="header">
         <div style="display: flex;">
-            <h3 style="flex: 2;">Test details: </h3>
-            <p-button icon="pi pi-plus" styleClass="p-button-warning" (onClick)="displayAddPopup = true"></p-button>
+            <h1 style="flex: 2;">Test details: </h1>
+            <p-button icon="pi pi-plus" styleClass="p-button-warning button" (onClick)="displayAddPopup = true"></p-button>
+            <p-button icon="pi pi-file-pdf" styleClass="p-button-danger button" (onClick)="ExportToPdf()"></p-button>
         </div>
     </ng-template>
     <ng-template pTemplate="content">
-        <p-table [value]="testDataList">
+        <p-table [value]="testDataList" [scrollable]="true" scrollHeight="400px">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Test name</th>
@@ -38,49 +39,71 @@
     </ng-template>
 </p-card>
 
-    <p-dialog 
+<p-dialog 
 [(visible)]="displayAddPopup" 
 [modal]="true"
 header="Add test details"
 (onHide)="displayAddPopup = false">
-<div style="width: 1000px; height: 400px;">
+<div>
      <form [formGroup]="addTestFormGroup" (ngSubmit)="OnSubmit()">
-        <label for="test-type">Test type: </label>
-        <p-cascadeSelect 
-        id="test-type"
-        placeholder="Test Name"
-        [options]="testTypeList" 
-        formControlName="testName" 
-        optionGroupLabel="name"
-        [optionGroupChildren]="['subTypes']">
-        </p-cascadeSelect>
+        <div style="display: flex; margin: 5px;">
+            <label for="test-type">Test type: </label>
+            <!-- <p-cascadeSelect 
+            id="test-type"
+            placeholder="Test Name"
+            [options]="testTypeList" 
+            formControlName="testName" 
+            optionGroupLabel="name"
+            [optionGroupChildren]="['subTypes']"
+            appendTo="body">
+            </p-cascadeSelect> -->
+            <p-dropdown
+            [options]="testNames"
+            formControlName = "testName"
+            appendTo="body">
+            </p-dropdown>
+        </div>
 
-        <label for="total-marks">Total marks: </label>
-        <input 
-        id="total-marks" 
-        type="number" 
-        formControlName = "totalMarks"
-        pInputText>
+        <div style="display: flex;">
+            <div style="display: flex; margin: 5px;">
+                <label for="marks-scored">Marks scored: </label>
+                <input 
+                id="marks-scored" 
+                type="number" 
+                formControlName = "marksScored"
+                pInputText>
+            </div>
+    
+            <div style="display: flex;margin: 5px;">
+                <label for="total-marks">Total marks: </label>
+                <input 
+                id="total-marks" 
+                type="number" 
+                formControlName = "totalMarks"
+                pInputText>
+            </div>
+    
+            <div style="display: flex; margin: 5px;">
+                <label for="subject">Subject: </label>
+                <p-dropdown
+                    [options]="GetSubjectList()"
+                    id="subject"
+                    placeholder="Select a subject"
+                    formControlName = "subject"
+                    appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
 
-        <label for="marks-scored">Marks scored: </label>
-        <input 
-        id="marks-scored" 
-        type="number" 
-        formControlName = "marksScored"
-        pInputText>
+        <div style="display: flex; margin: 5px;">
+            <label for="test-date">Test date: </label>
+            <!-- <input type="date" formControlName="testDate" id="test-date"> -->
+            <p-calendar id="test-date" formControlName="testDate" dateFormat="dd-mm-yy" appendTo="body"></p-calendar>
+        </div>
 
-        <label for="test-date">Test date: </label>
-        <p-calendar id="test-date" formControlName="testDate"></p-calendar>
-
-        <label for="subject">Subject: </label>
-        <p-dropdown
-            [options]="GetSubjectList()"
-            id="subject"
-            placeholder="Select a subject"
-            formControlName = "subject">
-        </p-dropdown>
-
-        <p-button label="Add test" type="submit"></p-button>
+        <div style="display: flex;justify-content: end;">
+            <p-button label="Add test" type="submit" [disabled]="!addTestFormGroup.valid"></p-button>
+        </div>
      </form>
 </div>
 </p-dialog>

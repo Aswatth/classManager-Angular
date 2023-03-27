@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 import { StudentModel } from 'src/app/Models/student.model';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmationService, MenuItem} from 'primeng/api';
 import { StudentService } from 'src/app/Services/student.service';
 import { Subscription } from 'rxjs';
 
@@ -15,10 +15,15 @@ export class StudentListComponent implements OnInit, OnDestroy{
   
   displayPopup: boolean = false;
   studentList: StudentModel[] = [];
-  totalFees = 0;
 
   popupSubscription!: Subscription;
   studentDataSubscription!: Subscription;
+
+  menuItems: MenuItem[] = [];
+  
+  showCbsHandler: boolean = false;
+  cbsType: string = "";
+  cbsDataList: any[] = [];
 
   constructor(private studentService: StudentService, 
     private router:Router, 
@@ -33,19 +38,52 @@ export class StudentListComponent implements OnInit, OnDestroy{
         this.CalculateTotalFees();
       }
     });
-
     this.popupSubscription = this.studentService.S_IsPopupOpen.subscribe(
       (value) => (this.displayPopup = value)
     );   
+
+    this.menuItems = [
+      {
+        label: "Class",
+        icon: "pi pi-list", 
+        command: () => 
+        {
+          this.showCbsHandler = true;
+          this.cbsType = "class";
+          this.cbsDataList = this.studentService.classList
+        }
+      },
+      {
+        label: "Board",
+        icon: "pi pi-list", 
+        command: () => 
+        {
+          this.showCbsHandler = true;
+          this.cbsType = "board";
+          this.cbsDataList = this.studentService.boardList
+        }
+      },
+      {
+        label: "Subject",
+        icon: "pi pi-list", 
+        command: () => 
+        {
+          this.showCbsHandler = true;
+          this.cbsType = "subject";
+          this.cbsDataList = this.studentService.subjectList
+        }
+      },
+    ];
   }
 
-  CalculateTotalFees(){
-    this.totalFees = 0;
+  CalculateTotalFees():number{
+    let fees = 0;
     this.studentList.forEach(student => {
       student.sessionList!.forEach(session => {
-        this.totalFees += session.fees;
+        fees += session.fees;
       })
     })
+    return fees;
   }
 
   OnAddStudent(){

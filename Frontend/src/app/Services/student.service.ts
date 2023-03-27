@@ -79,7 +79,7 @@ export class StudentService{
         this.http.post('http://localhost:9999/student', student).subscribe(
             {
                 complete: () => {
-                    this.messageService.add({severity: 'success', detail: 'Successfully added student'});
+                    this.messageService.add({key:"student-list", severity: 'success', detail: 'Successfully added student'});
                     this.S_IsPopupOpen.next(false);
                     this.GetAllStudent();
                 }
@@ -89,21 +89,51 @@ export class StudentService{
 
     UpdateStudent(newStudentModel: StudentModel){
         this.http.put<StudentModel>('http://localhost:9999/students/'+newStudentModel.id!, newStudentModel).subscribe({
+            next: data => {
+                let studentList: StudentModel[] = [];
+                let subcription = this.S_StudentDataSource.subscribe(
+                    data => {
+                        studentList = data;
+                    }
+                );
+                let index: number = studentList.indexOf(studentList.filter(e=>e.id == data.id)[0]);
+                studentList[index] = data;
+                subcription.unsubscribe();
+            },
             complete: () => {
-                this.GetAllStudent();
+                this.messageService.add({key:"student-detail", severity: 'success', detail: 'Successfully updated personal info'});
                 this.S_IsPopupOpen.next(false);
             }
         });
     }
 
     UpdateSession(id: number, sessionList: SessionModel[]){
-        return this.http.post<SessionModel[]>('http://localhost:9999/students/'+id+'/session', sessionList);
+        this.http.post<SessionModel[]>('http://localhost:9999/students/'+id+'/session', sessionList).subscribe(
+            {
+                next: data => {
+                    let studentList: StudentModel[] = [];
+                    let subcription = this.S_StudentDataSource.subscribe(
+                        data => {
+                            studentList = data;
+                        }
+                    );
+                    let index: number = studentList.indexOf(studentList.filter(e=>e.id == id)[0]);
+                    studentList[index].sessionList = data;
+                    subcription.unsubscribe();
+                },
+                complete: () => {this.messageService.add({key:"student-detail", severity: 'success', detail: 'Successfully updated session info'});}
+            }
+        );
     }
 
     DeleteStudent(id: number | undefined){
         this.http.delete("http://localhost:9999/students/"+ id).subscribe(
             {
-                complete: () => this.GetAllStudent()
+                complete: () => 
+                {
+                    this.messageService.add({key:"student-list", severity: 'success', detail: 'Successfully deleted student'});
+                    this.GetAllStudent()
+                }
             }
         );
     }

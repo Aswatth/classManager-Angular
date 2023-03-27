@@ -61,7 +61,8 @@ public final class StudentMapper
         studentEntity.setParentPhNum2(studentDataModel.getParentPhNum2());
 
         List<SessionEntity> sessionEntityList = new ArrayList<>();
-        studentDataModel.getSessionList().forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e, subjectRepo.findBySubject(e.getSubject()))));
+        if(studentDataModel.getSessionList() != null)
+            studentDataModel.getSessionList().forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e, subjectRepo.findBySubject(e.getSubject()))));
         studentEntity.setSessionList(sessionEntityList);
 
         return studentEntity;
