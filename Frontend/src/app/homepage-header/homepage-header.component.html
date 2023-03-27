@@ -1,0 +1,16 @@
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <h1 class="information">Home</h1>
+    </div>
+    <div class="p-toolbar-group-end">
+        <i class="pi pi-users information"></i><p class="information">{{ totalStudents }}</p>
+        <p class="information">&#8377; {{ totalFees }}</p>
+        <!-- <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
+        <p-button styleClass="menu" type="button" (onClick)="menu.toggle($event)" icon="pi-file-export"></p-button> -->
+        <p-button styleClass="menu" type="button" (onClick)="ExportData()" icon="pi pi-download"></p-button>
+        <p-button styleClass="menu" type="file" (onClick)="ImportData()" icon="pi pi-upload"></p-button>
+    </div>   
+</p-toolbar>
+<p-dialog [(visible)]="showImportPopup" header="Upload template">
+    <app-template-handler></app-template-handler>
+</p-dialog>

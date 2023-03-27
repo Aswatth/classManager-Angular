@@ -1,14 +1,26 @@
+:host ::ng-deep .p-toolbar {
+    padding: 5px;
+    border: none;
+    background-color: rgb(44, 41, 35);
+    color: white;
+}
+.information{
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    margin: 10px;
+}
 :host ::ng-deep .general-button{
     background-color: transparent;
     border-color: transparent;
     border: none;
-    color: black;
+    color: rgb(255, 255, 255);
 }
 :host ::ng-deep .general-button:hover{
     background-color: transparent;
     border-color: transparent;
     border: solid 0.5px;
-    color: black;
+    color: rgb(255, 255, 255);
 }
 .pending{
     background-color: rgb(255, 111, 111);

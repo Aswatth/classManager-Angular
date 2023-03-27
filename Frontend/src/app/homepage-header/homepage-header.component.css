@@ -1,0 +1,23 @@
+:host ::ng-deep .p-toolbar {
+    padding: 5px;
+    border: none;
+    background-color: rgb(44, 41, 35);
+}
+.information{
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+}
+:host ::ng-deep .menu{
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-color: transparent;
+}
+:host ::ng-deep .menu:hover{
+    background-color: transparent;
+    color: white;
+    border: solid;
+    border-color: white;
+    border-width: 0.5px;
+}

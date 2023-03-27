@@ -1,4 +1,6 @@
-package com.example.classManagerBackend.Models;
+package com.example.classManagerBackend.View;
+
+import com.example.classManagerBackend.Models.FeesAuditEntity;
 
 public class FeesDataModel
 {

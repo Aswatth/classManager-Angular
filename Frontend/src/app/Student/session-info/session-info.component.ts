@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -27,6 +27,7 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   sessionList: SessionModel[] = [];
 
   @Input() existingStudentData!: StudentModel;
+  @Output() onSessionUpdate = new EventEmitter<SessionModel[]>();
   hasUpdates: boolean = false;
 
   ngOnInit(){
@@ -120,13 +121,9 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   OnSaveClick(){
-    this.existingStudentData.sessionList = this.sessionList;
     console.log(this.sessionList);
-    this.studentService.UpdateSession(this.existingStudentData.id! ,this.existingStudentData.sessionList).subscribe(
-      data => {
-        this.sessionList = data;
-      }
-    );
+    this.studentService.UpdateSession(this.existingStudentData.id! ,this.sessionList);
+    this.onSessionUpdate.emit(this.sessionList);
     this.studentService.S_IsPopupOpen.next(false);
   }
 

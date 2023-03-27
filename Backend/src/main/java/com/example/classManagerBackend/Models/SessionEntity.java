@@ -12,17 +12,24 @@ import java.util.List;
 public class SessionEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     int studentId;
-    String subject;
+
+    @OneToOne
+    @JoinColumn(name = "subjectId")
+    SubjectEntity subjectEntity;
+
     @Convert(converter = StringListConverter.class)
     List<String> days;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date startTime;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date endTime;
+
     float fees;
 
     public int getId()
@@ -45,7 +52,17 @@ public class SessionEntity
         this.studentId = studentId;
     }
 
-    public String getSubject()
+    public SubjectEntity getSubjectEntity()
+    {
+        return subjectEntity;
+    }
+
+    public void setSubjectEntity(SubjectEntity subjectEntity)
+    {
+        this.subjectEntity = subjectEntity;
+    }
+
+    /*public String getSubject()
     {
         return subject;
     }
@@ -53,7 +70,7 @@ public class SessionEntity
     public void setSubject(String subject)
     {
         this.subject = subject;
-    }
+    }*/
 
     public List<String> getDays()
     {
@@ -101,7 +118,6 @@ public class SessionEntity
         return "SessionModel{" +
                 "id=" + id +
                 ", studentId=" + studentId +
-                ", subject='" + subject + '\'' +
                 ", days=" + days +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +

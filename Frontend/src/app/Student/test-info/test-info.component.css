@@ -1,0 +1,31 @@
+:host ::ng-deep .p-button-delete {
+    background-color: transparent;
+    color: red;
+    border: none;
+}
+:host ::ng-deep .p-button-delete:hover{
+    background-color: transparent;
+    color: red;
+    border: solid;
+    border-width: 1px;
+    border-color: red;
+}
+:host ::ng-deep .button{
+    margin-left: 5px;
+}
+input[type=date]{
+    padding: 10px;
+    background-color: transparent;
+    color: black;
+    border: solid;
+    border-color: grey;
+    border-width: 0.5px;
+}
+input[type=date]:focus :hover{
+    border-color: blue;
+    border-width: 0.2px;
+}
+input[type=date]:hover{
+    border-color: blue;
+    border-width: 0.2px;
+}

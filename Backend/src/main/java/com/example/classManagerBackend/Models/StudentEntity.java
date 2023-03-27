@@ -9,21 +9,28 @@ import java.util.List;
 public class StudentEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     String studentName;
     String schoolName;
-    String className;
-    String boardName;
+    //String className;
+
+    @OneToOne
+    @JoinColumn(name = "classId")
+    ClassEntity classEntity;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "boardId")
+    BoardEntity boardEntity;
+    //String boardName;
     String location;
     String studentPhNum;
     String parentPhNum1;
     String parentPhNum2;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "StudentId")
     List<SessionEntity> sessionList;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "StudentId")
     List<FeesAuditEntity> feesAuditEntityList;
 
@@ -59,7 +66,37 @@ public class StudentEntity
         this.schoolName = schoolName;
     }
 
-    public String getClassName()
+    public ClassEntity getClassEntity()
+    {
+        return classEntity;
+    }
+
+    public void setClassEntity(ClassEntity classEntity)
+    {
+        this.classEntity = classEntity;
+    }
+
+    public BoardEntity getBoardEntity()
+    {
+        return boardEntity;
+    }
+
+    public void setBoardEntity(BoardEntity boardEntity)
+    {
+        this.boardEntity = boardEntity;
+    }
+
+    /*public int getBoardId()
+    {
+        return boardId;
+    }
+
+    public void setBoardId(int boardId)
+    {
+        this.boardId = boardId;
+    }*/
+
+    /*public String getClassName()
     {
         return className;
     }
@@ -77,7 +114,7 @@ public class StudentEntity
     public void setBoardName(String boardName)
     {
         this.boardName = boardName;
-    }
+    }*/
 
     public String getLocation()
     {
@@ -147,22 +184,5 @@ public class StudentEntity
     public void setActive(boolean active)
     {
         isActive = active;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "StudentModel{" +
-                "id=" + id +
-                ", studentName='" + studentName + '\'' +
-                ", schoolName='" + schoolName + '\'' +
-                ", className='" + className + '\'' +
-                ", boardName='" + boardName + '\'' +
-                ", location='" + location + '\'' +
-                ", studentPhNum='" + studentPhNum + '\'' +
-                ", parentPhNum1='" + parentPhNum1 + '\'' +
-                ", parentPhNum2='" + parentPhNum2 + '\'' +
-                ", sessionList=" + sessionList.toString() +
-                '}';
     }
 }

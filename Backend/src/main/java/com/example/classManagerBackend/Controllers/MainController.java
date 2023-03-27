@@ -1,11 +1,12 @@
 package com.example.classManagerBackend.Controllers;
 
-import com.example.classManagerBackend.Models.FeesDataModel;
+import com.example.classManagerBackend.Services.*;
+import com.example.classManagerBackend.View.FeesDataModel;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
-import com.example.classManagerBackend.Services.FeesAuditService;
-import com.example.classManagerBackend.Services.SessionService;
-import com.example.classManagerBackend.Services.StudentService;
+import com.example.classManagerBackend.View.SessionDataModel;
+import com.example.classManagerBackend.View.StudentDataModel;
+import com.example.classManagerBackend.View.TestDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,19 +30,22 @@ public class MainController
     @Autowired
     FeesAuditService feesAuditService;
 
+    @Autowired
+    TestService testService;
+
     @PostMapping("/student")
-    void AddStudent(@RequestBody StudentEntity studentEntity){
-        studentService.AddStudent(studentEntity);
+    void AddStudent(@RequestBody StudentDataModel studentDataModel){
+        studentService.AddStudent(studentDataModel);
     }
 
     @PutMapping("/students/{id}")
-    void UpdateStudent(@PathVariable int id, @RequestBody StudentEntity newStudentEntity){
-        studentService.UpdateStudent(id, newStudentEntity);
+    StudentDataModel UpdateStudent(@PathVariable int id, @RequestBody StudentDataModel studentDataModel){
+        return studentService.UpdateStudent(id, studentDataModel);
     }
 
     @PostMapping("/students/{id}/session")
-    List<SessionEntity> UpdateSession(@PathVariable int id, @RequestBody List<SessionEntity> sessionEntityList){
-        return sessionService.UpdateSession(id, sessionEntityList);
+    List<SessionDataModel> UpdateSession(@PathVariable int id, @RequestBody List<SessionDataModel> sessionDataModelList){
+        return sessionService.UpdateSession(id, sessionDataModelList);
     }
 
     @DeleteMapping("/students/{id}")
@@ -50,7 +54,7 @@ public class MainController
     }
 
     @GetMapping("/students")
-    ResponseEntity<List<StudentEntity>> GetAllStudent(){
+    ResponseEntity<List<StudentDataModel>> GetAllStudent(){
         return ResponseEntity.status(HttpStatus.OK).body(studentService.GetAllStudents(true));
     }
 
@@ -85,5 +89,23 @@ public class MainController
     @GetMapping("/students/{id}")
     StudentEntity GetStudent(@PathVariable int id){
         return studentService.GetStudent(id);
+    }
+
+    @GetMapping("/tests/{studentId}")
+    List<TestDataModel> GetTests(@PathVariable int studentId)
+    {
+        return testService.GetTests(studentId);
+    }
+
+    @PutMapping("/test")
+    void AddTest(@RequestBody TestDataModel testDataModel)
+    {
+        testService.AddTest(testDataModel);
+    }
+
+    @DeleteMapping("/test/{testId}")
+    void DeleteTest(@PathVariable int testId)
+    {
+        testService.DeleteTest(testId);
     }
 }
