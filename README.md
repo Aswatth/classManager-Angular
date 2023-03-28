@@ -94,7 +94,7 @@ After successfully adding test:
 
 Test data can be exported to pdf by click on the pdf icon in <i>Test details</i> card/tile with student name as filename.
 
-<img src="/Images/Edit student/export-test-pdf.png" width=500 height=250>
+<img src="/Images/Export/export-test-pdf.png" width=500 height=250>
 
 Navigating back to homepage will display the student record with updated personal and session information:
 
@@ -138,8 +138,8 @@ Paid only:
 
 Fees data can be exported to pdf for selected month-year combination by clicking on pdf icon with file name as selected month-year:
 
-<img src="/Images/Fees/fees-export-1.png" width=500 height=250>
-<img src="/Images/Fees/fees-export-2.png" width=500 height=250>
+<img src="/Images/Export/fees-export-1.png" width=500 height=250>
+<img src="/Images/Export/fees-export-2.png" width=500 height=250>
 
 ## Deleting student:
 When the trash icon in the studnet's row is clicked a confirmation pop-up appears:
