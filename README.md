@@ -72,6 +72,7 @@ By clicking on edit icon in <i>Sessions</i> card/tile session details can be edi
 The popup contains existing session information.
 Clicking on existing session data will populate the respective data into the fields which can then be used to update existing data or create new session data.
 <i>Save</i> button will be enabled only when all values are valid.
+
 <img src="/Images/Edit student/edit-session.png" width=500 height=250>
 <img src="/Images/Edit student/edit-session-2.png" width=500 height=250>
 
@@ -83,6 +84,7 @@ After saving changes:
 Tests can be added for for each session's subject for a student.
 By clicking plus icon on the '+' icon in  <i>Test details</i> card/tile a popup appears for entering test information.
 <i> Add test </i> button will be enabled only when all values are valid.
+
 <img src="/Images/Edit student/add-test.png" width=500 height=250>
 <img src="/Images/Edit student/add-test-2.png" width=500 height=250>
 
@@ -90,6 +92,68 @@ After successfully adding test:
 
 <img src="/Images/Edit student/added-test.png" width=500 height=250>
 
+Test data can be exported to pdf by click on the pdf icon in <i>Test details</i> card/tile with student name as filename.
+
+<img src="/Images/Edit student/export-test-pdf.png" width=500 height=250>
+
 Navigating back to homepage will display the student record with updated personal and session information:
 
 <img src="/Images/Edit student/updated-homepage.png" width=500 height=250>
+
+## Fees summary:
+Fees summary can be tracked and updated for students for each month-year.
+
+The below screenshot indicates that the newly added student is yet to pay fees for the March-2023.
+The total fees to be paid is a summation of fees from all the sessions associated with the student.
+
+<img src="/Images/Fees/fees-summary.png" width=500 height=250>
+
+If <i>Pending</i> is pressed a pop-up appears where user can confirm the payment with necessary details:
+
+<img src="/Images/Fees/payment-confirmation.png" width=500 height=250>
+
+<i>Confirm</i> button is enabled only when all information is valid:
+
+<img src="/Images/Fees/payment-confirmation-2.png" width=500 height=250>
+
+Upon confirmation:
+
+The status for March-2023 will be updated as per submitted information:
+
+<img src="/Images/Fees/fees-summary-updated.png" width=500 height=250>
+
+And fees data for following month will be created automatically with status as <i>Pending</i>
+
+<img src="/Images/Fees/fees-summary-updated-2.png" width=500 height=250>
+
+Fees data can be filterd based status:
+
+Pending only:
+
+<img src="/Images/Fees/fees-pending-only.png" width=500 height=250>
+
+Paid only:
+
+<img src="/Images/Fees/fees-paid-only.png" width=500 height=250>
+
+Fees data can be exported to pdf for selected month-year combination by clicking on pdf icon with file name as selected month-year:
+
+<img src="/Images/Fees/fees-export-1.png" width=500 height=250>
+<img src="/Images/Fees/fees-export-2.png" width=500 height=250>
+
+## Deleting student:
+When the trash icon in the studnet's row is clicked a confirmation pop-up appears:
+
+<img src="/Images/delete-student.png" width=500 height=250>
+
+Upon confirmation:
+
+<img src="/Images/delete-student-1.png" width=500 height=250>
+
+After deleting a student user can still track fees information for the deleted student for the month-year in which the student was deleted:
+
+<img src="/Images/deleted-student-fees.png" width=500 height=250>
+
+However, it will not automatically create fees data for the following month:
+
+<img src="/Images/deleted-student-fees-1.png" width=500 height=250>
