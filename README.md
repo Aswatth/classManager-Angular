@@ -28,6 +28,7 @@ After clicking on <i> Add Student </i> button, a popup appears for adding person
 <img src="/Images/Add student/addStudent-PersonalInfo.png" width=500 height=250>
 
 The next button will be enabled only when all mandatory information is entered is valid.
+
 <img src="/Images/Add student/personalInfo-Filled.png" width=500 height=250>
 
 After clicking on <i> Next </i> button, the popup navigates to the session details page where a session can be:
@@ -40,6 +41,7 @@ The button with check icon is enabled only when all the details has been updated
 The next button will be enabled only when atleast one session has been created for the student.
 
 <img src="/Images/Add student/sessionInfo-filled.png" width=500 height=250>
+<img src="/Images/Add student/existing-session.png" width=500 height=250>
 
 After clicking on <i> Next </i> from session details it moves on to review and submit page where user can validate entered information.
 If changes are required user can navigate back to the respective page and make valid changes.
@@ -154,6 +156,14 @@ After deleting a student user can still track fees information for the deleted s
 
 <img src="/Images/deleted-student-fees.png" width=500 height=250>
 
-However, it will not automatically create fees data for the following month:
+However, it will not automatically create fees data for the following month as the student is deleted:
 
 <img src="/Images/deleted-student-fees-1.png" width=500 height=250>
+
+## Exporting
+Active student data can be exported to excel with separate sheets:
+- StudentData sheet -> Student's personal and session information
+- FeesData sheet -> Fees details for each student across months
+- TestData sheet -> Test data for each student's session
+- ClassData, BoardData, SubjectData sheets -> List of Classes,Boards and Subjects respectively
+
