@@ -36,7 +36,7 @@ public class TestService
         testEntities.stream().filter(
                 e->(Objects.equals(e.getClassName(), studentEntity.getClassEntity().getClassName()))
                         && (Objects.equals(e.getBoardName(), studentEntity.getBoardEntity().getBoardName()))
-                &&  (e.getStudentEntity() != null && e.getStudentEntity().getId() == studentId ))
+                &&  (e.getStudentEntity()!=null && e.getStudentEntity().getId() == studentId ))
                 .forEach(e->{
             TestDataModel dataModel = new TestDataModel();
 

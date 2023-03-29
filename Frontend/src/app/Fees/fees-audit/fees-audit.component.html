@@ -36,18 +36,18 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-feesData>
-        <ng-container *ngIf="feesData.feesAuditEntity != null">
+        <ng-container *ngIf="feesData != null">
             <tr>
                 <td>{{ feesData.studentName }}</td>
                 <td>{{ feesData.className }}-{{feesData.boardName}}</td>
                 <td>
-                    <ng-container *ngFor="let subject of feesData.feesAuditEntity.subjects.split(',')">
+                    <ng-container *ngFor="let subject of feesData.subjects.split(',')">
                         <p>{{subject}}</p>
                     </ng-container>
                 </td>
-                <ng-container *ngIf="feesData.feesAuditEntity">
-                    <td>{{feesData.feesAuditEntity.fees}}</td>
-                    <ng-container *ngIf="feesData.feesAuditEntity.paidOn == null">
+                <ng-container *ngIf="feesData">
+                    <td>{{feesData.fees}}</td>
+                    <ng-container *ngIf="feesData.paidOn == null">
                         <td >
                             <p-button 
                             styleClass="p-button-danger" 
@@ -57,19 +57,19 @@
                         <td> - </td>
                         <td> - </td>
                     </ng-container>
-                    <ng-container *ngIf="feesData.feesAuditEntity.paidOn != null">
+                    <ng-container *ngIf="feesData.paidOn != null">
                         <td>
                             <p style="display: inline-block;" class="paid">Paid</p>
                         </td>
                         <td>
-                            <p *ngIf="feesData.feesAuditEntity.modeOfPayment == 'Cash'">Cash</p>
-                            <p *ngIf="feesData.feesAuditEntity.modeOfPayment == 'Account'">Account</p>
+                            <p *ngIf="feesData.modeOfPayment == 'Cash'">Cash</p>
+                            <p *ngIf="feesData.modeOfPayment == 'Account'">Account</p>
                         </td>
-                        <td>{{ feesData.feesAuditEntity.paidOn | date }}</td>    
-                        <td>{{ feesData.feesAuditEntity.comments }}</td>    
+                        <td>{{ feesData.paidOn | date }}</td>    
+                        <td>{{ feesData.comments }}</td>    
                     </ng-container>
                 </ng-container>
-                <ng-container *ngIf="!feesData.feesAuditEntity">
+                <ng-container *ngIf="!feesData">
                     <td></td>
                     <td></td>
                 </ng-container>

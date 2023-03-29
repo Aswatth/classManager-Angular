@@ -10,9 +10,9 @@ public class ClassEntity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
+
     @NonNull
     String className;
-
     public int getId()
     {
         return id;

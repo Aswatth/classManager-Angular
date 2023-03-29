@@ -1,34 +1,24 @@
-package com.example.classManagerBackend.Models;
+package com.example.classManagerBackend.View;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import com.example.classManagerBackend.Models.FeesAuditEntity;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "feesAudit")
-public class FeesAuditEntity
+public class FeesAuditDataModel
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    int studentId;
+    String studentName;
+    String className;
+    String boardName;
+
     Date feesDate;
     String subjects;
-
-    @ManyToOne
-    @JoinColumn(name = "studentId")
-    StudentEntity studentEntity;
-
     double fees;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date paidOn;
     String modeOfPayment;
     String comments;
 
-    public FeesAuditEntity()
-    {
-    }
 
     public int getId()
     {
@@ -38,6 +28,46 @@ public class FeesAuditEntity
     public void setId(int id)
     {
         this.id = id;
+    }
+
+    public int getStudentId()
+    {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId)
+    {
+        this.studentId = studentId;
+    }
+
+    public String getStudentName()
+    {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName)
+    {
+        this.studentName = studentName;
+    }
+
+    public String getClassName()
+    {
+        return className;
+    }
+
+    public void setClassName(String className)
+    {
+        this.className = className;
+    }
+
+    public String getBoardName()
+    {
+        return boardName;
+    }
+
+    public void setBoardName(String boardName)
+    {
+        this.boardName = boardName;
     }
 
     public Date getFeesDate()
@@ -58,16 +88,6 @@ public class FeesAuditEntity
     public void setSubjects(String subjects)
     {
         this.subjects = subjects;
-    }
-
-    public StudentEntity getStudentEntity()
-    {
-        return studentEntity;
-    }
-
-    public void setStudentEntity(StudentEntity studentEntity)
-    {
-        this.studentEntity = studentEntity;
     }
 
     public double getFees()

@@ -3,22 +3,7 @@ package com.example.classManagerBackend.Utils;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Models.SubjectEntity;
-import com.example.classManagerBackend.Repos.ClassRepo;
-import com.example.classManagerBackend.Repos.SubjectRepo;
 import com.example.classManagerBackend.View.SessionDataModel;
-import com.example.classManagerBackend.View.StudentDataModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-
-import javax.swing.text.html.parser.Entity;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 public class SessionMapper
 {
@@ -40,7 +25,7 @@ public class SessionMapper
         SessionDataModel sessionDataModel = new SessionDataModel();
 
         sessionDataModel.setId(sessionEntity.getId());
-        sessionDataModel.setStudentId(sessionEntity.getStudentId());
+        sessionDataModel.setStudentId(sessionEntity.getStudentEntity().getId());
         sessionDataModel.setSubject(subject);
         sessionDataModel.setDays(sessionEntity.getDays());
         sessionDataModel.setStartTime(sessionEntity.getStartTime());
@@ -49,13 +34,13 @@ public class SessionMapper
 
         return sessionDataModel;
     }
-    public static SessionEntity DataToEntity(SessionDataModel sessionDataModel, SubjectEntity subjectEntity)
+    public static SessionEntity DataToEntity(SessionDataModel sessionDataModel, SubjectEntity subjectEntity, StudentEntity studentEntity)
     {
         SessionEntity sessionEntity = new SessionEntity();
 
         sessionEntity.setId(sessionDataModel.getId());
         sessionEntity.setSubjectEntity(subjectEntity);
-        sessionEntity.setStudentId(sessionDataModel.getStudentId());
+        sessionEntity.setStudentEntity(studentEntity);
         sessionEntity.setDays(sessionDataModel.getDays());
         sessionEntity.setStartTime(sessionDataModel.getStartTime());
         sessionEntity.setEndTime(sessionDataModel.getEndTime());

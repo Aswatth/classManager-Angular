@@ -1,8 +1,7 @@
 package com.example.classManagerBackend.Controllers;
 
 import com.example.classManagerBackend.Services.*;
-import com.example.classManagerBackend.View.FeesDataModel;
-import com.example.classManagerBackend.Models.SessionEntity;
+import com.example.classManagerBackend.View.FeesAuditDataModel;
 import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.View.SessionDataModel;
 import com.example.classManagerBackend.View.StudentDataModel;
@@ -59,7 +58,7 @@ public class MainController
     }
 
     @PostMapping("/fees")
-    ResponseEntity<List<FeesDataModel>> GetAllFeesAudits(@RequestBody String date){
+    ResponseEntity<List<FeesAuditDataModel>> GetAllFeesAudits(@RequestBody String date){
 
         Date d = new Date();
 
@@ -76,7 +75,7 @@ public class MainController
     }
 
     @PutMapping("/fees")
-    public void GetFeesAuditList(@RequestBody FeesDataModel feesAuditModel){
+    public void GetFeesAuditList(@RequestBody FeesAuditDataModel feesAuditModel){
         studentService.SaveFeesAudit(feesAuditModel);
     }
 

@@ -1,9 +1,13 @@
-import { FeesAuditModel } from "./fees-audit.model";
-
 export class FeesDataModel{
+    id!: number;
     studentId!: number;
     studentName!: string;
     className!: string;
     boardName!: string;
-    feesAuditEntity!: FeesAuditModel;
+    feesDate!: Date;
+    subjects!: string;
+    fees!: number;
+    paidOn!: Date;
+    modeOfPayment!: string;
+    comments!: string;
 }

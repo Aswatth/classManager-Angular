@@ -4,6 +4,7 @@ import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Models.SubjectEntity;
 import com.example.classManagerBackend.Repos.SessionRepo;
+import com.example.classManagerBackend.Repos.StudentRepo;
 import com.example.classManagerBackend.Repos.SubjectRepo;
 import com.example.classManagerBackend.Utils.SessionMapper;
 import com.example.classManagerBackend.View.SessionDataModel;
@@ -28,15 +29,19 @@ public class SessionService implements ISessionService
     @Autowired
     FeesAuditService feesAuditService;
 
+    @Autowired
+    StudentRepo studentRepo;
+
     @Override
     public List<SessionEntity> AddSessions(List<SessionEntity> sessionEntityList, int studentId)
     {
         List<SessionEntity> savedSessions = new ArrayList<>();
         sessionEntityList.forEach(e -> {
-            e.setStudentId(studentId);
+            StudentEntity studentEntity = studentRepo.findById(studentId).get();
+            e.setStudentEntity(studentEntity);
 
             //Check if a studentId-Subject combination already exists
-            if(sessionRepo.findBySubjectEntityAndStudentId(e.getSubjectEntity(), studentId).isEmpty())
+            if(sessionRepo.findBySubjectEntityAndStudentEntity(e.getSubjectEntity(), studentEntity).isEmpty())
             {
                 //Insert if not already present
                 savedSessions.add(sessionRepo.save(e));
@@ -48,17 +53,19 @@ public class SessionService implements ISessionService
     @Override
     public List<SessionDataModel> UpdateSession(int studentId, List<SessionDataModel> sessionDataModelList)
     {
+        StudentEntity studentEntity = studentRepo.findById(studentId).get();
+
         //List of existing subject for the current student's sessions
-        List<String> existingSessionSubject = sessionRepo.findByStudentId(studentId).stream().map(e-> e.getSubjectEntity().getSubject()).collect(Collectors.toList());
+        List<String> existingSessionSubject = sessionRepo.findByStudentEntity(studentEntity).stream().map(e-> e.getSubjectEntity().getSubject()).collect(Collectors.toList());
 
         List<SessionEntity> sessionEntityList = new ArrayList<>();
-        sessionDataModelList.forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e,subjectRepo.findBySubject(e.getSubject()))));
+        sessionDataModelList.forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e,subjectRepo.findBySubject(e.getSubject()), studentRepo.findById(studentId).get())));
 
         sessionEntityList.forEach(e -> {
             //Check if a session already exists for a particular subject
             if(existingSessionSubject.contains(e.getSubjectEntity().getSubject()))
             {
-                SessionEntity existingSession = sessionRepo.findBySubjectEntityAndStudentId(e.getSubjectEntity(), studentId).get();
+                SessionEntity existingSession = sessionRepo.findBySubjectEntityAndStudentEntity(e.getSubjectEntity(), studentEntity).get();
                 e.setId(existingSession.getId());
 
                 //Update if already exists
@@ -104,7 +111,8 @@ public class SessionService implements ISessionService
     @Override
     public void DeleteSessionBySubject(String subject, int studentId){
         SubjectEntity subjectEntity = subjectRepo.findBySubject(subject);
-        Optional<SessionEntity> sessionModel =sessionRepo.findBySubjectEntityAndStudentId(subjectEntity, studentId);
+        StudentEntity studentEntity = studentRepo.findById(studentId).get();
+        Optional<SessionEntity> sessionModel =sessionRepo.findBySubjectEntityAndStudentEntity(subjectEntity, studentEntity);
         sessionModel.ifPresent(this::DeleteSession);
     }
 }

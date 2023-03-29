@@ -18,7 +18,7 @@ public class StudentEntity
     @OneToOne
     @JoinColumn(name = "classId")
     ClassEntity classEntity;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "boardId")
     BoardEntity boardEntity;
     //String boardName;
@@ -26,13 +26,17 @@ public class StudentEntity
     String studentPhNum;
     String parentPhNum1;
     String parentPhNum2;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "StudentId")
     List<SessionEntity> sessionList;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "StudentId")
     List<FeesAuditEntity> feesAuditEntityList;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "studentId")
+    List<TestEntity> testEntityList;
 
     boolean isActive;
 
@@ -184,5 +188,15 @@ public class StudentEntity
     public void setActive(boolean active)
     {
         isActive = active;
+    }
+
+    public List<TestEntity> getTestEntityList()
+    {
+        return testEntityList;
+    }
+
+    public void setTestEntityList(List<TestEntity> testEntityList)
+    {
+        this.testEntityList = testEntityList;
     }
 }

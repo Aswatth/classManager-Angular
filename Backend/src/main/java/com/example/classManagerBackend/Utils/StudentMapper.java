@@ -62,7 +62,7 @@ public final class StudentMapper
 
         List<SessionEntity> sessionEntityList = new ArrayList<>();
         if(studentDataModel.getSessionList() != null)
-            studentDataModel.getSessionList().forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e, subjectRepo.findBySubject(e.getSubject()))));
+            studentDataModel.getSessionList().forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e, subjectRepo.findBySubject(e.getSubject()), studentEntity)));
         studentEntity.setSessionList(sessionEntityList);
 
         return studentEntity;

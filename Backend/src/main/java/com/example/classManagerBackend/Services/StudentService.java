@@ -4,8 +4,9 @@ import com.example.classManagerBackend.Models.FeesAuditEntity;
 import com.example.classManagerBackend.Repos.BoardRepo;
 import com.example.classManagerBackend.Repos.ClassRepo;
 import com.example.classManagerBackend.Repos.SubjectRepo;
+import com.example.classManagerBackend.Utils.FeesAuditMapper;
 import com.example.classManagerBackend.Utils.StudentMapper;
-import com.example.classManagerBackend.View.FeesDataModel;
+import com.example.classManagerBackend.View.FeesAuditDataModel;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Repos.StudentRepo;
@@ -131,30 +132,22 @@ public class StudentService implements IStudentService
         return studentModel.orElse(null);
     }
 
-    public List<FeesDataModel> GetFeesAudit(Date date)
+    public List<FeesAuditDataModel> GetFeesAudit(Date date)
     {
-        List<FeesDataModel> feesDataModelList = new ArrayList<>();
+        List<FeesAuditDataModel> feesDataModelList = new ArrayList<>();
 
         List<StudentDataModel> studentEntityList = GetAllStudents(false);
 
         studentEntityList.forEach(stu -> {
-            FeesDataModel feesDataModel = new FeesDataModel();
-            feesDataModel.setStudentId(stu.getId());
-            feesDataModel.setStudentName(stu.getStudentName());
-            feesDataModel.setClassName(stu.getClassName());
-            feesDataModel.setBoardName(stu.getBoardName());
-
             FeesAuditEntity feesAuditEntity = feesAuditService.GetFeesAudit(date, stu.getId());
 
-            feesDataModel.setFeesAuditEntity(feesAuditEntity);
-
-            feesDataModelList.add(feesDataModel);
+            feesDataModelList.add(FeesAuditMapper.EntityToData(feesAuditEntity, stu));
         });
 
         return feesDataModelList;
     }
 
-    public void SaveFeesAudit(FeesDataModel feesDataModel)
+    public void SaveFeesAudit(FeesAuditDataModel feesDataModel)
     {
         Optional<StudentEntity> studentEntity = studentRepo.findById(feesDataModel.getStudentId());
 
@@ -164,7 +157,7 @@ public class StudentService implements IStudentService
             double actualFees = sessionList.stream().map(SessionEntity::getFees).mapToDouble(m->m).sum();
             List<String> subjectList = new ArrayList<>();
             sessionList.forEach(e->subjectList.add(e.getSubjectEntity().getSubject()));
-            feesAuditService.SaveChanges(studentEntity.get().isActive(), feesDataModel.getFeesAuditEntity(), String.join(",",subjectList),actualFees);
+            feesAuditService.SaveChanges(studentEntity.get().isActive(), FeesAuditMapper.DataToEntity(feesDataModel, studentEntity.get()), String.join(",",subjectList),actualFees);
         }
     }
 
