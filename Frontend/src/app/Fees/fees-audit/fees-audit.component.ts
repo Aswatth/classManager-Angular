@@ -5,7 +5,6 @@ import { FeesAuditService } from 'src/app/Services/fees-audit.service';
 import { Subscription } from 'rxjs';
 import { FeesDataModel } from 'src/app/Models/fees-data.model';
 
-import { Table } from 'primeng/table';
 import jsPDF from 'jspdf'
 import autoTable, { CellInput, RowInput } from 'jspdf-autotable'
 
@@ -100,9 +99,9 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
   GetDataBasedOnFilters() : FeesDataModel[]
   {
     if(this.showPaidOnly)
-      return this.feesDataList.filter(f=>f.feesAuditEntity.paidOn!=null);
+      return this.feesDataList.filter(f=>f.paidOn!=null);
     if(this.showPendingOnly)
-      return this.feesDataList.filter(f=>f.feesAuditEntity.paidOn==null)  
+      return this.feesDataList.filter(f=>f.paidOn==null)  
     return this.feesDataList;
   }
 
@@ -111,9 +110,9 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     console.log(index);
     
     this.displayPopup = true;
-    console.log(this.feesDataList[index]!.feesAuditEntity.fees);
+    console.log(this.feesDataList[index]!.fees);
     
-    this.paymentConfirmationForm.controls["fees"].setValue(this.feesDataList[index].feesAuditEntity.fees);
+    this.paymentConfirmationForm.controls["fees"].setValue(this.feesDataList[index].fees);
   }
 
   ConfirmPayment(){
@@ -123,10 +122,10 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     
     let selectedValue = this.paymentConfirmationForm.controls['paidOn'].value;
 
-    this.feesDataList[this.selectedIndex].feesAuditEntity.paidOn = selectedValue?selectedValue : new Date();
-    this.feesDataList[this.selectedIndex].feesAuditEntity.comments = this.paymentConfirmationForm.controls['comments'].value;
-    this.feesDataList[this.selectedIndex].feesAuditEntity.fees = this.paymentConfirmationForm.controls['fees'].value;
-    this.feesDataList[this.selectedIndex].feesAuditEntity.modeOfPayment = this.paymentConfirmationForm.controls['modeOfPayment'].value;
+    this.feesDataList[this.selectedIndex].paidOn = selectedValue?selectedValue : new Date();
+    this.feesDataList[this.selectedIndex].comments = this.paymentConfirmationForm.controls['comments'].value;
+    this.feesDataList[this.selectedIndex].fees = this.paymentConfirmationForm.controls['fees'].value;
+    this.feesDataList[this.selectedIndex].modeOfPayment = this.paymentConfirmationForm.controls['modeOfPayment'].value;
 
     console.log(this.feesDataList);
     
@@ -160,16 +159,16 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
       let paymentStatus = "Pending";
       let paidDate = null;
 
-      if(e.feesAuditEntity.paidOn != null)
+      if(e.paidOn != null)
       {
         paymentStatus = "Paid";
-        paidDate = new Date(e.feesAuditEntity.paidOn).toLocaleDateString('default', {year: 'numeric', month: 'short', day: '2-digit'});
+        paidDate = new Date(e.paidOn).toLocaleDateString('default', {year: 'numeric', month: 'short', day: '2-digit'});
       }
 
       content.push([
-        e.studentName, e.className+"-"+e.boardName, e.feesAuditEntity.subjects.replace(/,/g,"\n"), 
-        e.feesAuditEntity.fees, paymentStatus, paidDate,
-        e.feesAuditEntity.modeOfPayment, e.feesAuditEntity.comments]);
+        e.studentName, e.className+"-"+e.boardName, e.subjects.replace(/,/g,"\n"), 
+        e.fees, paymentStatus, paidDate,
+        e.modeOfPayment, e.comments]);
     });
     
     const doc = new jsPDF('p','pt');

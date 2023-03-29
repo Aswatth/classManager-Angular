@@ -1,6 +1,7 @@
 package com.example.classManagerBackend.Models;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "Board")
@@ -10,6 +11,7 @@ public class BoardEntity
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
+    @NonNull
     String boardName;
 
     public int getId()

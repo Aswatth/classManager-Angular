@@ -15,7 +15,9 @@ public class SessionEntity
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
-    int studentId;
+    @ManyToOne
+    @JoinColumn(name = "studentId")
+    StudentEntity studentEntity;
 
     @OneToOne
     @JoinColumn(name = "subjectId")
@@ -42,14 +44,14 @@ public class SessionEntity
         this.id = id;
     }
 
-    public int getStudentId()
+    public StudentEntity getStudentEntity()
     {
-        return studentId;
+        return studentEntity;
     }
 
-    public void setStudentId(int studentId)
+    public void setStudentEntity(StudentEntity studentEntity)
     {
-        this.studentId = studentId;
+        this.studentEntity = studentEntity;
     }
 
     public SubjectEntity getSubjectEntity()
@@ -110,18 +112,5 @@ public class SessionEntity
     public void setFees(float fees)
     {
         this.fees = fees;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "SessionModel{" +
-                "id=" + id +
-                ", studentId=" + studentId +
-                ", days=" + days +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", fees=" + fees +
-                '}';
     }
 }

@@ -1,8 +1,9 @@
 package com.example.classManagerBackend.Services;
 
 import com.example.classManagerBackend.Models.FeesAuditEntity;
+import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Repos.FeesAuditRepo;
-import com.example.classManagerBackend.Repos.SessionRepo;
+import com.example.classManagerBackend.Repos.StudentRepo;
 import com.example.classManagerBackend.Utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class FeesAuditService implements IFeesAuditService
 {
     @Autowired
     FeesAuditRepo feesAuditRepo;
+
+    @Autowired
+    StudentRepo studentRepo;
 
     @Autowired
     DateUtils dateUtils;
@@ -32,7 +36,7 @@ public class FeesAuditService implements IFeesAuditService
 
         feesAuditEntity.setFeesDate(dateUtils.GetCurrentDate());
         feesAuditEntity.setSubjects(subjects);
-        feesAuditEntity.setStudentId(studentId);
+        feesAuditEntity.setStudentEntity(studentRepo.findById(studentId).get());
         feesAuditEntity.setFees(totalFees);
         feesAuditEntity.setPaidOn(null);
         feesAuditEntity.setComments(null);
@@ -45,10 +49,12 @@ public class FeesAuditService implements IFeesAuditService
     {
         Date currentDate = dateUtils.GetCurrentDate();
 
-        FeesAuditEntity feesAuditEntity = feesAuditRepo.findByFeesDateAndStudentId(currentDate, studentId);
+        StudentEntity studentEntity = studentRepo.findById(studentId).get();
+
+        FeesAuditEntity feesAuditEntity = feesAuditRepo.findByFeesDateAndStudentEntity(currentDate, studentEntity);
         if (feesAuditEntity.getPaidOn() != null)
         {
-            feesAuditEntity = feesAuditRepo.findByStudentIdAndPaidOn(studentId, null);
+            feesAuditEntity = feesAuditRepo.findByStudentEntityAndPaidOn(studentEntity, null);
         }
         feesAuditEntity.setFees(totalFees);
 
@@ -70,7 +76,7 @@ public class FeesAuditService implements IFeesAuditService
             nextFeesAuditEntity.setFees(actualFees);
             nextFeesAuditEntity.setSubjects(subjects);
             nextFeesAuditEntity.setFeesDate(nextDate);
-            nextFeesAuditEntity.setStudentId(feesAuditEntity.getStudentId());
+            nextFeesAuditEntity.setStudentEntity(feesAuditEntity.getStudentEntity());
 
             feesAuditRepo.save(nextFeesAuditEntity);
         }
@@ -78,8 +84,8 @@ public class FeesAuditService implements IFeesAuditService
 
     public FeesAuditEntity GetFeesAudit(Date date, int studentId)
     {
-
-        return feesAuditRepo.findByFeesDateAndStudentId(date, studentId);
+        StudentEntity studentEntity = studentRepo.findById(studentId).get();
+        return feesAuditRepo.findByFeesDateAndStudentEntity(date, studentEntity);
     }
 
     public List<Date> GetDateList()
