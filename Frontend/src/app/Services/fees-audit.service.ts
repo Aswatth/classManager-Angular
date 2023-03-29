@@ -1,12 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, OnInit } from "@angular/core";
 import { BehaviorSubject, Subject } from "rxjs";
-import { FeesDataModel } from "../Models/fees-data.model";
+import { FeesModel } from "../Models/fees.model";
 
 @Injectable({providedIn: 'root'})
 export class FeesAuditService implements OnInit{
 
-    S_FeesAuditData = new BehaviorSubject<FeesDataModel[]>([]);
+    S_FeesAuditData = new BehaviorSubject<FeesModel[]>([]);
 
     constructor(private http: HttpClient){}
 
@@ -19,7 +19,7 @@ export class FeesAuditService implements OnInit{
     }
 
     GetFeesAudit(date: string){        
-        this.http.post<FeesDataModel[]>("http://localhost:9999/fees",date).subscribe(
+        this.http.post<FeesModel[]>("http://localhost:9999/fees",date).subscribe(
             data => {
                 console.log(data);
                 
@@ -33,9 +33,9 @@ export class FeesAuditService implements OnInit{
         return this.http.get<Date[]>("http://localhost:9999/dates");
     }
 
-    SaveChanges(feesAuditList: FeesDataModel){
+    SaveChanges(feesAuditList: FeesModel){
         console.log("Saving changes");
 
-        this.http.put<FeesDataModel>("http://localhost:9999/fees", feesAuditList).subscribe();
+        this.http.put<FeesModel>("http://localhost:9999/fees", feesAuditList).subscribe();
     }
 }

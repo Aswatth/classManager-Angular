@@ -87,6 +87,10 @@ public class FeesAuditService implements IFeesAuditService
         StudentEntity studentEntity = studentRepo.findById(studentId).get();
         return feesAuditRepo.findByFeesDateAndStudentEntity(date, studentEntity);
     }
+    public List<FeesAuditEntity> GetFeesAudit()
+    {
+        return feesAuditRepo.findAll();
+    }
 
     public List<Date> GetDateList()
     {
