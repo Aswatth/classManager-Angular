@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { StudentModel } from '../Models/student.model';
-import { ExcelService } from '../Services/excel.service';
+import { ExportService } from '../Services/export.service';
 import { StudentService } from '../Services/student.service';
 
 @Component({
@@ -17,35 +17,35 @@ export class HomepageHeaderComponent implements OnInit{
 
   menuItems: MenuItem[] = [];
 
-  constructor(private excelService: ExcelService, private studentService: StudentService){}
+  constructor(private exportService: ExportService, private studentService: StudentService){}
 
   ngOnInit()
   {
     
-    this.menuItems = [{
-      items: [
-        {
-          label: 'Student template', 
-          icon: 'pi pi-download', 
-          command: () => {this.excelService.DownloadStudentTemplate();}
-        },
-        {
-          label: 'Fees template', 
-          icon: 'pi pi-download',
-          command: () => {this.excelService.DownloadFeesTemplate();}
-        },
-        {
-          label: 'Test template', 
-          icon: 'pi pi-download',
-          command: () => {this.excelService.DownloadTestTemplate();}
-        },
-      ]
-    }];
+    // this.menuItems = [{
+    //   items: [
+    //     {
+    //       label: 'Student template', 
+    //       icon: 'pi pi-download', 
+    //       command: () => {this.excelService.DownloadStudentTemplate();}
+    //     },
+    //     {
+    //       label: 'Fees template', 
+    //       icon: 'pi pi-download',
+    //       command: () => {this.excelService.DownloadFeesTemplate();}
+    //     },
+    //     {
+    //       label: 'Test template', 
+    //       icon: 'pi pi-download',
+    //       command: () => {this.excelService.DownloadTestTemplate();}
+    //     },
+    //   ]
+    // }];
   }
 
   ExportData()
   {
-    this.excelService.ExportData();
+    this.exportService.ExportData();
   }
   ImportData()
   {

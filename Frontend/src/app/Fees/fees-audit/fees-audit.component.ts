@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FeesAuditService } from 'src/app/Services/fees-audit.service';
 import { Subscription } from 'rxjs';
-import { FeesDataModel } from 'src/app/Models/fees-data.model';
+import { FeesModel } from 'src/app/Models/fees.model';
 
 import jsPDF from 'jspdf'
 import autoTable, { CellInput, RowInput } from 'jspdf-autotable'
@@ -15,7 +15,7 @@ import autoTable, { CellInput, RowInput } from 'jspdf-autotable'
 })
 export class FeesAuditComponent implements OnInit, OnDestroy {
   
-  feesDataList: FeesDataModel[] = [];
+  feesDataList: FeesModel[] = [];
   feesDataSubcription!: Subscription;
   
   displayPopup: boolean = false;
@@ -96,7 +96,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     }
   }
 
-  GetDataBasedOnFilters() : FeesDataModel[]
+  GetDataBasedOnFilters() : FeesModel[]
   {
     if(this.showPaidOnly)
       return this.feesDataList.filter(f=>f.paidOn!=null);

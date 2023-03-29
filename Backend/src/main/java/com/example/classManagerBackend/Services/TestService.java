@@ -4,6 +4,7 @@ import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
 import com.example.classManagerBackend.Models.TestEntity;
 import com.example.classManagerBackend.Repos.*;
+import com.example.classManagerBackend.Utils.TestMapper;
 import com.example.classManagerBackend.View.TestDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,17 +41,7 @@ public class TestService
                 .forEach(e->{
             TestDataModel dataModel = new TestDataModel();
 
-            dataModel.setId(e.getId());
-            dataModel.setTestName(e.getTestName());
-            dataModel.setTotalMarks(e.getTotalMarks());
-            dataModel.setMarksScored(e.getMarksScored());
-            dataModel.setTestDate(e.getTestDate());
-            dataModel.setClassName(e.getClassName());
-            dataModel.setBoardName(e.getBoardName());
-            dataModel.setSubject(e.getSubject());
-            dataModel.setStudentId(e.getStudentEntity().getId());
-
-            testDataModelList.add(dataModel);
+            testDataModelList.add(TestMapper.EntityToData(e));
         });
 
         return testDataModelList;
@@ -64,19 +55,7 @@ public class TestService
 
         if(studentEntity.isPresent())
         {
-
-            testEntity.setTestName(testDataModel.getTestName());
-            testEntity.setTotalMarks(testDataModel.getTotalMarks());
-            testEntity.setMarksScored(testDataModel.getMarksScored());
-            testEntity.setTestDate(testDataModel.getTestDate());
-            testEntity.setClassName(testDataModel.getClassName());
-            testEntity.setBoardName(testDataModel.getBoardName());
-            testEntity.setSubject(
-                    studentEntity.get().getSessionList().stream().filter(
-                            e-> Objects.equals(e.getSubjectEntity().getSubject(), testDataModel.getSubject())).findFirst().get()
-                            .getSubjectEntity().getSubject());
-            testEntity.setStudentEntity(studentEntity.get());
-
+            testEntity = TestMapper.DataToEntity(testDataModel, studentEntity.get());
             testRepo.save(testEntity);
         }
     }

@@ -1,4 +1,4 @@
-export class FeesDataModel{
+export class FeesModel{
     id!: number;
     studentId!: number;
     studentName!: string;
