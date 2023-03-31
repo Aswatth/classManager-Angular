@@ -89,8 +89,8 @@ public class StudentService implements IStudentService
     {
         StudentEntity studentEntity = StudentMapper.DataToEntity(
                 studentDataModel,
-                classRepo.findByClassName(studentDataModel.getClassName()),
-                boardRepo.findByBoardName(studentDataModel.getBoardName()),
+                classRepo.findByClassNameIgnoreCase(studentDataModel.getClassName()),
+                boardRepo.findByBoardNameIgnoreCase(studentDataModel.getBoardName()),
                 subjectRepo
         );
 
@@ -209,7 +209,8 @@ public class StudentService implements IStudentService
         studentEntityList.forEach(stu -> {
             FeesAuditEntity feesAuditEntity = feesAuditService.GetFeesAudit(date, stu.getId());
 
-            feesDataModelList.add(FeesAuditMapper.EntityToData(feesAuditEntity, stu));
+            if(feesAuditEntity != null)
+                feesDataModelList.add(FeesAuditMapper.EntityToData(feesAuditEntity, stu));
         });
 
         return feesDataModelList;

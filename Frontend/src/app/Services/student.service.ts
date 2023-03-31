@@ -27,7 +27,12 @@ export class StudentService{
         console.log("Student service cons");
         //Getting all student data
         this.GetAllStudent();
+        this.GetCbsData();
+    }
 
+    //CBS data
+    GetCbsData()
+    {
         //Get list of classes
         this.http.get<string[]>('http://localhost:9999/class').subscribe({
             next: (data) => {

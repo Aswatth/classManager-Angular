@@ -179,7 +179,8 @@ export class ExportService implements OnInit, OnDestroy{
             }
 
             this.http.post("http://localhost:9999/import",exportData).subscribe({
-                complete: () => {
+                next: () => {
+                    this.studentService.GetCbsData();
                     this.studentService.GetAllStudent();
                 }
             });

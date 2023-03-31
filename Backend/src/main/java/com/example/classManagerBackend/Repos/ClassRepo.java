@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface ClassRepo extends JpaRepository<ClassEntity, Integer>
 {
    public ClassEntity findByClassName(String className);
+   public ClassEntity findByClassNameIgnoreCase(String className);
 }

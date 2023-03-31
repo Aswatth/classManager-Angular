@@ -59,7 +59,7 @@ public class SessionService implements ISessionService
         List<String> existingSessionSubject = sessionRepo.findByStudentEntity(studentEntity).stream().map(e-> e.getSubjectEntity().getSubject()).collect(Collectors.toList());
 
         List<SessionEntity> sessionEntityList = new ArrayList<>();
-        sessionDataModelList.forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e,subjectRepo.findBySubject(e.getSubject()), studentRepo.findById(studentId).get())));
+        sessionDataModelList.forEach(e-> sessionEntityList.add(SessionMapper.DataToEntity(e,subjectRepo.findBySubjectIgnoreCase(e.getSubject()), studentRepo.findById(studentId).get())));
 
         sessionEntityList.forEach(e -> {
             //Check if a session already exists for a particular subject
