@@ -5,6 +5,7 @@ import { StudentModel } from 'src/app/Models/student.model';
 import {ConfirmationService, MenuItem} from 'primeng/api';
 import { StudentService } from 'src/app/Services/student.service';
 import { Subscription } from 'rxjs';
+import { AddStudentService } from 'src/app/Services/add-student.service';
 
 @Component({
   selector: 'student-list',
@@ -26,6 +27,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   cbsDataList: any[] = [];
 
   constructor(private studentService: StudentService, 
+    private addStudentService: AddStudentService,
     private router:Router, 
     private confirmationService: ConfirmationService
     ){}
@@ -88,6 +90,10 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   OnAddStudent(){
     this.studentService.S_IsPopupOpen.next(true);
+    
+    this.addStudentService.studentInfo = new StudentModel();
+    this.addStudentService.sessionList = []
+    
     this.router.navigate(['/student-popup']);
   }
 

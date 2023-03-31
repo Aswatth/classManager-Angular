@@ -73,18 +73,38 @@ export class StudentService{
         return this.http.get<StudentModel>('http://localhost:9999/students/'+id);
     }
 
-    AddStudent(student: StudentModel){        
-        console.log(student);
-        
-        this.http.post('http://localhost:9999/student', student).subscribe(
+    AddStudent(student: StudentModel){
+        let studentSub = this.S_StudentDataSource.subscribe(
             {
-                complete: () => {
-                    this.messageService.add({key:"student-list", severity: 'success', detail: 'Successfully added student'});
-                    this.S_IsPopupOpen.next(false);
-                    this.GetAllStudent();
+                next: data => {
+                    let existingStudent = data.filter(e=>(
+                        (e.studentName == student.studentName 
+                            && e.className == student.className 
+                            && e.boardName == student.boardName ) 
+                            || (e.parentPhNum1 == student.parentPhNum1)))
+                    console.log(existingStudent);
+                    
+                    if(existingStudent.length == 0)
+                    {
+                        this.http.post('http://localhost:9999/student', student).subscribe(
+                            {
+                                complete: () => {
+                                    this.messageService.add({key:"student-list", severity: 'success', detail: 'Successfully added student'});
+                                    this.S_IsPopupOpen.next(false);
+                                    this.GetAllStudent();
+                                }
+                            }
+                        );
+                    }
+                    else
+                    {    
+                        this.messageService.add({key:"student-list", severity: 'error', detail: 'Student record already exists'});
+                    }
                 }
             }
         );
+
+        studentSub.unsubscribe();
     }
 
     UpdateStudent(newStudentModel: StudentModel){

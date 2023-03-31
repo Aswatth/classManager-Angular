@@ -17,7 +17,6 @@ import { StudentDetailComponent } from './Student/student-detail/student-detail.
 import { TestInfoComponent } from './Student/test-info/test-info.component';
 import { SessionDataComponent } from './Student/session-info/session-data/session-data.component';
 import { FeesAuditComponent } from './Fees/fees-audit/fees-audit.component';
-import { TemplateHandlerComponent } from './homepage-header/template-handler/template-handler.component';
 import { CbsHandlerComponent } from './cbs-handler/cbs-handler.component';
 import { Date2Time } from './Pipes/date2time.pipe';
 
@@ -87,7 +86,6 @@ const routes: Routes = [
     Date2Time,
     TestInfoComponent,
     HomepageHeaderComponent,
-    TemplateHandlerComponent,
     CbsHandlerComponent
   ],
   imports: [

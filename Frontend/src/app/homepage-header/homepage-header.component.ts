@@ -17,30 +17,12 @@ export class HomepageHeaderComponent implements OnInit{
 
   menuItems: MenuItem[] = [];
 
-  constructor(private exportService: ExportService, private studentService: StudentService){}
+  file!: File;
+
+  constructor(private exportService: ExportService){}
 
   ngOnInit()
   {
-    
-    // this.menuItems = [{
-    //   items: [
-    //     {
-    //       label: 'Student template', 
-    //       icon: 'pi pi-download', 
-    //       command: () => {this.excelService.DownloadStudentTemplate();}
-    //     },
-    //     {
-    //       label: 'Fees template', 
-    //       icon: 'pi pi-download',
-    //       command: () => {this.excelService.DownloadFeesTemplate();}
-    //     },
-    //     {
-    //       label: 'Test template', 
-    //       icon: 'pi pi-download',
-    //       command: () => {this.excelService.DownloadTestTemplate();}
-    //     },
-    //   ]
-    // }];
   }
 
   ExportData()
@@ -49,6 +31,16 @@ export class HomepageHeaderComponent implements OnInit{
   }
   ImportData()
   {
+    this.showImportPopup = true;
+  }
+  ChooseFile(event: any)
+  {     
+    this.file = event.target.files[0];
+  }
 
+  ImportFile()
+  {
+    this.exportService.ImportData(this.file);
+    this.showImportPopup = false;
   }
 }

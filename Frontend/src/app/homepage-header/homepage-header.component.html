@@ -12,5 +12,6 @@
     </div>   
 </p-toolbar>
 <p-dialog [(visible)]="showImportPopup" header="Upload template">
-    <app-template-handler></app-template-handler>
+    <input type="file" (change)="ChooseFile($event)">
+    <p-button label="Import" (onClick)="ImportFile()"></p-button>
 </p-dialog>

@@ -4,9 +4,10 @@ import { StudentModel } from "./student.model";
 import { TestModel } from "./test.model";
 
 export class ExportModel{
-    studentModelList: StudentModel[] = [];
-    feesModelList: FeesModel[] = [];
-    testModelList: TestModel[] = [];
+    studentExportDataList: StudentSheetData[] = [];
+    sessionExportDataList: SessionSheetData[] = [];
+    feesExportDataList: FeesSheetData[] = [];
+    testExportDataList: TestSheetData[] = [];
     classList: string[] = [];
     boardList: string[] = [];
     subjectList: string[] = [];
@@ -22,8 +23,8 @@ export class StudentSheetData{
     parentPhNum2?: string | null  = "";
     subject!: string;
     days!: string;
-    startTime!: string;
-    endTime!: string;
+    startTime!: string|Date;
+    endTime!: string|Date;
     fees!: number;
 
     AddData(student: StudentModel, session: SessionModel)
@@ -43,14 +44,24 @@ export class StudentSheetData{
         this.fees = session.fees;
     }
 }
+export class SessionSheetData{
+    studentName!: string;
+    className!: string;
+    boardName!: string;
+    subject!: string;
+    days!: string;
+    startTime!: string | Date;
+    endTime!: string | Date;
+    fees!: string
+}
 export class FeesSheetData{
     studentName!: string;
     className!: string;
     boardName!: string;
-    feesDate!: string;
+    feesDate!: string|Date;
     subjects!: string;
     fees!: number;
-    paidOn!: string|null;
+    paidOn!: string|null|Date;
     modeOfPayment!: string|null;
     comments!: string|null;
 
@@ -73,7 +84,7 @@ export class TestSheetData{
     boardName!: string;
     subject!: string;
     testName!: string;
-    testDate!: string;
+    testDate!: string|Date;
     marksScored!: number;
     totalMarks!: number;
 
