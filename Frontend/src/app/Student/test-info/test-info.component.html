@@ -47,17 +47,10 @@ header="Add test details"
 <div>
      <form [formGroup]="addTestFormGroup" (ngSubmit)="OnSubmit()">
         <div style="display: flex; margin: 5px;">
-            <label for="test-type">Test type: </label>
-            <!-- <p-cascadeSelect 
-            id="test-type"
-            placeholder="Test Name"
-            [options]="testTypeList" 
-            formControlName="testName" 
-            optionGroupLabel="name"
-            [optionGroupChildren]="['subTypes']"
-            appendTo="body">
-            </p-cascadeSelect> -->
+            <label for="test-name">Test name: </label>
             <p-dropdown
+            id="test-name"
+            placeholder="Test name"
             [options]="testNames"
             formControlName = "testName"
             appendTo="body">
