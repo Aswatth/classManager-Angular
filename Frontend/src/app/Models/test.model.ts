@@ -7,5 +7,6 @@ export class TestModel{
     className!: string;
     boardName!: string;
     subject!: string;
+    studentName!: string;
     studentId!: number;
 }

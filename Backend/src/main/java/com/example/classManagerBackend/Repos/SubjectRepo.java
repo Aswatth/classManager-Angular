@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface SubjectRepo extends JpaRepository<SubjectEntity, Integer>
 {
     public SubjectEntity findBySubject(String subject);
+    public SubjectEntity findBySubjectIgnoreCase(String subject);
 }

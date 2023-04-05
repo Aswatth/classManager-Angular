@@ -12,12 +12,12 @@
                     </p-dropdown>
                     <p-multiSelect
                         class="block margins"
+                        styleClass="p-multiselect-label"
                         [options]="dayList"
-                        [filter]="false"
                         placeholder="Day(s)"
-                        [maxSelectedLabels]="3"
                         display="chip"
-                        formControlName = "days">
+                        formControlName = "days"
+                        appendTo="body">
                     </p-multiSelect>
                     <div style="display: flex;flex-direction: row;justify-content: space-between;" class="margins">
                         <div style="flex: 1;" class="timePicker">

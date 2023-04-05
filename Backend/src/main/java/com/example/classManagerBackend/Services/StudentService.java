@@ -1,16 +1,16 @@
 package com.example.classManagerBackend.Services;
 
 import com.example.classManagerBackend.Models.FeesAuditEntity;
-import com.example.classManagerBackend.Repos.BoardRepo;
-import com.example.classManagerBackend.Repos.ClassRepo;
-import com.example.classManagerBackend.Repos.SubjectRepo;
+import com.example.classManagerBackend.Models.TestEntity;
+import com.example.classManagerBackend.Repos.*;
 import com.example.classManagerBackend.Utils.FeesAuditMapper;
 import com.example.classManagerBackend.Utils.StudentMapper;
+import com.example.classManagerBackend.Utils.TestMapper;
 import com.example.classManagerBackend.View.FeesAuditDataModel;
 import com.example.classManagerBackend.Models.SessionEntity;
 import com.example.classManagerBackend.Models.StudentEntity;
-import com.example.classManagerBackend.Repos.StudentRepo;
 import com.example.classManagerBackend.View.StudentDataModel;
+import com.example.classManagerBackend.View.TestDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,13 @@ public class StudentService implements IStudentService
     SessionService sessionService;
 
     @Autowired
+    FeesAuditRepo feesAuditRepo;
+
+    @Autowired
     FeesAuditService feesAuditService;
+
+    @Autowired
+    TestService testService;
 
     @Autowired
     ClassRepo classRepo;
@@ -49,32 +55,90 @@ public class StudentService implements IStudentService
                 subjectRepo
         );
 
+        if(!StudentExists(studentEntity))
+        {
+            //Store session of current student in a temporary list
+            List<SessionEntity> sessionEntityList = studentEntity.getSessionList();
+            studentEntity.setSessionList(null);
+
+            //Get student after successfully inserting student data
+            studentEntity.setActive(true);
+            int addedStudentId = studentRepo.save((studentEntity)).getId();
+
+            //Use the student id to insert corresponding session
+            studentEntity.setSessionList(sessionService.AddSessions(sessionEntityList, addedStudentId));
+
+            List<String> subjectList = new ArrayList<>();
+
+            sessionEntityList.forEach(e -> {
+                if(e.getSubjectEntity() != null)
+                {
+                    subjectList.add(e.getSubjectEntity().getSubject());
+                }
+            });
+
+            //Create audit once a new student is created
+            feesAuditService.CreateAudit(addedStudentId, String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
+        }
+
+        //Return list of all students
+        return GetAllStudents(true);
+    }
+
+    public void ImportStudent(StudentDataModel studentDataModel, List<FeesAuditDataModel> feesAuditDataModelList, List<TestDataModel> testDataModelList)
+    {
+        StudentEntity studentEntity = StudentMapper.DataToEntity(
+                studentDataModel,
+                classRepo.findByClassNameIgnoreCase(studentDataModel.getClassName()),
+                boardRepo.findByBoardNameIgnoreCase(studentDataModel.getBoardName()),
+                subjectRepo
+        );
+
         //Store session of current student in a temporary list
         List<SessionEntity> sessionEntityList = studentEntity.getSessionList();
         studentEntity.setSessionList(null);
 
         //Get student after successfully inserting student data
         studentEntity.setActive(true);
-        int addedStudentId = studentRepo.save((studentEntity)).getId();
-        //studentEntity.setSessionList(sessionEntityList);
 
-        //Use the student id to insert corresponding session
-        studentEntity.setSessionList(sessionService.AddSessions(sessionEntityList, addedStudentId));
+        if(!StudentExists(studentEntity))
+        {
+            StudentEntity addedStudentEntity = studentRepo.save(studentEntity);
+            int addedStudentId = addedStudentEntity.getId();
+            //studentEntity.setSessionList(sessionEntityList);
 
-        List<String> subjectList = new ArrayList<>();
+            //Use the student id to insert corresponding session
+            studentEntity.setSessionList(sessionService.AddSessions(sessionEntityList, addedStudentId));
 
-        sessionEntityList.forEach(e -> {
-            if(e.getSubjectEntity() != null)
-            {
-                subjectList.add(e.getSubjectEntity().getSubject());
-            }
-        });
+            List<String> subjectList = new ArrayList<>();
 
-        //Create audit once a new student is created
-        feesAuditService.CreateAudit(addedStudentId, String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
+            sessionEntityList.forEach(e -> {
+                if(e.getSubjectEntity() != null)
+                {
+                    subjectList.add(e.getSubjectEntity().getSubject());
+                }
+            });
 
-        //Return list of all students
-        return GetAllStudents(true);
+            //Import fees
+            feesAuditDataModelList.forEach(f->{
+                FeesAuditEntity feesAuditEntity = FeesAuditMapper.DataToEntity(f, addedStudentEntity);
+                feesAuditEntity.setStudentEntity(addedStudentEntity);
+                feesAuditRepo.save(feesAuditEntity);
+            });
+
+            //Import tests
+            testDataModelList.forEach(t->{
+                testService.AddTest(t, addedStudentEntity);
+            });
+        }
+    }
+
+    boolean StudentExists(StudentEntity studentEntity)
+    {
+        StudentEntity student = studentRepo.findByClassEntityAndBoardEntityOrParentPhNum1(studentEntity.getClassEntity(), studentEntity.getBoardEntity(), studentEntity.getParentPhNum1());
+        if(student == null)
+            return false;
+        return true;
     }
 
     @Override
@@ -95,7 +159,11 @@ public class StudentService implements IStudentService
         //Update existing student data
         newStudentEntity.setActive(true);
 
-        return StudentMapper.EntityToData(studentRepo.save(newStudentEntity), newStudentEntity.getClassEntity().getClassName(), newStudentEntity.getBoardEntity().getBoardName());
+        if(!StudentExists(newStudentEntity))
+        {
+            studentRepo.save(newStudentEntity);
+        }
+        return StudentMapper.EntityToData(newStudentEntity, newStudentEntity.getClassEntity().getClassName(), newStudentEntity.getBoardEntity().getBoardName());
     }
 
     @Override
@@ -141,7 +209,8 @@ public class StudentService implements IStudentService
         studentEntityList.forEach(stu -> {
             FeesAuditEntity feesAuditEntity = feesAuditService.GetFeesAudit(date, stu.getId());
 
-            feesDataModelList.add(FeesAuditMapper.EntityToData(feesAuditEntity, stu));
+            if(feesAuditEntity != null)
+                feesDataModelList.add(FeesAuditMapper.EntityToData(feesAuditEntity, stu));
         });
 
         return feesDataModelList;
@@ -159,5 +228,10 @@ public class StudentService implements IStudentService
             sessionList.forEach(e->subjectList.add(e.getSubjectEntity().getSubject()));
             feesAuditService.SaveChanges(studentEntity.get().isActive(), FeesAuditMapper.DataToEntity(feesDataModel, studentEntity.get()), String.join(",",subjectList),actualFees);
         }
+    }
+
+    public void AddTest(TestDataModel testDataModel)
+    {
+        testService.AddTest(testDataModel, studentRepo.findById(testDataModel.getStudentId()).get());
     }
 }

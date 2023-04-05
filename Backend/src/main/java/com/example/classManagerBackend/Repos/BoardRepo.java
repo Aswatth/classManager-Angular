@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface BoardRepo extends JpaRepository<BoardEntity, Integer>
 {
     public BoardEntity findByBoardName(String boardName);
+    public BoardEntity findByBoardNameIgnoreCase(String boardName);
 }

@@ -99,7 +99,7 @@ public class MainController
     @PutMapping("/test")
     void AddTest(@RequestBody TestDataModel testDataModel)
     {
-        testService.AddTest(testDataModel);
+        studentService.AddTest(testDataModel);
     }
 
     @DeleteMapping("/test/{testId}")

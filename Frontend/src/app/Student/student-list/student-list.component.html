@@ -1,29 +1,28 @@
 <app-homepage-header [totalFees]="CalculateTotalFees()" [totalStudents]="studentList.length"></app-homepage-header>
   <hr>
-<p-table #dt [value]="studentList"
+<div style="display: flex;justify-content: end; margin-bottom: 10px;">
+    <div style="margin-right: 5px;">
+        <p-button label="Add student" styleClass="p-button-success" (onClick)="OnAddStudent()"></p-button>
+    </div>
+    <div style="margin-right: 5px;">
+        <p-button label="Fees" styleClass="p-button-fees" (onClick)="ShowsFees()"></p-button>
+    </div>
+    <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body"></p-menu>
+    <p-button type="button" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"></p-button>
+</div>
+<p-table #dt [value]="filteredData"
 selectionMode="single"
 (onRowSelect)="onRowSelect($event)"
 [rows]="10"
 [showCurrentPageReport]="true"
 [rowsPerPageOptions]="[5,10,15]"
 [paginator]="true"
-[globalFilterFields]="['studentName','class-board', 'subject']"
 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-    <ng-template pTemplate="caption">
-        <div style="display: flex; justify-content: space-between; ">
-            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
-            <div style="display: flex;">
-                <div style="margin-right: 5px;">
-                    <p-button label="Add student" styleClass="p-button-success" (onClick)="OnAddStudent()"></p-button>
-                </div>
-                <div style="margin-right: 5px;">
-                    <p-button label="Fees" styleClass="p-button-fees" (onClick)="ShowsFees()"></p-button>
-                </div>
-                <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body"></p-menu>
-                <p-button type="button" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"></p-button>
-            </div>
-        </div>
-    </ng-template>
+<ng-template pTemplate="caption">
+    <p-accordion [activeIndex]="0" expandIcon="pi pi-search" collapseIcon="pi pi-times">
+        <app-search [studentList]="studentList" (filteredData)="GetFilteredData($event)"></app-search>
+    </p-accordion>
+</ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th>#</th>
@@ -33,11 +32,9 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             </th>
             <th>
                 Class-Board
-                <p-columnFilter type="text" field="class-board" display="menu"></p-columnFilter>
             </th>
             <th>
                 Subjects
-                <p-columnFilter type="text" field="subject" display="menu"></p-columnFilter>
             </th>
             <th>Days</th>
             <th>Timing</th>

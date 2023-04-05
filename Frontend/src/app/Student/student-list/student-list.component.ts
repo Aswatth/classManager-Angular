@@ -5,6 +5,8 @@ import { StudentModel } from 'src/app/Models/student.model';
 import {ConfirmationService, MenuItem} from 'primeng/api';
 import { StudentService } from 'src/app/Services/student.service';
 import { Subscription } from 'rxjs';
+import { AddStudentService } from 'src/app/Services/add-student.service';
+import { FilterService } from 'primeng/api';
 
 @Component({
   selector: 'student-list',
@@ -15,6 +17,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   
   displayPopup: boolean = false;
   studentList: StudentModel[] = [];
+  filteredData: StudentModel[] = [];
 
   popupSubscription!: Subscription;
   studentDataSubscription!: Subscription;
@@ -26,6 +29,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   cbsDataList: any[] = [];
 
   constructor(private studentService: StudentService, 
+    private addStudentService: AddStudentService,
     private router:Router, 
     private confirmationService: ConfirmationService
     ){}
@@ -35,6 +39,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
     this.studentDataSubscription = this.studentService.S_StudentDataSource.subscribe({
       next: (data) => {
         this.studentList = data;
+        this.filteredData = this.studentList;
         this.CalculateTotalFees();
       }
     });
@@ -88,6 +93,10 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   OnAddStudent(){
     this.studentService.S_IsPopupOpen.next(true);
+    
+    this.addStudentService.studentInfo = new StudentModel();
+    this.addStudentService.sessionList = []
+    
     this.router.navigate(['/student-popup']);
   }
 
@@ -117,6 +126,11 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   onRowSelect(event: {data: StudentModel}){
     this.router.navigate(['/student/'+event.data.id]);
+  }
+
+  GetFilteredData(data: StudentModel[])
+  {
+    this.filteredData = data;
   }
 
   ngOnDestroy(): void {

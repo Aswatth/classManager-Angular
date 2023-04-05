@@ -47,17 +47,12 @@ public class TestService
         return testDataModelList;
     }
 
-    public void AddTest(TestDataModel testDataModel)
+    public void AddTest(TestDataModel testDataModel, StudentEntity studentEntity)
     {
         TestEntity testEntity = new TestEntity();
 
-        Optional<StudentEntity> studentEntity = studentRepo.findById(testDataModel.getStudentId());
-
-        if(studentEntity.isPresent())
-        {
-            testEntity = TestMapper.DataToEntity(testDataModel, studentEntity.get());
-            testRepo.save(testEntity);
-        }
+        testEntity = TestMapper.DataToEntity(testDataModel, studentEntity);
+        testRepo.save(testEntity);
     }
 
     public void DeleteTest(int testId)
