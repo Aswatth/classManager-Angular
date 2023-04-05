@@ -6,6 +6,7 @@ import {ConfirmationService, MenuItem} from 'primeng/api';
 import { StudentService } from 'src/app/Services/student.service';
 import { Subscription } from 'rxjs';
 import { AddStudentService } from 'src/app/Services/add-student.service';
+import { FilterService } from 'primeng/api';
 
 @Component({
   selector: 'student-list',
@@ -16,6 +17,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   
   displayPopup: boolean = false;
   studentList: StudentModel[] = [];
+  filteredData: StudentModel[] = [];
 
   popupSubscription!: Subscription;
   studentDataSubscription!: Subscription;
@@ -37,6 +39,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
     this.studentDataSubscription = this.studentService.S_StudentDataSource.subscribe({
       next: (data) => {
         this.studentList = data;
+        this.filteredData = this.studentList;
         this.CalculateTotalFees();
       }
     });
@@ -123,6 +126,11 @@ export class StudentListComponent implements OnInit, OnDestroy{
 
   onRowSelect(event: {data: StudentModel}){
     this.router.navigate(['/student/'+event.data.id]);
+  }
+
+  GetFilteredData(data: StudentModel[])
+  {
+    this.filteredData = data;
   }
 
   ngOnDestroy(): void {

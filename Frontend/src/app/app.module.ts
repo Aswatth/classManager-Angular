@@ -18,6 +18,7 @@ import { TestInfoComponent } from './Student/test-info/test-info.component';
 import { SessionDataComponent } from './Student/session-info/session-data/session-data.component';
 import { FeesAuditComponent } from './Fees/fees-audit/fees-audit.component';
 import { CbsHandlerComponent } from './cbs-handler/cbs-handler.component';
+import { SearchComponent } from './search/search.component';
 import { Date2Time } from './Pipes/date2time.pipe';
 
 import {TableModule} from 'primeng/table';
@@ -43,6 +44,7 @@ import { MenuModule } from 'primeng/menu';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ListboxModule } from 'primeng/listbox';
 import { ScrollerModule } from 'primeng/scroller';
+import { AccordionModule } from 'primeng/accordion';
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -86,7 +88,8 @@ const routes: Routes = [
     Date2Time,
     TestInfoComponent,
     HomepageHeaderComponent,
-    CbsHandlerComponent
+    CbsHandlerComponent,
+    SearchComponent
   ],
   imports: [
     //Angular Modules
@@ -119,7 +122,8 @@ const routes: Routes = [
     MenuModule,
     FileUploadModule,
     ListboxModule,
-    ScrollerModule
+    ScrollerModule,
+    AccordionModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
