@@ -37,3 +37,7 @@ button{
     width: 100%;
     /* background-color: transparent; */
 }
+:host ::ng-deep .p-multiselect-label{
+    max-width: 500px;
+    display: flex;
+}
