@@ -1,88 +1,96 @@
 <app-homepage-header [totalFees]="CalculateTotalFees()" [totalStudents]="studentList.length"></app-homepage-header>
   <hr>
-<div style="display: flex;justify-content: end; margin-bottom: 10px;">
-    <div style="margin-right: 5px;">
-        <p-button label="Add student" styleClass="p-button-success" (onClick)="OnAddStudent()"></p-button>
+  <ng-container [ngSwitch]="GetLoadStatus()">
+    <div style="text-align: center;vertical-align: middle;">
+        <p-progressSpinner *ngSwitchCase="0"></p-progressSpinner>
     </div>
-    <div style="margin-right: 5px;">
-        <p-button label="Fees" styleClass="p-button-fees" (onClick)="ShowsFees()"></p-button>
-    </div>
-    <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body"></p-menu>
-    <p-button type="button" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"></p-button>
-</div>
-<p-table #dt [value]="filteredData"
-selectionMode="single"
-(onRowSelect)="onRowSelect($event)"
-[rows]="10"
-[showCurrentPageReport]="true"
-[rowsPerPageOptions]="[5,10,15]"
-[paginator]="true"
-currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-<ng-template pTemplate="caption">
-    <p-accordion [activeIndex]="0" expandIcon="pi pi-search" collapseIcon="pi pi-times">
-        <app-search [studentList]="studentList" (filteredData)="GetFilteredData($event)"></app-search>
-    </p-accordion>
-</ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th>#</th>
-            <th>
-                Name
-                <p-columnFilter type="text" field="studentName" display="menu"></p-columnFilter>
-            </th>
-            <th>
-                Class-Board
-            </th>
-            <th>
-                Subjects
-            </th>
-            <th>Days</th>
-            <th>Timing</th>
-            <th>Fees</th>
-            <th>Actions</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-student>
-        <tr [pSelectableRow]="student">
-            <td>{{ studentList.indexOf(student) + 1 }}</td>
-            <td>{{student.studentName}}</td>
-            <td>{{student.className}} - {{student.boardName}}</td>
-            <td>
-                <ng-container *ngFor="let session of student.sessionList">
-                    <p>{{ session.subject }}</p>
-                </ng-container>
-            </td>
-            <td>
-                <ng-container *ngFor="let session of student.sessionList">
-                    <p>{{ session.days }}</p>
-                </ng-container>
-            </td>
-            <td>
-                <ng-container *ngFor="let session of student.sessionList">
-                    <p>{{ session.startTime | Date2Time }} - {{ session.endTime | Date2Time }}</p>
-                </ng-container>
-            </td>
-            <td>
-                <ng-container *ngFor="let session of student.sessionList">
-                    <p>&#8377;{{ session.fees }}</p>
-                </ng-container>
-            </td>
-            <!-- <td style="color: red;"> Pending </td> -->
-            <p-button styleClass="p-button-delete" icon="pi pi-trash" (onClick)="OnDelete(student)"></p-button>
-        </tr>
-    </ng-template>
-</p-table>
-<p-dialog 
-header="Add student" 
-[modal]="true" 
-[closeOnEscape]="false" 
-[(visible)]="displayPopup" 
-styleClass="p-dialog-style" 
-(onHide)="OnDialogClose()">
-    <router-outlet></router-outlet>
-</p-dialog>
-<p-toast position="bottom-center" key="student-list"></p-toast>
-<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
-<p-dialog [(visible)]="showCbsHandler" header="{{cbsType | titlecase}} list">
-    <app-cbs-handler [dataList]="cbsDataList" [type]="cbsType"></app-cbs-handler>    
-</p-dialog>
+    <i><h3 style="text-align: center;vertical-align: middle;" *ngSwitchCase="-1">Unable to connect to server</h3></i>
+    <div *ngSwitchCase="1">
+        <div style="display: flex;justify-content: end; margin-bottom: 10px;">
+            <div style="margin-right: 5px;">
+                <p-button label="Add student" styleClass="p-button-success" (onClick)="OnAddStudent()"></p-button>
+            </div>
+            <div style="margin-right: 5px;">
+                <p-button label="Fees" styleClass="p-button-info" (onClick)="ShowsFees()"></p-button>
+            </div>
+            <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body"></p-menu>
+            <p-button type="button" styleClass="p-button-warning" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"></p-button>
+        </div>
+        <p-table #dt [value]="filteredData"
+        selectionMode="single"
+        (onRowSelect)="onRowSelect($event)"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5,10,15]"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <ng-template pTemplate="caption">
+            <p-accordion [activeIndex]="0" expandIcon="pi pi-search" collapseIcon="pi pi-times">
+                <app-search [studentList]="studentList" (filteredData)="GetFilteredData($event)"></app-search>
+            </p-accordion>
+        </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>#</th>
+                    <th>
+                        Name
+                        <p-columnFilter type="text" field="studentName" display="menu"></p-columnFilter>
+                    </th>
+                    <th>
+                        Class-Board
+                    </th>
+                    <th>
+                        Subjects
+                    </th>
+                    <th>Days</th>
+                    <th>Timing</th>
+                    <th>Fees</th>
+                    <th>Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-student>
+                <tr [pSelectableRow]="student">
+                    <td>{{ studentList.indexOf(student) + 1 }}</td>
+                    <td>{{student.studentName}}</td>
+                    <td>{{student.className}} - {{student.boardName}}</td>
+                    <td>
+                        <ng-container *ngFor="let session of student.sessionList">
+                            <p>{{ session.subject }}</p>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngFor="let session of student.sessionList">
+                            <p>{{ session.days }}</p>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngFor="let session of student.sessionList">
+                            <p>{{ session.startTime | Date2Time }} - {{ session.endTime | Date2Time }}</p>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngFor="let session of student.sessionList">
+                            <p>&#8377;{{ session.fees }}</p>
+                        </ng-container>
+                    </td>
+                    <!-- <td style="color: red;"> Pending </td> -->
+                    <p-button styleClass="p-button-delete" icon="pi pi-trash" (onClick)="OnDelete(student)"></p-button>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-dialog 
+        header="Add student" 
+        [modal]="true" 
+        [closeOnEscape]="false" 
+        [(visible)]="displayPopup" 
+        styleClass="p-dialog-style" 
+        (onHide)="OnDialogClose()">
+            <router-outlet></router-outlet>
+        </p-dialog>
+        <p-toast position="bottom-center" key="student-list"></p-toast>
+        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+        <p-dialog [(visible)]="showCbsHandler" header="{{cbsType | titlecase}} list">
+            <app-cbs-handler [dataList]="cbsDataList" [type]="cbsType"></app-cbs-handler>    
+        </p-dialog>    
+    </div>    
+  </ng-container>

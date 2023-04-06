@@ -11,7 +11,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class ClassManagerBackendApplication {
-
 	public static void main(String[] args) throws IOException
 	{
 		ApplicationContext context = SpringApplication.run(ClassManagerBackendApplication.class, args);

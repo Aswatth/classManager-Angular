@@ -13,14 +13,20 @@
 </p-toolbar>
 <p-table #dt [value]="GetDataBasedOnFilters()">
     <ng-template pTemplate="caption">
-        <div style="display: flex;justify-content: space-between;">
-            <div style="display: flex;flex-direction: row; justify-content: space-between;">
-                <p-dropdown [options]="yearList" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
-                <p-dropdown [options]="monthList" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
-                <p-checkbox [(ngModel)]="showPendingOnly" [binary]="true" label="Pending only" (onChange)="PendingCbChange()"></p-checkbox>
-                <p-checkbox [(ngModel)]="showPaidOnly" [binary]="true" label="Paid only" (onChange)="PaidCbChange()"></p-checkbox>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <div style="display: flex;justify-content: space-between;">
+                    <p-dropdown [options]="yearList" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
+                    <p-dropdown [options]="monthList" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
+                    <p-checkbox [(ngModel)]="showPendingOnly" [binary]="true" label="Pending only" (onChange)="PendingCbChange()"></p-checkbox>
+                    <p-checkbox [(ngModel)]="showPaidOnly" [binary]="true" label="Paid only" (onChange)="PaidCbChange()"></p-checkbox>
+                </div>
             </div>
-            <p-button icon="pi pi-file-pdf" styleClass="p-button-danger" (onClick)="exportToPdf()"></p-button>
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: end;">
+                    <p-button icon="pi pi-file-pdf" styleClass="p-button-danger" (onClick)="exportToPdf()"></p-button>
+                </div>
+            </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">

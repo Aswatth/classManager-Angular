@@ -32,6 +32,13 @@ public class MainController
     @Autowired
     TestService testService;
 
+    @GetMapping("/isLoaded")
+    boolean IsLoaded()
+    {
+        return true;
+    }
+
+
     @PostMapping("/student")
     void AddStudent(@RequestBody StudentDataModel studentDataModel){
         studentService.AddStudent(studentDataModel);
