@@ -45,6 +45,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ListboxModule } from 'primeng/listbox';
 import { ScrollerModule } from 'primeng/scroller';
 import { AccordionModule } from 'primeng/accordion';
+import { AvatarModule } from 'primeng/avatar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const popupRoute: Routes = [{
   path: 'student-popup', 
@@ -98,9 +100,11 @@ const routes: Routes = [
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {useHash: true}),
 
     //PrimeNG modules
+    AvatarModule,
+    ProgressSpinnerModule,
     ToolbarModule,
     TableModule,
     InputTextModule,

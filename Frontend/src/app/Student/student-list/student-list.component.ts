@@ -81,6 +81,11 @@ export class StudentListComponent implements OnInit, OnDestroy{
     ];
   }
 
+  GetLoadStatus()
+  {
+    return this.studentService.loadingInidcation;
+  }
+
   CalculateTotalFees():number{
     let fees = 0;
     this.studentList.forEach(student => {

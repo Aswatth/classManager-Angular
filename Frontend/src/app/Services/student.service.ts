@@ -9,10 +9,10 @@ import { FeesAuditService } from "./fees-audit.service";
 @Injectable({providedIn: 'root'})
 export class StudentService{
 
-    boardList: string[] = ['CBSE', 'ICSE', 'STATE', 'IGCSE'];
-    classList: string[] = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'Other'];
-    subjectList: string[] = ['Science', 'Maths', 'Social', 'English', 'Tamil', 'Economics', 'Accounts', 'Business Maths'];
-    dayList: string[] = ['Weekday','Weekend','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    boardList: string[] = [];
+    classList: string[] = [];
+    subjectList: string[] = [];
+    dayList: string[] = [];
 
     //Subjects
     //flag for popup open/close
@@ -20,14 +20,34 @@ export class StudentService{
 
     S_StudentDataSource = new BehaviorSubject<StudentModel[]>([]);
 
+    private loadingInterval: any;
+    private currentWaitTime: number = 0;
+    private waitTime: number = 10;
+    loadingInidcation: number = 0; //0=Loading 1=Loaded -1=Unable to load
+
     //Fees data
     //S_totalFees = new BehaviorSubject<number>(0);
 
     constructor(private http: HttpClient, private messageService: MessageService, private feesAuditService: FeesAuditService){
         console.log("Student service cons");
-        //Getting all student data
-        this.GetAllStudent();
-        this.GetCbsData();
+        // //Getting all student data
+        // this.GetAllStudent();
+        // this.GetCbsData();
+        this.loadingInterval = setInterval(() => {
+            this.http.get<boolean>("http://localhost:9999/isLoaded").subscribe({
+            next: (data) => data?this.loadingInidcation = 1:-1,
+            error: () => {
+                this.loadingInidcation = 0;
+                ++this.currentWaitTime;
+                if(this.currentWaitTime > this.waitTime)
+                {
+                    this.loadingInidcation = -1;
+                    clearInterval(this.loadingInterval);
+                }
+            },
+            complete: () => clearInterval(this.loadingInterval)
+            })
+        },10*100);
     }
 
     //CBS data
@@ -40,7 +60,8 @@ export class StudentService{
                 console.log(data);
                 
                 this.classList = data;
-            }
+            },
+            error: (message) => console.log(message)
         });
 
         //Get list of boards
