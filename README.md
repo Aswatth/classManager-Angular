@@ -167,8 +167,6 @@ Active student data can be exported to excel with separate sheets:
 - TestData sheet -> Test data for each student's session
 - ClassData, BoardData, SubjectData sheets -> List of Classes,Boards and Subjects respectively
 
-#### In progress:
-Adding unit tests to both Angular and Spring boot to improve quality of the application
-
 ### Future works:
+Adding unit tests to both Angular and Spring boot to improve quality of the application
 User Reverse proxying using Apache server to eliminate the hardcoded spring boot urls.
