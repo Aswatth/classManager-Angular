@@ -12,7 +12,7 @@ export class StudentService{
     boardList: string[] = [];
     classList: string[] = [];
     subjectList: string[] = [];
-    dayList: string[] = [];
+    dayList: string[] = ['Weekday', 'Weekend', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     //Subjects
     //flag for popup open/close
