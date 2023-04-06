@@ -31,8 +31,8 @@ export class StudentService{
     constructor(private http: HttpClient, private messageService: MessageService, private feesAuditService: FeesAuditService){
         console.log("Student service cons");
         // //Getting all student data
-        // this.GetAllStudent();
-        // this.GetCbsData();
+        this.GetAllStudent();
+        this.GetCbsData();
         this.loadingInterval = setInterval(() => {
             this.http.get<boolean>("http://localhost:9999/isLoaded").subscribe({
             next: (data) => data?this.loadingInidcation = 1:-1,
