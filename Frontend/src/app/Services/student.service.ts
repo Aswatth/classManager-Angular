@@ -29,7 +29,7 @@ export class StudentService{
     //S_totalFees = new BehaviorSubject<number>(0);
 
     constructor(private http: HttpClient, private messageService: MessageService, private feesAuditService: FeesAuditService){
-        console.log("Student service cons");
+        //console.log("Student service cons");
         // //Getting all student data
         this.GetAllStudent();
         this.GetCbsData();
@@ -56,8 +56,8 @@ export class StudentService{
         //Get list of classes
         this.http.get<string[]>('http://localhost:9999/class').subscribe({
             next: (data) => {
-                console.log("Class list");
-                console.log(data);
+                //console.log("Class list");
+                //console.log(data);
                 
                 this.classList = data;
             },
@@ -67,8 +67,8 @@ export class StudentService{
         //Get list of boards
         this.http.get<string[]>('http://localhost:9999/board').subscribe({
             next: (data) => {
-                console.log("Board list");
-                console.log(data);
+                //console.log("Board list");
+                //console.log(data);
 
                 this.boardList = data;
             }
@@ -77,8 +77,8 @@ export class StudentService{
         //Get list of subjects
         this.http.get<string[]>('http://localhost:9999/subject').subscribe({
             next: (data) => {
-                console.log("Subject list");
-                console.log(data);
+                //console.log("Subject list");
+                //console.log(data);
 
                 this.subjectList = data;
             }
@@ -89,7 +89,7 @@ export class StudentService{
     GetAllStudent(){
         this.http.get<StudentModel[]>('http://localhost:9999/students').subscribe({
             next: (data) => {
-                console.log("STUDENT LIST");   
+                //console.log("STUDENT LIST");   
                 this.S_StudentDataSource.next(data);
             }
         });
@@ -108,7 +108,7 @@ export class StudentService{
                             && e.className == student.className 
                             && e.boardName == student.boardName ) 
                             || (e.parentPhNum1 == student.parentPhNum1)))
-                    console.log(existingStudent);
+                    //console.log(existingStudent);
                     
                     if(existingStudent.length == 0)
                     {

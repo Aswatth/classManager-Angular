@@ -58,8 +58,8 @@ export class StudentDetailComponent implements OnInit, OnDestroy{
 
   UpdatePersonalInfo(event: StudentModel)
   {
-    console.log("Event:");
-    console.log(event);
+    //console.log("Event:");
+    //console.log(event);
     
     this.studentModel = event;
   }

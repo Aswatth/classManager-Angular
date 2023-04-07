@@ -32,7 +32,7 @@ export class CbsHandlerComponent implements OnInit{
 
   UpdateData()
   {
-    console.log("Updating data");
+    //console.log("Updating data");
     let existsAlready = false;
     this.dataList.forEach(e=>{
       if(e.toLocaleLowerCase() == this.inputData.toLocaleLowerCase())
@@ -54,7 +54,7 @@ export class CbsHandlerComponent implements OnInit{
         formattedData = this.inputData.charAt(0).toUpperCase() + this.inputData.slice(1);
       }
       this.dataList.push(formattedData);
-      console.log(this.dataList); 
+      //console.log(this.dataList); 
       this.cbsService.Update(this.dataList, this.type);
     }   
   }
@@ -65,7 +65,7 @@ export class CbsHandlerComponent implements OnInit{
       next: (data) => {
         if(data == true)
         {
-          console.log("Safe to delete");
+          //console.log("Safe to delete");
           let index = this.dataList.indexOf(item)
           this.dataList.splice(index, 1);
           this.cbsService.Update(this.dataList, this.type);

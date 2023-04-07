@@ -59,8 +59,8 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   OnAdd(){
-    console.log("session list");
-    console.log(this.sessionList);    
+    //console.log("session list");
+    //console.log(this.sessionList);    
     
     let sessionModel:SessionModel = this.sessionForm.getRawValue();
 
@@ -95,8 +95,8 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   DeleteSession(session: SessionModel){
-    console.log("Deleted session:");
-    console.log(session);
+    //console.log("Deleted session:");
+    //console.log(session);
     let index = this.sessionList.indexOf(session);
     this.sessionList.splice(index, 1);
     this.hasUpdates = true;
@@ -121,7 +121,7 @@ export class SessionInfoComponent implements OnInit, OnDestroy{
   }
 
   OnSaveClick(){
-    console.log(this.sessionList);
+    //console.log(this.sessionList);
     this.studentService.UpdateSession(this.existingStudentData.id! ,this.sessionList);
     this.onSessionUpdate.emit(this.sessionList);
     this.studentService.S_IsPopupOpen.next(false);

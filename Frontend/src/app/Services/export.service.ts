@@ -31,8 +31,8 @@ export class ExportService implements OnInit, OnDestroy{
             next: (data) => {
                 let exportData: ExportModel = data;
 
-                console.log("Export data");
-                console.log(exportData);
+                //console.log("Export data");
+                //console.log(exportData);
 
                 //Update student dob date format
                 exportData.studentExportDataList.forEach(s=>{
@@ -109,7 +109,7 @@ export class ExportService implements OnInit, OnDestroy{
 
     ConvertTimeToDate(time: string) : Date
     {
-        console.log("TIME: "+time);
+        //console.log("TIME: "+time);
         
         let date: Date = new Date();
         let hours = +time.split(" ")[0].split(":")[0];
@@ -141,7 +141,7 @@ export class ExportService implements OnInit, OnDestroy{
             let boardSheetDataList: BoardSheetData[] = XLSX.utils.sheet_to_json(workbook.Sheets['BoardData']) as BoardSheetData[];
             let subjectSheetDataList: SubjectSheetData[] = XLSX.utils.sheet_to_json(workbook.Sheets['SubjectData']) as SubjectSheetData[];
 
-            console.log(studentSheetDataList);            
+            //console.log(studentSheetDataList);            
 
             let exportData = new ExportModel();
             exportData.studentExportDataList = studentSheetDataList;
