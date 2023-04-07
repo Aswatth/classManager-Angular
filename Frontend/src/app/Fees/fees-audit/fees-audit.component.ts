@@ -210,6 +210,9 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
         e.fees, paymentStatus, paidDate,
         e.modeOfPayment, e.comments]);
     });
+    content.push([
+      "-", "-", "-", this.GetFees(), "-", "-", "-", "-"
+    ])
     
     const doc = new jsPDF('p','pt');
     autoTable(doc, { 
