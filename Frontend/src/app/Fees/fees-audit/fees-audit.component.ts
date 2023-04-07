@@ -32,7 +32,9 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
 
   showPendingOnly = false;
   showPaidOnly = false;
-  
+  showCashOnly = false;
+  showAccountOnly = false;
+
   datePaid: Date = new Date();
 
   //@ViewChild('dt') table!: Table;
@@ -66,7 +68,11 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
         this.selectedYear = date.getFullYear();
         this.monthList = this.dateList.filter(m=>m.getFullYear() == this.selectedYear).map(m=>m.toLocaleDateString('default', {month: 'short'}));
         this.selectedMonth = date.toLocaleString('default', { month: 'short' })
+        console.log("Current fees date");
         console.log(date);
+        console.log("Selected month")
+        console.log(this.selectedMonth);
+        
         
       }
     );
@@ -90,6 +96,11 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
 
   PendingCbChange()
   {
+    if(this.showPendingOnly)
+    {
+      this.showCashOnly = false;
+      this.showAccountOnly = false;
+    }
     if(this.showPaidOnly && this.showPendingOnly)
     {
       this.showPaidOnly = false;
@@ -98,10 +109,27 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
 
   GetDataBasedOnFilters() : FeesModel[]
   {
-    if(this.showPaidOnly)
+    if(this.showAccountOnly && this.showCashOnly)
+    {
       return this.feesDataList.filter(f=>f.paidOn!=null);
+    }
+    if(this.showPaidOnly)
+    {
+      if(this.showCashOnly)
+      {
+        return this.feesDataList.filter(f=>f.modeOfPayment=="Cash");
+      }
+      if(this.showAccountOnly)
+      {
+        return this.feesDataList.filter(f=>f.modeOfPayment=="Account");
+      }
+      return this.feesDataList.filter(f=>f.paidOn!=null);
+    }
     if(this.showPendingOnly)
-      return this.feesDataList.filter(f=>f.paidOn==null)  
+    {
+      return this.feesDataList.filter(f=>f.paidOn==null);
+    }
+    
     return this.feesDataList;
   }
 
