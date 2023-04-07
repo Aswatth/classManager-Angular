@@ -27,8 +27,8 @@ public class FeesAuditMapper
         feesAuditDataModel.setId(feesAuditEntity.getId());
         feesAuditDataModel.setStudentId(studentDataModel.getId());
         feesAuditDataModel.setStudentName(studentDataModel.getStudentName());
-        feesAuditDataModel.setClassName(studentDataModel.getClassName());
-        feesAuditDataModel.setBoardName(studentDataModel.getBoardName());
+        feesAuditDataModel.setClassName(feesAuditEntity.getClassName());
+        feesAuditDataModel.setBoardName(feesAuditEntity.getBoardName());;
 
         feesAuditDataModel.setFeesDate(feesAuditEntity.getFeesDate());
         feesAuditDataModel.setSubjects(feesAuditEntity.getSubjects());
@@ -48,6 +48,8 @@ public class FeesAuditMapper
         feesAuditEntity.setFeesDate(feesAuditDataModel.getFeesDate());
         feesAuditEntity.setSubjects(feesAuditDataModel.getSubjects());
         feesAuditEntity.setStudentEntity(studentEntity);
+        feesAuditEntity.setClassName(feesAuditDataModel.getClassName());
+        feesAuditEntity.setBoardName(feesAuditDataModel.getBoardName());
         feesAuditEntity.setFees(feesAuditDataModel.getFees());
         feesAuditEntity.setPaidOn(feesAuditDataModel.getPaidOn());
         feesAuditEntity.setModeOfPayment(feesAuditDataModel.getModeOfPayment());

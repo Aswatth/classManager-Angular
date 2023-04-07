@@ -20,6 +20,9 @@ public class FeesAuditEntity
     @JoinColumn(name = "studentId")
     StudentEntity studentEntity;
 
+    String className;
+    String boardName;
+
     double fees;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date paidOn;
@@ -68,6 +71,26 @@ public class FeesAuditEntity
     public void setStudentEntity(StudentEntity studentEntity)
     {
         this.studentEntity = studentEntity;
+    }
+
+    public String getClassName()
+    {
+        return className;
+    }
+
+    public void setClassName(String className)
+    {
+        this.className = className;
+    }
+
+    public String getBoardName()
+    {
+        return boardName;
+    }
+
+    public void setBoardName(String boardName)
+    {
+        this.boardName = boardName;
     }
 
     public double getFees()

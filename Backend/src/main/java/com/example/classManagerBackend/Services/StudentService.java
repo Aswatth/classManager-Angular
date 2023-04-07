@@ -78,7 +78,7 @@ public class StudentService implements IStudentService
             });
 
             //Create audit once a new student is created
-            feesAuditService.CreateAudit(addedStudentId, String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
+            feesAuditService.CreateAudit(studentRepo.findById(addedStudentId).get(), String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
         }
 
         //Return list of all students
@@ -160,6 +160,8 @@ public class StudentService implements IStudentService
         newStudentEntity.setActive(true);
 
         studentRepo.save(newStudentEntity);
+
+        feesAuditService.UpdateFeesAudit(newStudentEntity);
 
         return StudentMapper.EntityToData(newStudentEntity, newStudentEntity.getClassEntity().getClassName(), newStudentEntity.getBoardEntity().getBoardName());
     }
