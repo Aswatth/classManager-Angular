@@ -35,3 +35,8 @@
     text-transform: uppercase;
     color: green;
 }
+.information{
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+}

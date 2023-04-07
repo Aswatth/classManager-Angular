@@ -10,14 +10,21 @@
             Fees summary
         </h1>
     </div>
+    <div class="p-toolbar-group-end">
+        <p class="information">{{ selectedMonth }}: &#8377; {{GetFees()}}</p>
+    </div>
 </p-toolbar>
 <p-table #dt [value]="GetDataBasedOnFilters()">
     <ng-template pTemplate="caption">
         <div style="display: flex;">
             <div style="flex: 1;">
                 <div style="display: flex;justify-content: space-between;">
-                    <p-dropdown [options]="yearList" placeholder="Year" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
-                    <p-dropdown [options]="monthList" placeholder="Month" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
+                    <div>
+                        <p style="display: inline;">Year: </p><p-dropdown [options]="yearList" placeholder="Year" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
+                    </div>
+                    <div>
+                        <p style="display: inline;">Month: </p><p-dropdown [options]="monthList" placeholder="Month" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
+                    </div>
                     <p-checkbox [(ngModel)]="showPendingOnly" [binary]="true" label="Pending only" (onChange)="PendingCbChange()"></p-checkbox>
                     <p-checkbox [(ngModel)]="showPaidOnly" [binary]="true" label="Paid only" (onChange)="PaidCbChange()"></p-checkbox>
                     <ng-container *ngIf="showPaidOnly">

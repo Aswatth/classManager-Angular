@@ -165,6 +165,13 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     this.feesAuditService.SaveChanges(this.feesDataList[this.selectedIndex]);
   }
 
+  GetFees() : number
+  {
+    let fees = 0;
+    this.feesDataList.forEach(f=>fees += f.fees);
+    return fees;
+  }
+
   OnYearChange()
   {
     let year = this.selectedYear;
@@ -203,6 +210,9 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
         e.fees, paymentStatus, paidDate,
         e.modeOfPayment, e.comments]);
     });
+    content.push([
+      "-", "-", "-", this.GetFees(), "-", "-", "-", "-"
+    ])
     
     const doc = new jsPDF('p','pt');
     autoTable(doc, { 
