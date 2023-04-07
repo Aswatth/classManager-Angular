@@ -4,6 +4,7 @@
             <div>
                 <ng-container *ngIf="studentInfo">
                     <p><b>Student name:</b>{{ studentInfo.studentName }} </p>
+                    <p><b>Date of birth:</b>{{ studentInfo.dateOfBirth | date }} </p>
                     <p><b>Location:</b>  {{ studentInfo.location }} </p>
                     <p><b>School name:</b>  {{ studentInfo.schoolName }} </p>
                     <p><b>Class:</b>  {{ studentInfo.className }} </p>

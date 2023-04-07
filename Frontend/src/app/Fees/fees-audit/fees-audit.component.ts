@@ -92,18 +92,23 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     {
       this.showPendingOnly = false;
     }
-  }
-
-  PendingCbChange()
-  {
-    if(this.showPendingOnly)
+    if(this.showPendingOnly || !this.showPaidOnly)
     {
       this.showCashOnly = false;
       this.showAccountOnly = false;
     }
+  }
+
+  PendingCbChange()
+  {
     if(this.showPaidOnly && this.showPendingOnly)
     {
       this.showPaidOnly = false;
+    }
+    if(this.showPendingOnly || !this.showPaidOnly)
+    {
+      this.showCashOnly = false;
+      this.showAccountOnly = false;
     }
   }
 

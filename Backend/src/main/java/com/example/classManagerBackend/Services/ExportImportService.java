@@ -55,6 +55,7 @@ public class ExportImportService
         studentEntityList.forEach(e->{
             StudentExportData studentExportData = new StudentExportData();
             studentExportData.setStudentName(e.getStudentName());
+            studentExportData.setDateOfBirth(e.getDateOfBirth());
             studentExportData.setSchoolName(e.getSchoolName());
             studentExportData.setClassName(e.getClassEntity().getClassName());
             studentExportData.setBoardName(e.getBoardEntity().getBoardName());
@@ -167,6 +168,7 @@ public class ExportImportService
             StudentDataModel studentDataModel = new StudentDataModel();
 
             studentDataModel.setStudentName(s.getStudentName());
+            studentDataModel.setDateOfBirth(s.getDateOfBirth());
             studentDataModel.setLocation(s.getLocation());
             studentDataModel.setSchoolName(s.getSchoolName());
             studentDataModel.setClassName(s.getClassName());

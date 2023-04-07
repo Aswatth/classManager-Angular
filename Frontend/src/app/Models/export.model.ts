@@ -14,6 +14,7 @@ export class ExportModel{
 }
 export class StudentSheetData{
     studentName: string = "";
+    dateOfBirth!: string|Date;
     schoolName: string = "";
     className: string  = "";
     boardName: string  = "";

@@ -34,6 +34,11 @@ export class ExportService implements OnInit, OnDestroy{
                 console.log("Export data");
                 console.log(exportData);
 
+                //Update student dob date format
+                exportData.studentExportDataList.forEach(s=>{
+                    s.dateOfBirth = new Date(s.dateOfBirth).toLocaleString('default', {day: '2-digit', month: 'short', year: 'numeric'});
+                });
+
                 //Update session info's time format
                 exportData.sessionExportDataList.forEach(ses=>{
                     ses.startTime = new Date(ses.startTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });                    
@@ -140,6 +145,9 @@ export class ExportService implements OnInit, OnDestroy{
 
             let exportData = new ExportModel();
             exportData.studentExportDataList = studentSheetDataList;
+            exportData.studentExportDataList.forEach(s=>{
+                s.dateOfBirth = new Date(s.dateOfBirth);
+            });
             
             exportData.sessionExportDataList = sessionSheetDataList;
             exportData.sessionExportDataList.forEach(f=>{

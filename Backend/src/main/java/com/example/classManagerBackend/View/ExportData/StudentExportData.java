@@ -1,8 +1,11 @@
 package com.example.classManagerBackend.View.ExportData;
 
+import java.util.Date;
+
 public class StudentExportData
 {
     String studentName;
+    Date dateOfBirth;
     String className;
     String boardName;
 
@@ -20,6 +23,16 @@ public class StudentExportData
     public void setStudentName(String studentName)
     {
         this.studentName = studentName;
+    }
+
+    public Date getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getSchoolName()
