@@ -13,12 +13,12 @@ export class SessionDataComponent{
     @Output() selectedSession = new EventEmitter<SessionModel>();
 
     OnDelete(){
-        console.log("Firing delete");
+        //console.log("Firing delete");
         this.sessionDelete.emit(this.sessionModel);
     }
     
     Click(){
-        console.log("Firing click");
+        //console.log("Firing click");
         this.selectedSession.emit(this.sessionModel);
     }
 }

@@ -7,7 +7,7 @@ import { SessionModel } from '../Models/session.model';
 @Injectable({providedIn: 'root'})
 export class AddStudentService{
     
-    studentInfo?: StudentModel = new StudentModel();
+    studentInfo?: StudentModel;
     sessionList!: SessionModel[];
 
     constructor(private studentService: StudentService){

@@ -16,10 +16,14 @@
         <div style="display: flex;">
             <div style="flex: 1;">
                 <div style="display: flex;justify-content: space-between;">
-                    <p-dropdown [options]="yearList" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
-                    <p-dropdown [options]="monthList" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
+                    <p-dropdown [options]="yearList" placeholder="Year" [(ngModel)]="selectedYear" (onChange)="OnYearChange()"></p-dropdown>
+                    <p-dropdown [options]="monthList" placeholder="Month" [(ngModel)]="selectedMonth" (onChange)="OnMonthChange()"></p-dropdown>
                     <p-checkbox [(ngModel)]="showPendingOnly" [binary]="true" label="Pending only" (onChange)="PendingCbChange()"></p-checkbox>
                     <p-checkbox [(ngModel)]="showPaidOnly" [binary]="true" label="Paid only" (onChange)="PaidCbChange()"></p-checkbox>
+                    <ng-container *ngIf="showPaidOnly">
+                        <p-checkbox [(ngModel)]="showCashOnly" [binary]="true" label="Cash"></p-checkbox>
+                        <p-checkbox [(ngModel)]="showAccountOnly" [binary]="true" label="Account"></p-checkbox>
+                    </ng-container>
                 </div>
             </div>
             <div style="flex: 1;">

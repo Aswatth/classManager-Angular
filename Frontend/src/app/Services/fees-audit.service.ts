@@ -21,7 +21,7 @@ export class FeesAuditService implements OnInit{
     GetFeesAudit(date: string){        
         this.http.post<FeesModel[]>("http://localhost:9999/fees",date).subscribe(
             data => {
-                console.log(data);
+                //console.log(data);
                 
                 this.S_FeesAuditData.next(data);
             }
@@ -34,7 +34,7 @@ export class FeesAuditService implements OnInit{
     }
 
     SaveChanges(feesAuditList: FeesModel){
-        console.log("Saving changes");
+        //console.log("Saving changes");
 
         this.http.put<FeesModel>("http://localhost:9999/fees", feesAuditList).subscribe();
     }

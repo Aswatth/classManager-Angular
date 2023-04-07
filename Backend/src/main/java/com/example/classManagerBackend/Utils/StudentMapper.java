@@ -32,6 +32,7 @@ public final class StudentMapper
 
         studentDataModel.setId(studentEntity.getId());
         studentDataModel.setStudentName(studentEntity.getStudentName());
+        studentDataModel.setDateOfBirth(studentEntity.getDateOfBirth());
         studentDataModel.setSchoolName(studentEntity.getSchoolName());
         studentDataModel.setClassName(className);
         studentDataModel.setBoardName(boardName);
@@ -52,6 +53,7 @@ public final class StudentMapper
         StudentEntity studentEntity = new StudentEntity();
         studentEntity.setId(studentDataModel.getId());
         studentEntity.setStudentName(studentDataModel.getStudentName());
+        studentEntity.setDateOfBirth(studentDataModel.getDateOfBirth());
         studentEntity.setSchoolName(studentDataModel.getSchoolName());
         studentEntity.setClassEntity(classEntity);
         studentEntity.setBoardEntity(boardEntity);

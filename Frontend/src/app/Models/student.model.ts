@@ -3,6 +3,7 @@ import { SessionModel } from "./session.model";
 export class StudentModel{
     id?: number;
     studentName: string = "";
+    dateOfBirth: Date = new Date();
     schoolName: string = "";
     className: string  = "";
     boardName: string  = "";
@@ -13,16 +14,4 @@ export class StudentModel{
     sessionList: SessionModel[] = [];
 
     constructor(){};
-
-    AddStudent(studentName:string, schoolName: string, boardName: string, className: string, 
-        location: string, parentPhNum1: string, studentPhNum?: string, parentPhNum2?: string){
-            this.studentName = studentName;
-            this.schoolName = schoolName;
-            this.boardName = boardName;
-            this.className = className;
-            this.location = location;
-            this.studentPhNum = studentPhNum;
-            this.parentPhNum1 = parentPhNum1;
-            this.parentPhNum2 = parentPhNum2;
-        }
 }

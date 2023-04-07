@@ -27,11 +27,12 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
     private studentService: StudentService) { }
 
   ngOnInit(){
-    console.log("Personal info init");
+    //console.log("Personal info init");
     
     this.personalInfoForm = new FormGroup(
       {
         'studentName': new FormControl(null, Validators.required),
+        'dateOfBirth': new FormControl(null, Validators.required),
         'schoolName': new FormControl(null, Validators.required),
         'className': new FormControl(null, Validators.required),
         'boardName': new FormControl(null, Validators.required),
@@ -58,6 +59,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
 
   SetFormValue(existingStudentData: StudentModel){
     this.personalInfoForm.controls['studentName'].setValue(existingStudentData.studentName);
+    this.personalInfoForm.controls['dateOfBirth'].setValue(new Date(existingStudentData.dateOfBirth));
     this.personalInfoForm.controls['schoolName'].setValue(existingStudentData.schoolName);
     this.personalInfoForm.controls['className'].setValue(existingStudentData.className);
     this.personalInfoForm.controls['boardName'].setValue(existingStudentData.boardName);
@@ -65,6 +67,12 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
     this.personalInfoForm.controls['studentPhNum'].setValue(existingStudentData.studentPhNum);
     this.personalInfoForm.controls['parentPhNum1'].setValue(existingStudentData.parentPhNum1);
     this.personalInfoForm.controls['parentPhNum2'].setValue(existingStudentData.parentPhNum2);
+    //console.log("form value");
+    //console.log(existingStudentData);
+    //console.log(this.personalInfoForm.getRawValue());
+    
+    
+    
   }
 
   OnSaveClick(){
@@ -76,8 +84,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
     this.existingStudentData.id = id;
     this.existingStudentData.sessionList = sessionList;
 
-    console.log("Existing student data");    
-    console.log(this.existingStudentData);
+    //console.log("Existing student data");    
+    //console.log(this.existingStudentData);
 
     this.studentService.UpdateStudent(this.existingStudentData);
     this.onStudentUpdate.emit(this.existingStudentData);
@@ -89,6 +97,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    console.log("destroying popup");
+    //console.log("destroying popup");
   }
 }

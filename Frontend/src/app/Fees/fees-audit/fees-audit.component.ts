@@ -32,7 +32,9 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
 
   showPendingOnly = false;
   showPaidOnly = false;
-  
+  showCashOnly = false;
+  showAccountOnly = false;
+
   datePaid: Date = new Date();
 
   //@ViewChild('dt') table!: Table;
@@ -41,7 +43,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     private feesAuditService: FeesAuditService){}
 
   ngOnInit(): void {
-    console.log("Fees init");
+    //console.log("Fees init");
     
     this.feesDataSubcription = this.feesAuditService.S_FeesAuditData.subscribe(
       (data) => {
@@ -66,7 +68,11 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
         this.selectedYear = date.getFullYear();
         this.monthList = this.dateList.filter(m=>m.getFullYear() == this.selectedYear).map(m=>m.toLocaleDateString('default', {month: 'short'}));
         this.selectedMonth = date.toLocaleString('default', { month: 'short' })
-        console.log(date);
+        //console.log("Current fees date");
+        //console.log(date);
+        //console.log("Selected month")
+        //console.log(this.selectedMonth);
+        
         
       }
     );
@@ -86,6 +92,11 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     {
       this.showPendingOnly = false;
     }
+    if(this.showPendingOnly || !this.showPaidOnly)
+    {
+      this.showCashOnly = false;
+      this.showAccountOnly = false;
+    }
   }
 
   PendingCbChange()
@@ -94,30 +105,52 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     {
       this.showPaidOnly = false;
     }
+    if(this.showPendingOnly || !this.showPaidOnly)
+    {
+      this.showCashOnly = false;
+      this.showAccountOnly = false;
+    }
   }
 
   GetDataBasedOnFilters() : FeesModel[]
   {
-    if(this.showPaidOnly)
+    if(this.showAccountOnly && this.showCashOnly)
+    {
       return this.feesDataList.filter(f=>f.paidOn!=null);
+    }
+    if(this.showPaidOnly)
+    {
+      if(this.showCashOnly)
+      {
+        return this.feesDataList.filter(f=>f.modeOfPayment=="Cash");
+      }
+      if(this.showAccountOnly)
+      {
+        return this.feesDataList.filter(f=>f.modeOfPayment=="Account");
+      }
+      return this.feesDataList.filter(f=>f.paidOn!=null);
+    }
     if(this.showPendingOnly)
-      return this.feesDataList.filter(f=>f.paidOn==null)  
+    {
+      return this.feesDataList.filter(f=>f.paidOn==null);
+    }
+    
     return this.feesDataList;
   }
 
   OnPendingPress(index: number){
     this.selectedIndex = index;
-    console.log(index);
+    //console.log(index);
     
     this.displayPopup = true;
-    console.log(this.feesDataList[index]!.fees);
+    //console.log(this.feesDataList[index]!.fees);
     
     this.paymentConfirmationForm.controls["fees"].setValue(this.feesDataList[index].fees);
   }
 
   ConfirmPayment(){
-    console.log("Payment confirmed");
-    console.log(this.paymentConfirmationForm.getRawValue());
+    //console.log("Payment confirmed");
+    //console.log(this.paymentConfirmationForm.getRawValue());
     this.displayPopup = false;
     
     let selectedValue = this.paymentConfirmationForm.controls['paidOn'].value;
@@ -127,7 +160,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     this.feesDataList[this.selectedIndex].fees = this.paymentConfirmationForm.controls['fees'].value;
     this.feesDataList[this.selectedIndex].modeOfPayment = this.paymentConfirmationForm.controls['modeOfPayment'].value;
 
-    console.log(this.feesDataList);
+    //console.log(this.feesDataList);
     
     this.feesAuditService.SaveChanges(this.feesDataList[this.selectedIndex]);
   }
@@ -177,7 +210,7 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     head: [header],
     body: content,
     didParseCell(data) {
-      //console.log(data.cell.raw);
+      ////console.log(data.cell.raw);
       if(data.cell.raw == "Pending")
       {
         data.cell.styles.textColor = [255,0,0];
@@ -197,6 +230,6 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.feesDataSubcription.unsubscribe();
-    console.log("Fees destroy");    
+    //console.log("Fees destroy");    
   }
 }

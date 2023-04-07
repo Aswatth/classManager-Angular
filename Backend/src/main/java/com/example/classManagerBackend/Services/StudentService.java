@@ -78,7 +78,7 @@ public class StudentService implements IStudentService
             });
 
             //Create audit once a new student is created
-            feesAuditService.CreateAudit(addedStudentId, String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
+            feesAuditService.CreateAudit(studentRepo.findById(addedStudentId).get(), String.join(",", subjectList) ,sessionEntityList.stream().mapToDouble(SessionEntity::getFees).sum());
         }
 
         //Return list of all students
@@ -135,7 +135,7 @@ public class StudentService implements IStudentService
 
     boolean StudentExists(StudentEntity studentEntity)
     {
-        StudentEntity student = studentRepo.findByClassEntityAndBoardEntityOrParentPhNum1(studentEntity.getClassEntity(), studentEntity.getBoardEntity(), studentEntity.getParentPhNum1());
+        StudentEntity student = studentRepo.findByStudentNameAndClassEntityAndBoardEntityAndDateOfBirth(studentEntity.getStudentName(), studentEntity.getClassEntity(), studentEntity.getBoardEntity(), studentEntity.getDateOfBirth());
         if(student == null)
             return false;
         return true;
@@ -159,10 +159,10 @@ public class StudentService implements IStudentService
         //Update existing student data
         newStudentEntity.setActive(true);
 
-        if(!StudentExists(newStudentEntity))
-        {
-            studentRepo.save(newStudentEntity);
-        }
+        studentRepo.save(newStudentEntity);
+
+        feesAuditService.UpdateFeesAudit(newStudentEntity);
+
         return StudentMapper.EntityToData(newStudentEntity, newStudentEntity.getClassEntity().getClassName(), newStudentEntity.getBoardEntity().getBoardName());
     }
 

@@ -30,13 +30,15 @@ public class FeesAuditService implements IFeesAuditService
     }
 
     @Override
-    public void CreateAudit(int studentId, String subjects, double totalFees)
+    public void CreateAudit(StudentEntity studentEntity, String subjects, double totalFees)
     {
         FeesAuditEntity feesAuditEntity = new FeesAuditEntity();
 
         feesAuditEntity.setFeesDate(dateUtils.GetCurrentDate());
         feesAuditEntity.setSubjects(subjects);
-        feesAuditEntity.setStudentEntity(studentRepo.findById(studentId).get());
+        feesAuditEntity.setClassName(studentEntity.getClassEntity().getClassName());
+        feesAuditEntity.setBoardName(studentEntity.getBoardEntity().getBoardName());
+        feesAuditEntity.setStudentEntity(studentEntity);
         feesAuditEntity.setFees(totalFees);
         feesAuditEntity.setPaidOn(null);
         feesAuditEntity.setComments(null);
@@ -51,14 +53,35 @@ public class FeesAuditService implements IFeesAuditService
 
         StudentEntity studentEntity = studentRepo.findById(studentId).get();
 
+        //Fetch data on current date
         FeesAuditEntity feesAuditEntity = feesAuditRepo.findByFeesDateAndStudentEntity(currentDate, studentEntity);
         if (feesAuditEntity.getPaidOn() != null)
         {
+            //If already paid then fetch the one that is pending payment
             feesAuditEntity = feesAuditRepo.findByStudentEntityAndPaidOn(studentEntity, null);
         }
         feesAuditEntity.setFees(totalFees);
-
         feesAuditEntity.setSubjects(subjects);
+        feesAuditEntity.setClassName(studentEntity.getClassEntity().getClassName());
+        feesAuditEntity.setBoardName(studentEntity.getBoardEntity().getBoardName());
+
+        feesAuditRepo.save(feesAuditEntity);
+    }
+
+    public void UpdateFeesAudit(StudentEntity studentEntity)
+    {
+        Date currentDate = dateUtils.GetCurrentDate();
+
+        //Fetch data on current date
+        FeesAuditEntity feesAuditEntity = feesAuditRepo.findByFeesDateAndStudentEntity(currentDate, studentEntity);
+        if (feesAuditEntity.getPaidOn() != null)
+        {
+            //If already paid then fetch the one that is pending payment
+            feesAuditEntity = feesAuditRepo.findByStudentEntityAndPaidOn(studentEntity, null);
+        }
+        feesAuditEntity.setClassName(studentEntity.getClassEntity().getClassName());
+        feesAuditEntity.setBoardName(studentEntity.getBoardEntity().getBoardName());
+
         feesAuditRepo.save(feesAuditEntity);
     }
 
@@ -74,6 +97,8 @@ public class FeesAuditService implements IFeesAuditService
 
             FeesAuditEntity nextFeesAuditEntity = new FeesAuditEntity();
             nextFeesAuditEntity.setFees(actualFees);
+            nextFeesAuditEntity.setClassName(feesAuditEntity.getClassName());
+            nextFeesAuditEntity.setBoardName(feesAuditEntity.getBoardName());
             nextFeesAuditEntity.setSubjects(subjects);
             nextFeesAuditEntity.setFeesDate(nextDate);
             nextFeesAuditEntity.setStudentEntity(feesAuditEntity.getStudentEntity());

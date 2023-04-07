@@ -2,6 +2,7 @@ package com.example.classManagerBackend.Models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class StudentEntity
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     String studentName;
+    Date dateOfBirth;
     String schoolName;
     //String className;
 
@@ -58,6 +60,16 @@ public class StudentEntity
     public void setStudentName(String studentName)
     {
         this.studentName = studentName;
+    }
+
+    public Date getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getSchoolName()

@@ -35,7 +35,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
     ){}
 
   ngOnInit(): void {
-    console.log("Student list init");
+    //console.log("Student list init");
     this.studentDataSubscription = this.studentService.S_StudentDataSource.subscribe({
       next: (data) => {
         this.studentList = data;
@@ -116,7 +116,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
   }
 
   OnDelete(student: StudentModel){
-    console.log(student);
+    //console.log(student);
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete <b>'+ student.studentName +'\'s</b> data?',
       accept: () => {
@@ -124,7 +124,7 @@ export class StudentListComponent implements OnInit, OnDestroy{
         this.CalculateTotalFees();
       },
       reject: () =>{
-        console.log("Rejected");
+        //console.log("Rejected");
       }
   });
   }

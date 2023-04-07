@@ -2,12 +2,14 @@ package com.example.classManagerBackend.View;
 
 import com.example.classManagerBackend.Models.SessionEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public class StudentDataModel
 {
     int id;
     String studentName;
+    Date dateOfBirth;
     String schoolName;
     String className;
     String boardName;
@@ -35,6 +37,16 @@ public class StudentDataModel
     public void setStudentName(String studentName)
     {
         this.studentName = studentName;
+    }
+
+    public Date getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getSchoolName()

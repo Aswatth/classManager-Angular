@@ -91,7 +91,7 @@ export class TestInfoComponent implements OnInit{
 
   OnSubmit()
   {
-    console.log(this.addTestFormGroup.getRawValue());
+    //console.log(this.addTestFormGroup.getRawValue());
     this.AddTest();
   }
 
