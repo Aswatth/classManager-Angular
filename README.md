@@ -175,3 +175,4 @@ Active student data can be exported to excel with separate sheets:
 ### Future works:
 Adding unit tests to both Angular and Spring boot to improve quality of the application.
 Use Reverse proxying using Apache server to eliminate the hardcoded spring boot urls.
+Stylize exported excel column headers.
