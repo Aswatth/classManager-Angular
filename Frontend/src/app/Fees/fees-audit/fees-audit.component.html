@@ -10,6 +10,9 @@
             Fees summary
         </h1>
     </div>
+    <div class="p-toolbar-group-end">
+        <p class="information">&#8377; {{ selectedMonth }}-{{GetFees()}}</p>
+    </div>
 </p-toolbar>
 <p-table #dt [value]="GetDataBasedOnFilters()">
     <ng-template pTemplate="caption">

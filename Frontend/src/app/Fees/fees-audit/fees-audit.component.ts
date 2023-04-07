@@ -165,6 +165,13 @@ export class FeesAuditComponent implements OnInit, OnDestroy {
     this.feesAuditService.SaveChanges(this.feesDataList[this.selectedIndex]);
   }
 
+  GetFees() : number
+  {
+    let fees = 0;
+    this.feesDataList.forEach(f=>fees += f.fees);
+    return fees;
+  }
+
   OnYearChange()
   {
     let year = this.selectedYear;
