@@ -53,6 +53,11 @@ After clicking on submit:
 <img src="/Images/Add student/after-submit.png" width=500 height=250>
 The submitted information will be successfully saved in the backend with a pop-up confirmation and will be displayed in the student-table and the title-bar will display updated student count and total fees.
 
+
+User can search for a particular record by filtering down the data. The filtered results can be further narrowed down by searching for a particular student name.
+
+<img src="/Images/Add student/search.png" width=500 height=250>
+
 ## Editing added student:
 Clicking on the particular student record will navigate to the student details page where all information related to the selected student will be displayed:
 
@@ -168,5 +173,5 @@ Active student data can be exported to excel with separate sheets:
 - ClassData, BoardData, SubjectData sheets -> List of Classes,Boards and Subjects respectively
 
 ### Future works:
-Adding unit tests to both Angular and Spring boot to improve quality of the application
-User Reverse proxying using Apache server to eliminate the hardcoded spring boot urls.
+Adding unit tests to both Angular and Spring boot to improve quality of the application.
+Use Reverse proxying using Apache server to eliminate the hardcoded spring boot urls.
