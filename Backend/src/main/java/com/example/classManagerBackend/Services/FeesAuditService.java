@@ -95,4 +95,10 @@ public class FeesAuditService implements IFeesAuditService
         feesAuditRepo.deleteAll(feesAuditEntityList);
     }
 
+    @Override
+    public void DeleteAudit(FeesAuditEntity feesAuditEntity)
+    {
+        feesAuditRepo.delete(feesAuditEntity);
+    }
+
 }

@@ -51,7 +51,7 @@ public class MainController
 
     @GetMapping("/students")
     ResponseEntity<List<StudentEntity>> GetAllStudent(){
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.GetAllStudents());
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.GetAllStudents(true));
     }
 
     @PostMapping("/fees")
